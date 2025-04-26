@@ -51,6 +51,7 @@
         
        <!-- App CSS -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
         <!-- Template Main CSS File -->
         <link href="{{ asset('assets/css/lightstyleen.css') }}" rel="stylesheet">
