@@ -43,18 +43,33 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+   
+    //relations
+
     public function user(){
         return $this->belongsTo(User::class, 'user_id');
     }
-protected $append = ['user'];    
-     
+
+ 
     public function users(){
         return $this->hasMany(User::class,'user_id');
     }
-
-    
+    public function categories(){
+        return $this->hasMany(Category::class,'user_id');
+    }
+  //appends
+  protected $appends = ['created_at_readable','role_readable'];
     public function getCreatedAtReadableAttribute()
     {
-        return $this->created_at->diffForHumans();
+        return $this->created_at?->diffForHumans();
     }
+
+    public function getRoleReadableAttribute()
+    {
+        if($this->role== 1){
+            return 'admin';
+        }else{
+            return 'chife';
+        }    }
+
 }

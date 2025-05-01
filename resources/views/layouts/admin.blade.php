@@ -101,6 +101,15 @@
                                 <li><a href="{{ route('admin.users.create') }}">Create</a></li>
                             </ul>
                         </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="fa fa-th-large"></i> Categories
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="topbar-pages">
+                                <li><a href="{{ route('admin.categories.index') }}">Show</a></li>
+                                <li><a href="{{ route('admin.categories.create') }}">Create</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
             </aside>
