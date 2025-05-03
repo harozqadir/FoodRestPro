@@ -13,10 +13,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class)->names('admin.users')->except(['show']);
     Route::resource('categories', CategoryController::class)->names('admin.categories')->except(['show']);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
     
 });
-
 
 Auth::routes();
 

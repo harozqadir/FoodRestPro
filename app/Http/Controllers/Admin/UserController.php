@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Contracts\DataTable;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -118,5 +119,20 @@ class UserController extends Controller
         User::findOrFail($id)->delete();
       
         return redirect()->back()->with(['message' => 'User deleted successfully'],);
+    }
+
+    public function logout(Request $request)
+    {
+        // Log out the user
+        Auth::guard('web')->logout();
+
+        // Invalidate the session
+        $request->session()->invalidate();
+
+        // Regenerate the CSRF token
+        $request->session()->regenerateToken();
+
+        // Redirect to the login page
+        return redirect()->route('login');
     }
 }

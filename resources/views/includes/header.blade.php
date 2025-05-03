@@ -9,7 +9,7 @@
             <span class="user-email">{{ Auth::user()->email }}</span>
             <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                 @csrf
-                <button type="submit" class="logout-btn" >Logout</button>
+                <button type="submit" class="logout-btn">Logout</button>
             </form>
         @endauth
         @guest

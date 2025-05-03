@@ -88,8 +88,12 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        Category::findOrFail($id)->delete();
-      
+        $category = Category::findOrFail($id);
+        $file=public_path("categories-image/{$category->image}");
+        if (file_exists($file)) {
+            unlink($file);
+        }
+        $category->delete();
         return redirect()->back()->with(['message' => 'User deleted successfully'],);
     }
 }

@@ -39,49 +39,14 @@ class="row mt-4">
         @method('PUT')
     @endisset
 
-    <div class="col-md-4 mt-3 position-relative">
-        <label for="name_ckb" class="form-label">Name in Kurdish</label>
-        <input type="text" class="form-control" name="name_ckb" value="{{ isset($data) ? $data->name_ckb : old('name_ckb') }}">
-        @error('name_ckb')
-            <div class="text-danger">{{ $message }}</div>
-        @enderror
-    </div>
-   <div class="col-md-4 mt-3 postion-relative">
-    <label for="" class="form-label">Name in ar</label>
-    <input type="text" class="form-control" value="{{isset($data) ? $data->name_ar : old('name_ar')}}" name="name_ar" >
-    @error('name_ar')
-    <div class="text-danger">{{ $message }}</div>
-        
-    @enderror
-   </div>
 
-   <div class="col-md-4 mt-3 postion-relative">
-    <label for="" class="form-label">Name in en</label>
-    <input type="text" class="form-control" value="{{isset($data) ? $data->name_en: old('name_en')}}" name="name_en" >
-    @error('name_en')
-    <div class="text-danger">{{ $message }}</div>
-        
-    @enderror
-   </div>
+    <x-input title="Name in kurdish" name="name_ckb" type="text"  :dt="isset($data) ? $data : false " />
+    <x-input title="Name in Arabic" name="name_ar" type="text"  :dt="isset($data) ? $data : false" />
+    <x-input title="Name in English" name="name_en" type="text"  :dt="isset($data) ? $data : false" />
+    <x-input title="Image" name="image" type="file"  :dt="isset($data) ? $data : false " />
 
-   <div class="col-md-4 mt-3 postion-relative">
-    <label for="" class="form-label">Image</label>
-    <input type="file" class="form-control" name="image" >      
-    @error('image')
-    <div class="text-danger">{{ $message }}</div>
-        
-    @enderror
-   </div>
+    <x-button :chehckedifupdate=" isset($data) ? true : false " />
 
-<div class="col-12 mt-5">
-    <button class="btn btn-success col-md-2 mt-4">
-        @if(isset($data))
-        <i class="fas fa-sync-alt"></i>update
-        @else
-        <i class="fas fa-plus"></i>create
-        @endif
-    </button>
-</div>
 </form>
 </div>
 

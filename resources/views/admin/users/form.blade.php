@@ -14,54 +14,16 @@
     @isset($data)
         @method('PUT')
     @endisset
+<div>
+   <x-input title="Email" name="email"  :dt="isset($data) ? $data :false "  type="email"/>
+   <x-input title="Password" name="password"  :dt="false"   type="password"/>
+   <x-input title="Password Confirmation" name="password_confirmation"  :dt="false" type="password"/>
+   <x-role-select :role="isset($dt) ? $dt->role : old('role')" />
 
-   <div class="col-md-4 mt-3 postion-relative">
-    <label for="" class="form-label">Email</label>
-    <input type="email" class="form-control" value="{{isset($data) ? $data->email : old('email')}}" name="email" >
-    @error('email')
-    <div class="text-danger">{{ $message }}</div>
-        
-    @enderror
+
    </div>
-   <div class="col-md-4 mt-3 postion-relative">
-    <label for="" class="form-label">Password</label>
-    <input type="password" class="form-control" value="" name="password" >
-    @error('password')
-    <div class="text-danger">{{ $message }}</div>
-        
-    @enderror
+<x-button :chehckedifupdate=" isset($data) ? true : false " />
 
-    </div>
-
-    <div class="col-md-4 mt-3 postion-relative">
-    <label for="" class="form-label">Password Confirmation</label>
-    <input type="password" class="form-control" value="" name="password_confirmation" >
-    </div>
-   
-    <div class="col-md-4 mt-3 postion-relative">
-        <label for="" class="form-label">Role</label>
-        <select name="role" id="" class="form-select">
-          <option value=""></option>
-          <option @selected (isset($data) ? $data->role == 1 : old('role') == 1 )  value="1">Admin</option>
-          <option @selected (isset($data) ? $data->role == 2 : old('role') == 2 )  value="2">Server</option>
-          <option @selected (isset($data) ? $data->role == 3 : old('role') == 3 )  value="3">Chief</option>
-        </select>
-        @error('role')
-        <div class="text-danger">{{ $message }}</div>
-            
-        @enderror
-        </div>
-
-
-<div class="col-12 mt-5">
-    <button class="btn btn-success col-md-2 mt-4">
-        @if(isset($data))
-        <i class="fas fa-sync-alt"></i>update
-        @else
-        <i class="fas fa-plus"></i>create
-        @endif
-    </button>
-</div>
 </form>
 </div>
 
