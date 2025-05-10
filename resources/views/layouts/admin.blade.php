@@ -14,7 +14,7 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Scripts -->
-
+       
         <!-- Fonts -->
 
         <script src="{{ asset('online/jquery.min.js') }}"></script>
@@ -82,36 +82,45 @@
 
     <body data-layout="horizantal" data-topbar="colored" >
 
-        <div id="lauout-wrapper" >
+        <div id="layout-wrapper" style="max-width: 1200px; margin: 0 auto;">
             @include('includes.header')
             <aside id="slidebar" class="slidebar">
-                <nav class="admin-nav">
-                    <ul>
-                        <li>
-                            <a class="{{ in_array(Route::currentRouteName(), ['home']) }}" href="{{ route('home') }}">
-                                <i class="fa fa-home"></i> Dashboard
-                            </a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle">
-                                <i class="fa fa-users"></i> Users
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="{{ route('admin.users.index') }}">Show</a></li>
-                                <li><a href="{{ route('admin.users.create') }}">Create</a></li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle">
-                                <i class="fa fa-th-large"></i> Categories
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="topbar-pages">
-                                <li><a href="{{ route('admin.categories.index') }}">Show</a></li>
-                                <li><a href="{{ route('admin.categories.create') }}">Create</a></li>
-                            </ul>
-                        </li>
+            <nav class="admin-nav">
+                <ul>
+                <li>
+                    <a class="{{ in_array(Route::currentRouteName(), ['home']) }}" href="{{ route('home') }}">
+                    <i class="fa fa-home"></i> Dashboard
+                    </a>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">
+                    <i class="fa fa-users"></i> Users
+                    </a>
+                    <ul class="dropdown-menu">
+                    <li><a href="{{ route('admin.users.index') }}">Show</a></li>
+                    <li><a href="{{ route('admin.users.create') }}">Create</a></li>
                     </ul>
-                </nav>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">
+                    <i class="fa fa-list-alt"></i> Categories
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="topbar-pages">
+                    <li><a href="{{ route('admin.categories.index') }}">Show</a></li>
+                    <li><a href="{{ route('admin.categories.create') }}">Create</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">
+                    <i class="fa fa-tags"></i> Sub Categories
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="topbar-pages">
+                    <li><a href="{{ route('admin.sub-categories.index') }}">Show</a></li>
+                    <li><a href="{{ route('admin.sub-categories.create') }}">Create</a></li>
+                    </ul>
+                </li>
+                </ul>
+            </nav>
             </aside>
             <div class="main-content">
                 
@@ -180,7 +189,7 @@
 
                     }
                 })
-        };
+        }; 
 
     </script>
 

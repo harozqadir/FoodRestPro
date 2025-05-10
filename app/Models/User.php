@@ -57,6 +57,11 @@ class User extends Authenticatable
     public function categories(){
         return $this->hasMany(Category::class,'user_id');
     }
+    public function sub_categories (){
+        return $this->hasMany(SubCategory::class,'user_id');
+    }
+
+    
   //appends
   protected $appends = ['created_at_readable','role_readable'];
     public function getCreatedAtReadableAttribute()
