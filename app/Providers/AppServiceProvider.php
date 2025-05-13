@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\SubCategory;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +12,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        view()->composer('includes.header', function ($view) {
+            $view->with('sub_categories',SubCategory::select('id','name_en')->get());
+        });
     }
 
     /**

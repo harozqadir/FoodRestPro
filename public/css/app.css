@@ -11404,4 +11404,53 @@ textarea.form-control-lg {
 .admin-nav .dropdown.active .dropdown-menu {
   display: block;
 }
-        
+
+@media (max-width: 768px) {
+  #page-topbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1030; /* Ensure it stays above other elements */
+  }
+
+  .navbar-brand-box h2 {
+      font-size: 18px;
+  }
+
+  .admin-nav ul {
+      flex-direction: column;
+  }
+}
+
+
+.btn-danger {
+    background-color: rgb(167, 53, 53) !important
+}
+
+*::-webkit-scrollbar {
+    width: 5px;
+    height: 5px
+}
+
+*::-webkit-scrollbar-thumb {
+    background: rgb(126, 126, 126)
+}
+
+#page-topbar {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+#page-topbar .btn-light {
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+
+#page-topbar .btn-light:hover {
+  background-color: #f8f9fa;
+  border-color: #bbb;
+}

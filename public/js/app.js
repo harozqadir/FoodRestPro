@@ -40367,3 +40367,13 @@ Vue.compile = compileToFunctions;
 /******/ 	
 /******/ })()
 ;
+
+
+            $(document).ready(function(){
+                $('.dropdown-toggle').click(function(e){
+                    e.preventDefault(); // Prevent the default link behavior
+                    $(this).next('.dropdown-menu').slideToggle(); // Toggle the vertical dropdown
+                });
+            });
+        
+        

@@ -4,8 +4,7 @@
 
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <title>Food Restaurant Admin</title>
         <!-- CSRF Token -->
@@ -56,82 +55,28 @@
         <!-- Template Main CSS File -->
         <link href="{{ asset('assets/css/lightstyleen.css') }}" rel="stylesheet">
 
-        <style>
-            .btn-danger {
-                background-color: rgb(167, 53, 53) !important
-            }
-
-            *::-webkit-scrollbar {
-                width: 5px;
-                height: 5px
-            }
-
-            *::-webkit-scrollbar-thumb {
-                background: rgb(126, 126, 126)
-            }
-        </style>
-        <script>
-            $(document).ready(function(){
-                $('.dropdown-toggle').click(function(e){
-                    e.preventDefault(); // Prevent the default link behavior
-                    $(this).next('.dropdown-menu').slideToggle(); // Toggle the vertical dropdown
-                });
-            });
-        </script>
+     
+        
     </head>
 
     <body data-layout="horizantal" data-topbar="colored" >
+        
 
+           
         <div id="layout-wrapper" style="max-width: 1200px; margin: 0 auto;">
             @include('includes.header')
-            <aside id="slidebar" class="slidebar">
-            <nav class="admin-nav">
-                <ul>
-                <li>
-                    <a class="{{ in_array(Route::currentRouteName(), ['home']) }}" href="{{ route('home') }}">
-                    <i class="fa fa-home"></i> Dashboard
-                    </a>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">
-                    <i class="fa fa-users"></i> Users
-                    </a>
-                    <ul class="dropdown-menu">
-                    <li><a href="{{ route('admin.users.index') }}">Show</a></li>
-                    <li><a href="{{ route('admin.users.create') }}">Create</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">
-                    <i class="fa fa-list-alt"></i> Categories
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="topbar-pages">
-                    <li><a href="{{ route('admin.categories.index') }}">Show</a></li>
-                    <li><a href="{{ route('admin.categories.create') }}">Create</a></li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">
-                    <i class="fa fa-tags"></i> Sub Categories
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="topbar-pages">
-                    <li><a href="{{ route('admin.sub-categories.index') }}">Show</a></li>
-                    <li><a href="{{ route('admin.sub-categories.create') }}">Create</a></li>
-                    </ul>
-                </li>
-                </ul>
-            </nav>
-            </aside>
-            <div class="main-content">
+
+            
+            
+            <div class="main-content" style="margin-top:0px">
                 
+                <div class="page-content" style="margin-top:0px">
                     @if (session()->has('message'))
                         <div class="alert alert-success alert-dismissible mt-2 fade show" role="alert">
                             {{ session()->get('message') }}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                     
-                    <div class="page-content" style="margin-top:0px">
                     @yield('content')
                 </div>
                 
@@ -147,7 +92,6 @@
 
 
         <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
-        <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ asset('assets/vendor/chart.js/chart.min.js') }}"></script>
         <script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
         <script src="{{ asset('assets/vendor/quill/quill.min.js') }}"></script>
@@ -155,7 +99,7 @@
         <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
         <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+        <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
         <!-- Template Main JS File -->
         <script src="{{ asset('assets/js/main.js') }}"></script>
@@ -194,6 +138,9 @@
     </script>
 
 <script>
-
+    document.getElementById('sidebarToggle').addEventListener('click', function() {
+        const sidebar = document.getElementById('slidebar');
+        sidebar.classList.toggle('d-none');
+    });
 </script>
 @endauth
