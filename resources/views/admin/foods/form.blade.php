@@ -31,7 +31,7 @@
 
 <form 
 enctype="multipart/form-data"
-action="{{ isset($data) ? route('admin.foods.update', ['category' => $data->id]) : route('admin.foods.store') }}" 
+action="{{ isset($data) ? route('admin.foods.update', ['food' => $data->id]) : route('admin.foods.store') }}" 
 method="POST" 
 class="row mt-4">
     @csrf
