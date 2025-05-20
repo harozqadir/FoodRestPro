@@ -55,19 +55,35 @@
         <!-- Template Main CSS File -->
         <link href="{{ asset('assets/css/lightstyleen.css') }}" rel="stylesheet">
 
-     
-        
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+        <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/chart.js/chart.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/quill/quill.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+        <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+
+           <!-- Template Main JS File -->
+            <script src="{{ asset('assets/js/main.js') }}"></script>
+
+           <!-- App js-->
+            <script src="assets/js/app.js"></script>
     </head>
 
     <body data-layout="horizantal" data-topbar="colored" >
         
 
            
-        <div id="layout-wrapper" style="max-width: 1200px; margin: 0 auto;">
-            @include('includes.header')
+        <div id="layout-wrapper">
+            @include('includes.header') 
+            
 
             
-            
+            <br><br><br>
             <div class="main-content" style="margin-top:0px">
                 
                 <div class="page-content" style="margin-top:0px">
@@ -91,25 +107,13 @@
         </div>
 
 
-        <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
-        <script src="{{ asset('assets/vendor/chart.js/chart.min.js') }}"></script>
-        <script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
-        <script src="{{ asset('assets/vendor/quill/quill.min.js') }}"></script>
-        <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
-        <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
-        <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
-        <!-- Template Main JS File -->
-        <script src="{{ asset('assets/js/main.js') }}"></script>
-
-     <!-- App js-->
-     <script src="assets/js/app.js"></script>
+        
 
     </html>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script>
+        
         let deleteFunction=(id)=>{
                 Swal.fire({
                     title: 'Are you sure to delete this?',
@@ -135,12 +139,26 @@
                 })
         }; 
 
-    </script>
+          $(document).ready(function() {
+          $('select').select2();
+});
 
-<script>
-    document.getElementById('sidebarToggle').addEventListener('click', function() {
-        const sidebar = document.getElementById('slidebar');
-        sidebar.classList.toggle('d-none');
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('mouseenter', function () {
+                const submenu = this.querySelector('.dropdown-menu');
+                if (submenu) submenu.style.display = 'block';
+            });
+            dropdown.addEventListener('mouseleave', function () {
+                const submenu = this.querySelector('.dropdown-menu');
+                if (submenu) submenu.style.display = 'none';
+            });
+        });
     });
+
+    
 </script>
+
 @endauth

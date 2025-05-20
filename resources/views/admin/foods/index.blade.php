@@ -19,7 +19,7 @@
                     <div class="table-rep-plugin">
                         <div class="table-responsive mb-0">
                         
-                            <table id="myTable" class="table table-responsive table-bordered dt-reponsive nowrap myTable"
+                            <table id="myTable" class="table table-responsive"
                             style="border-collapse: collapse; border-spacing: 0; width:100% vertical-align:middle">
                             <br>
                             <thead>

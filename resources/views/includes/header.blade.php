@@ -1,5 +1,4 @@
-<!-- filepath: /Users/mohammed/Development/laravel/Foodrest/resources/views/includes/header.blade.php -->
-<header id="page-topbar" class="bg-primary text-white" style="height: 80px;">
+<header id="page-topbar" class="bg-primary text-white" style="height: 80px; font-family: 'Oswald', sans-serif;">
     <div class="container-fluid">
         <div class="row align-items-center">
             <!-- Logo Section -->
@@ -33,10 +32,8 @@
         </div>
     </div>
 </header>
-
-<aside id="slidebar" class="slidebar bg-light page-topbar">
+<aside id="slidebar" class="slidebar bg-light page-topbar" style="font-family: 'Oswald', sans-serif; width: 100%;">
     <nav class="admin-nav">
-      
         <ul class="list-unstyled">
             <li>
                 <a class="{{ in_array(Route::currentRouteName(), ['home']) ? 'active' : '' }}" href="{{ route('home') }}">
@@ -54,7 +51,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle arrow-none" id="topnav-pages" role="button">
-                    <i class="fa fa-list-alt"></i> Categories
+                    <i class="fa fa-folder"></i> Categories
                 </a>
                 <div class="dropdown-menu" aria-labelledby="topnav-pages">
                     <div><a href="{{ route('admin.categories.index') }}" class="dropdown-item">Show</a></div>
@@ -63,7 +60,7 @@
             </li>
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle arrow-none" id="topnav-pages" role="button">
-                    <i class="fa fa-tags"></i> Sub Categories
+                    <i class="fa fa-sitemap"></i> Sub Categories
                 </a>
                 <div class="dropdown-menu" aria-labelledby="topnav-pages">
                     <div><a href="{{ route('admin.sub-categories.index') }}" class="dropdown-item">Show</a></div>
@@ -71,16 +68,26 @@
                 </div>
             </li>
             
-
+             
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle arrow-none" id="topnav-pages" role="button">
-                    <i class="uil-box me-2"></i> Foods
+                    <i class="fa fa-cutlery"></i>  Foods <div class="arrow-down"></div>
                 </a>
-                <div class="dropdown-menu" aria-labelledby="topnav-pages">
-                    @foreach ($sub_categories as $row)
-                      <a href="{{ route('admin.foods.index', ['sub_category' => $row->id]) }}" class="dropdown-item"> {{$row->name_en}}</a> 
+                <div class="dropdown-menu" aria-labelledby="topnav-pages" >
+                    @foreach ($categories as $row)
+                        <div class="dropdown" style="margin-right: 20px; position: relative;">
+                            <a  id="topnav-form" role="button" href="#">
+                                {{$row->name_en}} 
+                                <i class="fa fa-angle-right ms-2 fw-bold"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="topnav-form" style="position: absolute; left: 100%; top: 0; display: none;">
+                                @foreach ($row->sub_categories as $row2)
+                                    <a href="{{ route('admin.foods.index', ['sub_category' => $row2->id]) }}" 
+                                        class="dropdown-item"> {{$row2->name_en}}</a>
+                                @endforeach
+                            </div>
+                        </div>
                     @endforeach
-                    
                 </div>
             </li>
         </ul>

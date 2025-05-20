@@ -93,7 +93,7 @@
               render: function(data, type, row){
                 const id =row.id;
                 const editurl = '{{ route('admin.sub-categories.edit',':id') }}'
-                const deleteurl = '{{ route('admin.categories.destroy',':id') }}'
+                const deleteurl = '{{ route('admin.sub-categories.destroy',':id') }}'
                 
                 return `
                   <a href='${editurl.replace(':id',id)}' class="btn btn-primary me-2">Edit</a>

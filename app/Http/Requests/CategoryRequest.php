@@ -25,7 +25,7 @@ class CategoryRequest extends FormRequest
             'name_en' => ['required', 'string', 'max:255'],
             'name_ar' => ['required', 'string', 'max:255'],
             'name_ckb' => ['required', 'string', 'max:255'],
-            'image' => ''.($this->isMethod('PUT') ? 'nullable' : 'required').'|mimes:png,jpg|max:2048',
+            'image' => ''.($this->isMethod('PUT') ? 'nullable' : 'required').'|mimes:png,jpg,jpeg|max:10240',
             
         ];
     }

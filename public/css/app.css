@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Nunito);
+@import '@fortawesome/fontawesome-free/css/all.min.css';
 @charset "UTF-8";
 /*!
  * Bootstrap v5.1.3 (https://getbootstrap.com/)
@@ -1962,7 +1963,7 @@ progress {
   --bs-table-hover-color: #212529;
   --bs-table-hover-bg: rgba(0, 0, 0, 0.075);
   width: 100%;
-  margin-bottom: 1rem;
+  margin-top: 40px;
   color: #212529;
   vertical-align: top;
   border-color: #dee2e6;
@@ -11288,12 +11289,13 @@ textarea.form-control-lg {
 }
 
 
+
 /* header admin dashboard */
 /* public/css/app.css */
 
 /* Header Styles */
 .admin-header {
-  background-color: #4758d0; /* Blue background */
+  background-color: #4758d0; 
   color: white;
   display: flex;
   justify-content: space-between;
@@ -11316,9 +11318,8 @@ textarea.form-control-lg {
 }
 
 .admin-header .logout-btn {
-  background-color: #808080; /* gray button */
+  background-color: #808080; 
   color: white;
-
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
@@ -11326,10 +11327,9 @@ textarea.form-control-lg {
 }
 
 .admin-header .logout-btn:hover {
-  background-color: #e04343; /* Darker red on hover */
+  background-color: #e04343;
 }
 
-/* Navigation Bar Styles */
 .admin-nav {
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -11345,50 +11345,45 @@ textarea.form-control-lg {
 
 .admin-nav li {
   margin-right: 20px;
-  /* display: list-item; */
   display: inline-block;
 }
 
-.admin-nav  li a {
+.admin-nav li a {
   text-decoration: none;
   color: #555;
   font-weight: bold;
-  display: flex; /* Align icon and text */
+  display: flex;
   align-items: center;
-  display: list-item;
-
 }
 
 .admin-nav ul li a i {
-  margin-right: 5px; /* Space between icon and text */
-  
+  margin-right: 5px;
 }
 
 .admin-nav ul li a:hover {
-  color: #333; /* Darker grey on hover */
+  color: #333;
 }
 
 .dropdown-menu {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            top: 100%;
-        }
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  top: 100%;
+}
 
-        .dropdown-menu > li > a {
-            text-decoration: none;
-            padding: 10px;
-            display: block;
-            color: #000;
-        }
+.dropdown-menu > li > a {
+  text-decoration: none;
+  padding: 10px;
+  display: block;
+  color: #000;
+}
 
-        /* Ensure the dropdown-menu and its li items display vertically */
 .admin-nav .dropdown-menu {
-  display: none; /* Hidden by default; shown via JS */
-  flex-direction: column; /* Use column layout if using flex */
+  display: none;
+  flex-direction: column;
   list-style: none;
   padding: 0;
   margin: 0;
@@ -11397,7 +11392,7 @@ textarea.form-control-lg {
 .admin-nav .dropdown-menu li {
   display: block;
   padding: 5px 10px;
-  border-bottom: 1px solid #ddd; /* Optional separator */
+  border-bottom: 1px solid #ddd;
 }
 
 .admin-nav .dropdown:hover .dropdown-menu,
@@ -11410,30 +11405,29 @@ textarea.form-control-lg {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 1030; /* Ensure it stays above other elements */
+    z-index: 1030;
   }
 
   .navbar-brand-box h2 {
-      font-size: 18px;
+    font-size: 18px;
   }
 
   .admin-nav ul {
-      flex-direction: column;
+    flex-direction: column;
   }
 }
 
-
 .btn-danger {
-    background-color: rgb(167, 53, 53) !important
+  background-color: rgb(167, 53, 53) !important;
 }
 
 *::-webkit-scrollbar {
-    width: 5px;
-    height: 5px
+  width: 5px;
+  height: 5px;
 }
 
 *::-webkit-scrollbar-thumb {
-    background: rgb(126, 126, 126)
+  background: rgb(126, 126, 126);
 }
 
 #page-topbar {
@@ -11453,4 +11447,12 @@ textarea.form-control-lg {
 #page-topbar .btn-light:hover {
   background-color: #f8f9fa;
   border-color: #bbb;
+}
+.arrow-left {
+  border: solid black;
+  border-width: 0 4px 4px 0;
+  display: inline-block;
+  padding: 4px;
+  transform: rotate(135deg); /* Rotate to point left */
+  -webkit-transform: rotate(135deg);
 }

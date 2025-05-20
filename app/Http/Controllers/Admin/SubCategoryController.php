@@ -6,12 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\SubCategoryRequest;
 use App\Models\Category;
 use App\Models\SubCategory;
+use App\Trait\DeleteFile;
 use Illuminate\Http\Request;
+use App\Trait\UploadFile;
+
 use Yajra\DataTables\Facades\DataTables;
 
 class SubCategoryController extends Controller
 {
-    
+    use UploadFile;
+    use DeleteFile;
         public function index(Request $request)
         {
         if ($request->ajax()) {
@@ -35,13 +39,12 @@ class SubCategoryController extends Controller
         public function store(SubCategoryRequest $request)
         {
             $new_data=$request->validated();
-            $name= $request->file('image')->hashName();
-            $request->file('image')->move('sub-categories-image', $name);
-            $new_data['image'] = $name;
+           
+            $new_data['image'] = $this->Uploadfile($request, 'image', 'sub-categories-image');
             auth()->user()->sub_categories()->create($new_data);
             return redirect()->back()->with(['message' => 'User Created Successfully'],);
             
-            SubCategory::create($validatedData);
+           // SubCategory::create($validatedData);
 
        
         }
@@ -71,7 +74,10 @@ class SubCategoryController extends Controller
         public function update(SubCategoryRequest $request, string $id)
         {
             $old_data = SubCategory::findOrFail($id);
+
             $new_data = $request->validated();
+
+
             $name= $old_data->image;
             if ($request->hasFile('image')) {
                 //If the image is updated, delete the old image
@@ -79,12 +85,10 @@ class SubCategoryController extends Controller
                     $name = $old_data->image;
                 }
                 // Check if the old image file exists and delete it
-                if (file_exists(public_path('sub-categories-image/' . $old_data->image))) {
-                    unlink(public_path('sub-categories-image/' . $old_data->image));
-                }
+                $this-> DeleteFile(public_path("sub-categories-image/{$name}"));
                 // Store the new image
-                $name = $request->file('image')->hashName();
-                $request->file('image')->move('sub-categories-image', $name);
+                $name =$this-> UploadFile($request, 'image', 'sub-categories-image');
+
             }
             $new_data['image'] = $name;
             $old_data->update($new_data);
@@ -97,12 +101,10 @@ class SubCategoryController extends Controller
          */
         public function destroy(string $id)
         {
-            $category = SubCategory::findOrFail($id);
-            $file=public_path("sub-categories-image/{$category->image}");
-            if (file_exists($file)) {
-                unlink($file);
-            }
-            $category->delete();
+            $sub_category = SubCategory::findOrFail($id);
+            $this-> DeleteFile(public_path("sub-categories-image/{$sub_category->image}"));
+            $sub_category->delete();
+            
             return redirect()->back()->with(['message' => 'User deleted successfully'],);
         }
     }

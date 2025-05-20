@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -28,7 +29,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'admin/home';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -49,8 +50,12 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role' => ['required', 'string', 'in:user,admin'], // Validate the role field
+
         ]);
     }
 
@@ -63,9 +68,29 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
+            'name' => $data['name'],
+
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'role' => 1 ,
+            'role' => $data['role'],
         ]);
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function register(Request $request)
+    {
+        // Validate the incoming request data
+        $this->validator($request->all())->validate();
+
+        // Create the user but do not log them in
+        $this->create($request->all());
+
+        // Redirect to the login page with a success message
+        return redirect('/login')->with('status', 'Registration successful. Please log in.');
     }
 }

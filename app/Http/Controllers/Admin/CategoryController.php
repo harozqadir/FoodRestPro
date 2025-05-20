@@ -5,11 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Trait\DeleteFile;
+use App\Trait\UploadFile;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class CategoryController extends Controller
 {
+
+    use UploadFile;
+    use DeleteFile;
     public function index(Request $request)
     {
     if ($request->ajax()) {
@@ -32,9 +37,8 @@ class CategoryController extends Controller
     {
 
         $new_data=$request->validated();
-        $name= $request->file('image')->hashName();
-        $request->file('image')->move('categories-image', $name);
-        $new_data['image'] = $name;
+        
+        $new_data['image'] = $this->Uploadfile($request, 'image', 'categories-image');
         auth()->user()->categories()->create($new_data);
         return redirect()->back()->with(['message' => 'User Created Successfully'],);
     }
@@ -89,10 +93,9 @@ class CategoryController extends Controller
     public function destroy(string $id)
     {
         $category = Category::findOrFail($id);
-        $file=public_path("categories-image/{$category->image}");
-        if (file_exists($file)) {
-            unlink($file);
-        }
+
+       $this->DeleteFile(public_path(("categories-image/{$category->image}")));
+    
         $category->delete();
         return redirect()->back()->with(['message' => 'User deleted successfully'],);
     }

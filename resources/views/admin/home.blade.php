@@ -5,8 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
-                <div class="card-header">{{ __('Register') }}</div>
+                <br>
+                <div class="card-header">
+                    <h3 style="font-weight: bold; color: #4CAF50; font-family: 'Arial', sans-serif;">{{ __('Dashboard') }}</h3>
+                </div>
+                
 
                 <div class="card-body">
                     @if (session('status'))
@@ -14,7 +17,7 @@
                             {{ session('status') }}
                         </div>
                     @endif
-
+  <br>
                     {{ __('You are logged in!') }}
                 </div>
             </div>

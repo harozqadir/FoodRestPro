@@ -6,12 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FoodRequest;
 use App\Models\Foods;
 use App\Models\SubCategory;
+use App\Trait\DeleteFile;
+use App\Trait\UploadFile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
 class FoodController extends Controller
 {
+    use UploadFile;
+    use DeleteFile;
     public function index(Request $request)
     {
 
@@ -77,6 +81,7 @@ class FoodController extends Controller
     public function destroy(string $id)
     {
         Foods::findOrFail($id)->delete();
+        
         return redirect()->back()->with(['message' => 'User deleted successfully'],);
     }
 }

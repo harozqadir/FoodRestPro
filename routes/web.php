@@ -4,13 +4,14 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+
+Route::get('/', function () {
+    Auth::logout(); // Log out the user
+    return redirect()->route('login');
+});
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class)->names('admin.users')->except(['show']);
@@ -18,7 +19,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('sub-categories', SubCategoryController::class)->names('admin.sub-categories')->except(['show']);
     Route::resource('foods', FoodController::class)->names('admin.foods')->except(['show']);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/admin/foods', [App\Http\Controllers\Admin\FoodController::class, 'index'])->name('admin.foods.index');
 });
+
 
 Auth::routes();
 
