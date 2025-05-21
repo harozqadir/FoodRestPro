@@ -7,7 +7,7 @@
 
     <a href="{{ route('admin.categories.index') }}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Categories </a>
 
-<br><br>
+
 <div class="mt-3">
     <div class="row">
         <div class="col-12">

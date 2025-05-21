@@ -67,7 +67,15 @@
                     <div><a href="{{ route('admin.sub-categories.create') }}" class="dropdown-item">Create</a></div>
                 </div>
             </li>
-            
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle arrow-none" id="topnav-pages" role="button">
+                    <i class="fa fa-chair me-2"></i> Tables
+                </a>
+                <div class="dropdown-menu" aria-labelledby="topnav-pages">
+                    <div><a href="{{ route('admin.tables.index') }}" class="dropdown-item">Show</a></div>
+                    <div><a href="{{ route('admin.tables.create') }}" class="dropdown-item">Create</a></div>
+                </div>
+            </li>
              
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle arrow-none" id="topnav-pages" role="button">
