@@ -66,6 +66,9 @@ class User extends Authenticatable
     public function tables(){
         return $this->hasMany(Table::class,'user_id');
     }
+    public function reservations(){
+        return $this->hasMany(Reservation::class,'user_id');
+    }
     
   //appends
   protected $appends = ['created_at_readable','role_readable'];

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FoodController;
+use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\TableController;
 use App\Http\Controllers\Admin\UserController;
@@ -20,6 +21,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('sub-categories', SubCategoryController::class)->names('admin.sub-categories')->except(['show']);
     Route::resource('foods', FoodController::class)->names('admin.foods')->except(['show']);
     Route::resource('tables', TableController::class)->names('admin.tables')->except(['show']);
+    Route::resource('reservations', ReservationController::class)->names('admin.reservations')->except(['index']);
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/admin/foods', [App\Http\Controllers\Admin\FoodController::class, 'index'])->name('admin.foods.index');
