@@ -15,7 +15,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::prefix('admin')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function () {
     Route::resource('users', UserController::class)->names('admin.users')->except(['show']);
     Route::resource('categories', CategoryController::class)->names('admin.categories')->except(['show']);
     Route::resource('sub-categories', SubCategoryController::class)->names('admin.sub-categories')->except(['show']);
@@ -25,6 +25,13 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/admin/foods', [App\Http\Controllers\Admin\FoodController::class, 'index'])->name('admin.foods.index');
+}); 
+
+Route::prefix('server')->middleware(['auth','isServer'])->group(function () {
+    
+    Route::get('/home', function (){
+        return view('server.home');
+    })->name('server.home');
 });
 
 

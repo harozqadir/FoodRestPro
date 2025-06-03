@@ -18,8 +18,8 @@
                                     <th>#</th>
                                     <th>Email</th>
                                     <th>Role</th>
-                                    <th>Created At</th>
                                     <th>Created By</th>
+                                    <th>Created At</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>

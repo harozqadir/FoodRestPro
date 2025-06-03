@@ -81,8 +81,21 @@ class User extends Authenticatable
     {
         if($this->role== 1){
             return 'admin';
-        }else{
+        }else if ($this->role == 2){
+            return 'server';
+        }else {
             return 'chife';
         }    }
+
+        //permissions   
+
+        public function isAdmin()
+        {
+            return $this->role == 1;
+        }
+        public function isServer()
+        {
+            return $this->role == 2;
+        }
 
 }

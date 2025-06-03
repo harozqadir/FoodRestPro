@@ -81,14 +81,14 @@
 
            
         <div id="layout-wrapper">
-            @include('includes.header') 
+            @include('includes.header_server') 
             
 
             
-            <br>
-            <div class="main-content mt-5" >
+            <br><br><br>
+            <div class="main-content" style="margin-top:0px">
                 
-                <div class="page-content col-10 mx-auto" >
+                <div class="page-content" style="margin-top:0px">
                     @if (session()->has('message'))
                         <div class="alert alert-success alert-dismissible mt-2 fade show" role="alert">
                             {{ session()->get('message') }}
