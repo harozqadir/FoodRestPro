@@ -40,15 +40,7 @@
                     <i class="fa fa-home"></i> Dashboard
                 </a>
             </li>
-            <li class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle arrow-none" id="topnav-pages" role="button">
-                    <i class="fa fa-users"></i> Users
-                </a>
-                <div class="dropdown-menu" aria-labelledby="topnav-pages">
-                    <div><a href="{{ route('admin.users.index') }}" class="dropdown-item">Show</a></div>
-                    <div><a href="{{ route('admin.users.create') }}" class="dropdown-item">Create</a></div>
-                </div>
-            </li>
+            
         </ul>
     </nav>
 </aside>

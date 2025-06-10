@@ -17,6 +17,12 @@ public function category()
 return $this->belongsTo(Category::class);   
 
 }
+
+public function foods()
+{
+return $this->hasMany(Foods::class,'sub_category_id');   
+
+}
 protected $appends = ['created_at_readable','full_path_image'];
     public function getCreatedAtReadableAttribute()
     {

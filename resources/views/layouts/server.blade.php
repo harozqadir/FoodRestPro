@@ -84,9 +84,7 @@
             @include('includes.header_server') 
             
 
-            
-            <br><br><br>
-            <div class="main-content" style="margin-top:0px">
+            <div class="main-content" >
                 
                 <div class="page-content" style="margin-top:0px">
                     @if (session()->has('message'))
@@ -95,7 +93,10 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    @yield('content')
+                    <div class="mt-5">
+                     @yield('content')
+
+                    </div>
                 </div>
                 
                 <footer class="footer">

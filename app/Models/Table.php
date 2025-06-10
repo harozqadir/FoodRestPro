@@ -14,6 +14,12 @@ class Table extends Model
    {
       return $this->belongsTo(User::class,'user_id');
    }
+
+   public Function reservations()
+   {
+      return $this->hasMany(Reservation::class,'table_id');
+   }
+
    protected $appends = ['created_at_readable'];
    public function getCreatedAtReadableAttribute()
    {

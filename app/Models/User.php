@@ -69,6 +69,12 @@ class User extends Authenticatable
     public function reservations(){
         return $this->hasMany(Reservation::class,'user_id');
     }
+    public function invoices(){
+        return $this->hasMany(Invoice::class,'user_id');
+    }
+    public function invoice_foods(){
+        return $this->hasMany(Foodinvoice::class,'user_id');
+    }
     
   //appends
   protected $appends = ['created_at_readable','role_readable'];

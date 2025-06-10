@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\TableController;
 use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Server\TableController as ServerTableController;
+use App\Http\Controllers\Server\FoodController as ServerFoodController;
 
 
 Route::get('/', function () {
@@ -27,11 +29,13 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function () {
     Route::get('/admin/foods', [App\Http\Controllers\Admin\FoodController::class, 'index'])->name('admin.foods.index');
 }); 
 
-Route::prefix('server')->middleware(['auth','isServer'])->group(function () {
+Route::prefix('server')->middleware(['auth','isServer'])->group(function(){
     
-    Route::get('/home', function (){
-        return view('server.home');
-    })->name('server.home');
+    Route::get('/home',[ServerTableController::class,'index'])->name('server.home');
+    Route::get('/foods/{id}',[ServerFoodController::class,'index'])->name('server.foods');
+    Route::post('/foods-store',[ServerFoodController::class,'store'])->name('server.foods.store');
+
+
 });
 
 
