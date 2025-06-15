@@ -13,8 +13,21 @@ class Foodinvoice extends Model
     'food_id',       // Add food_id here
     'quantity',      // Add quantity here
     'price',         // Add price here
+    'status' ,       // Add status here 
     'table_id',       // Add table_id here
     'total_price',    // Ensure total_price is also fillable
     'user_id',        // Add other fields as needed
 ];
+// Define the relationship with Food
+public function food()
+{
+    return $this->belongsTo(Foods::class, 'food_id');
+}
+
+// Define the relationship with Invoice
+public function invoice()
+{
+    return $this->belongsTo(Invoice::class, 'invoice_id');
+}
+
 }

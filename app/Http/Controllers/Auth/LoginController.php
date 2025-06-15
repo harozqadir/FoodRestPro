@@ -26,14 +26,18 @@ class LoginController extends Controller
      * @var string
      */
     //protected $redirectTo = '/admin/home';
+    
 
     public function redirectTo(){
+
         if (auth()->user()->isAdmin()) {
             return '/admin/home';
         }else if(auth()->user()->isServer()) {
             return '/server/home';
+        }else{
+            return '/chief/home';
         }
-            return '/';
+        
         
     }
 
@@ -45,6 +49,7 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-        $this->middleware('auth')->only('logout');
+
+        //$this->middleware('auth')->only('logout');
     }
 }

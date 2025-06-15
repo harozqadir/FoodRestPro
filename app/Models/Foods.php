@@ -16,9 +16,10 @@ class Foods extends Model
 }
 public function sub_category()
 {
-return $this->belongsTo(SubCategory::class);   
+return $this->belongsTo(SubCategory::class,'sub_category_id');   
 
 }
+
 protected $appends = ['created_at_readable','price_readable'];
 
     public function getCreatedAtReadableAttribute()

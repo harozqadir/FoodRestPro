@@ -15,4 +15,11 @@ class Invoice extends Model
         'total_price',    // Ensure total_price is also fillable
         'user_id',        // Add other fields as needed
     ];
+// Define the relationship with InvoiceFood
+public function invoice_food()
+{
+    return $this->hasMany(Foodinvoice::class, 'invoice_id');
 }
+    
+}
+

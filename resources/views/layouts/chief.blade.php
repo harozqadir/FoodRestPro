@@ -1,0 +1,167 @@
+@auth()
+    <!doctype html>
+    <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Food Restaurant Admin</title>
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
+        <title>{{ config('app.name', 'Laravel') }}</title>
+
+        <!-- Scripts -->
+       
+        <!-- Fonts -->
+
+        <script src="{{ asset('online/jquery.min.js') }}"></script>
+        <script src="{{ asset('online/axios.min.js') }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ asset('online/jquery.datatable.min.css') }}">
+        <script type="text/javascript" charset="utf8" src="{{ asset('online/jquery-3.3.1.js') }}"></script>
+        <script type="text/javascript" charset="utf8" src="{{ asset('online/datatable.js') }}"></script>
+        <!-- Styles -->
+
+        <link href="{{ asset('online/fonta.css') }}" rel="stylesheet">
+        <script src="{{ asset('online/sweetAlert.js') }}" defer></script>
+
+        <link href="{{ asset('css/select2.css') }}" rel="stylesheet">
+        <script src="{{ asset('js/printThis.js') }}" defer></script>
+        <script src="{{ asset('js/select.js') }}" defer></script>
+
+        <!-- Vendor CSS Files -->
+        <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+        <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+       
+        {{-- //install DataTable.net --}}
+       <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
+       <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/js/dataTables.min.js">
+        
+       <!-- App CSS -->
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
+        <!-- Template Main CSS File -->
+        <link href="{{ asset('assets/css/lightstyleen.css') }}" rel="stylesheet">
+
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+        <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/chart.js/chart.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/quill/quill.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+        <script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
+        <script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+         
+
+        
+           <!-- Template Main JS File -->
+            <script src="{{ asset('assets/js/main.js') }}"></script>
+
+           <!-- App js-->
+            <script src="assets/js/app.js"></script>
+    </head>
+
+    <body data-layout="horizantal" data-topbar="colored" >
+        
+
+           
+        <div id="layout-wrapper">
+            @include('includes.header_chief') 
+            
+
+            <div class="main-content" >
+                
+                <div class="page-content" style="margin-top:0px">
+                    @if (session()->has('message'))
+                        <div class="alert alert-success alert-dismissible mt-2 fade show" role="alert">
+                            {{ session()->get('message') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    <div class="mt-5">
+                     @yield('content')
+
+                    </div>
+                </div>
+                
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row"></div>
+                    </div>
+                </footer>
+
+            </div>
+
+        </div>
+
+
+        
+
+    </html>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        
+        let deleteFunction=(id)=>{
+                Swal.fire({
+                    title: 'Are you sure to delete this?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+
+
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                        'Deleted!',
+                        'Deleted Successfully',
+                        'success'
+                        );
+                     setTimeout(() => {
+                        document.getElementById(id).submit();
+
+                     }, 500);
+
+                    }
+                })
+        }; 
+
+          $(document).ready(function() {
+          $('select').select2();
+});
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdowns = document.querySelectorAll('.dropdown');
+        dropdowns.forEach(dropdown => {
+            dropdown.addEventListener('mouseenter', function () {
+                const submenu = this.querySelector('.dropdown-menu');
+                if (submenu) submenu.style.display = 'block';
+            });
+            dropdown.addEventListener('mouseleave', function () {
+                const submenu = this.querySelector('.dropdown-menu');
+                if (submenu) submenu.style.display = 'none';
+            });
+        });
+    });
+
+    
+</script>
+
+@endauth

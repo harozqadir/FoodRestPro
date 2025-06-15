@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Server\TableController as ServerTableController;
 use App\Http\Controllers\Server\FoodController as ServerFoodController;
-
+use App\Http\Controllers\Chief\FoodController as ChiefFoodController;
+use App\Http\Controllers\Chief\OrderController;
 
 Route::get('/', function () {
     Auth::logout(); // Log out the user
@@ -34,10 +35,20 @@ Route::prefix('server')->middleware(['auth','isServer'])->group(function(){
     Route::get('/home',[ServerTableController::class,'index'])->name('server.home');
     Route::get('/foods/{id}',[ServerFoodController::class,'index'])->name('server.foods');
     Route::post('/foods-store',[ServerFoodController::class,'store'])->name('server.foods.store');
+    Route::post('/foods-plus-or-minus/{id}/{value}',[ServerFoodController::class,'plus_or_minus'])->name('server.foods.plus_or_minus');
+    Route::post('/invoice-delete/{id}',[ServerTableController::class,'deleteInvoice'])->name('server.invoice.delete');
 
 
 });
 
+Route::prefix('chief')->middleware(['auth','isChief'])->group(function(){
+    Route::get('/foods',[ChiefFoodController::class,'index'])->name('chief.foods.index');
+    Route::post('/foods-update-available/{id}',[ChiefFoodController::class,'update_available'])->name('chief.foods.update');
+    Route::get('/home',[OrderController::class,'index'])->name('chief.home');
+    Route::post('/foods-update-state/{id}/{state}',[OrderController::class,'update_state'])->name('chief.update-state');
+
+
+});
 
 Auth::routes();
 

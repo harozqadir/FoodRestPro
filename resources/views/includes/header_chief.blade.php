@@ -34,13 +34,19 @@
 </header>
 <aside id="slidebar" class="slidebar bg-light page-topbar" style="font-family: 'Oswald', sans-serif; width: 100%;">
     <nav class="admin-nav">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav d-flex flex-row">
+            
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('server.home') }}">
-                    <i class="fa fa-home"></i> Home 
-                </a>
+            <a class="nav-link" href="{{ route('server.home') }}">
+                <i class="fa fa-home"></i> Home 
+            </a>
             </li>
             
+            <li class="nav-item me-3">
+                <a class="nav-link" href="{{ route('chief.foods.index') }}">
+                    <i class="fas fa-hamburger"></i> Foods 
+                </a>
+            </li>
         </ul>
     </nav>
 </aside>

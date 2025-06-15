@@ -72,7 +72,7 @@ class User extends Authenticatable
     public function invoices(){
         return $this->hasMany(Invoice::class,'user_id');
     }
-    public function invoice_foods(){
+    public function invoice_food(){
         return $this->hasMany(Foodinvoice::class,'user_id');
     }
     
@@ -102,6 +102,11 @@ class User extends Authenticatable
         public function isServer()
         {
             return $this->role == 2;
+        }
+
+        public function isChief()
+        {
+            return $this->role == 3;
         }
 
 }
