@@ -13,6 +13,11 @@ class Reservation extends Model
     {
        return $this->belongsTo(User::class,'user_id');
     }
+
+    public function orders()
+{
+    return $this->hasMany(Order::class, 'reservation_id');
+}
     protected $appends = ['created_at_readable'];
     public function getCreatedAtReadableAttribute()
     {

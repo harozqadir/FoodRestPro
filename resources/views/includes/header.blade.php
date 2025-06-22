@@ -36,7 +36,7 @@
     <nav class="admin-nav">
         <ul class="list-unstyled">
             <li>
-                <a class="{{ in_array(Route::currentRouteName(), ['home']) ? 'active' : '' }}" href="{{ route('home') }}">
+                <a class="{{ in_array(Route::currentRouteName(), ['admin.home']) ? 'active' : '' }}" href="{{ route('admin.home') }}">
                     <i class="fa fa-home"></i> Dashboard
                 </a>
             </li>

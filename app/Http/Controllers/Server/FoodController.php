@@ -13,72 +13,98 @@ use Illuminate\Http\Request;
 
 class FoodController extends Controller
 {
-/**
- * Display a listing of the resource.
- *
- * @param  int  $id
- * @return \Illuminate\Http\Response
- */
 
  
-public function index($id){
-    $table=Table::findOrFail($id);
+public function index($tableId){
+
+    $table=Table::findOrFail($tableId);
+    
+    // Get all categories and subcategories
     $categories = Category::all();
-    // Eager load subcategories and their foods
     $sub_categories = SubCategory::with('foods')->get();
+
+
     // Get the latest invoice for the table with status 0 (open)
-    $invoice= Invoice::where('table_id', $id)
-    ->where('status', 0)
-    ->latest()->with('invoice_food.food.sub_category')-> first();
+    $invoice= Invoice::where('table_id', $tableId)
+    ->where('status', 0)// Open invoice
+    ->with('invoice_food.food.sub_category')// Eager load related data
+    ->latest()
+    -> first();
    
     return view('server.foods',compact('table','categories','sub_categories','invoice'));
 }
+public function store(Request $request, $tableId)
+{
 
-public function store(Request $request){
-   
+    // Validate the request
+    $request->validate([
+        'food_id' => 'required|array',
+        'food_id.*' => 'exists:foods,id',
+        'quantity' => 'required|array',
+        'quantity.*' => 'integer|min:0',
+        'price' => 'required|array',
+        'price.*' => 'numeric|min:0',
+    ]);
 
-  if($request->total > 0){
-    // Check if there is an existing open invoice for the table
-    $check_for_invoice = Invoice::where('table_id', $request->table_id)
-    ->where('status', 0)
-    ->latest()
-    ->first();
-    $invoice_id = -1;
-    if($check_for_invoice){
-        // If an open invoice exists, update it
-        $invoice_id = $check_for_invoice->id;
-    }else{
-        // If no open invoice exists, create a new one
-      $new_invoice= auth()->user()->invoices()->create([
-        'table_id' => $request->table_id,
-        'total_price' => $request->total, 
-        ]); 
-        // Get the ID of the newly created invoice
-        // This will be used to associate food items with this invoice
-        $invoice_id = $new_invoice->id;
+    // Check if at least one food item has a quantity greater than 0
+    $hasOrder = false;
+    foreach ($request->quantity as $quantity) {
+        if ($quantity > 0) {
+            $hasOrder = true;
+            break;
+        }
+    }
+    // If no food is selected, redirect back with an error message
+    if (!$hasOrder) {
+        return redirect()->back()->with('error', 'No food items were selected. Please select at least one food item.');
     }
     
+     if($request->total> 0){
+       $check_for_invoice = Invoice::where('table_id', $tableId)
+        ->where('status', 0) // Open invoice
+        ->latest()
+        ->first();
+        $invoice_id = -1;
 
-    for($i=0; $i < count($request->food_id); $i++){
-    // Check if the quantity is greater than 0 before creating the invoice_food record
-    // This prevents creating records with zero quantity
-    // This is important to avoid creating empty records in the invoice_food table
-        if($request->quantity[$i] > 0){
-        
-        auth()->user()->invoice_food()->create([
-            'invoice_id' => $invoice_id,
-            'food_id' => $request->food_id[$i],
-            'quantity' => $request->quantity[$i],
-            'price' => $request->price[$i],
-            
-        ]);
+        if($check_for_invoice){
+            // If an open invoice exists, use its ID
+            $invoice_id = $check_for_invoice->id;
+        } else {
+            // If no open invoice exists, create a new one
+            $new_invoice = Invoice::create([
+                'table_id' => $tableId,
+                'total_price' => $request->total,
+                'status' => 0, // Open invoice
+            ]);
+            $invoice_id = $new_invoice->id;
         }
-}
-  }
-  
-          return redirect()->back();
+        
+     }
+    // Initialize $check_for_invoice to null
+    $check_for_invoice = null;
+    
+   
 
+     for($i=0;$i<count($request->food_id);$i++){
+        // Check if the quantity is greater than 0 before creating the invoice_food record
+        // This prevents creating records with zero quantity
+        if($request->quantity[$i] > 0){
+            auth()->user()->invoice_food()->create([
+                'invoice_id' => $invoice_id,
+                'food_id' => $request->food_id[$i],
+                'quantity' => $request->quantity[$i],
+                'price' => $request->price[$i],
+            ]);
+        }
+    
+       
+    }
+
+    return redirect()->back();
 }
+
+
+
 public function plus_or_minus($id,$value){
     $invoice_food = Foodinvoice::findOrFail($id);
     $invoice_food->update([

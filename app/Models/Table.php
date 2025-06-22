@@ -20,10 +20,16 @@ class Table extends Model
       return $this->hasMany(Reservation::class,'table_id');
    }
 
+   public function invoice()
+{
+    
+   return $this->hasOne(Invoice::class, 'table_id')->where('status', 0); // Open invoice
+}  
+
    protected $appends = ['created_at_readable'];
    public function getCreatedAtReadableAttribute()
    {
       return $this->created_at?->diffForHumans();
    }
- 
+   
 }

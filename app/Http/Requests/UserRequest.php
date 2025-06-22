@@ -18,14 +18,9 @@ class UserRequest extends FormRequest
             return [
                 'email'    => 'required|email|string|unique:users,email,' . $request->user()->id . '|max:255',
                 'password' => 'nullable|string|min:6|max:256|confirmed',
-                'role'     => 'required|in:1,2,3',
+                'role'     => 'required|in:1,2,3,4',
             ];
-        } else {
-            return [
-                'email'    => 'required|email|string|unique:users,email|max:256',
-                'password' => 'required|string|min:6|max:255|confirmed',
-                'role'     => 'required|in:1,2,3',
-            ];
+        
         }
     }
 }

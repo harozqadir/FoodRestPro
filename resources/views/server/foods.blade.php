@@ -1,14 +1,14 @@
 @extends('layouts.server')
 
 @section('content')
-<div style=" margin-left: 30px;">
+<div class="mt-5">
     <div class="d-flex justify-content-between ">
          <div class="d-flex align-items-center">
         <h3>
             Table Number: #{{$table->table_number}}
         </h3>
         @if($invoice)
-         <span>-  #{{$invoice->id}}  - </span> 
+         <span>  - Invoice ID: #{{$invoice->id}}  - </span> 
          
          <form id="{{ $invoice->id }}" action="{{route('server.invoice.delete',['id'=>$invoice->id])}}" method="POST">   
          @csrf
@@ -18,25 +18,36 @@
     </form>
          @endif
         </div>
+   
+        
         <a href="{{route('server.home')}}" class="btn btn-primary" 
-        style="margin-right: 15px;">Back
-         </a>
-        </div>
+        style="margin-right: 15px;">Back </a>
     
+</div>
+<br>
+         {{-- Show Ordered Foods Here   --}}
+
      @if ($invoice)
-    <div>
+    <div >
         <h4>Ordered Food</h4>
         <table class="table table-striped">
-            <tr>
-            <th>Food</th>
-            <th>Quantity</th>
-            <th>Action</th>
-        </tr>
+            <thead>
+                <tr>
+                    <th>Food</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                
+                    <th>Action</th>
+                </tr>
+            </thead>
+        <tbody>
         @if($invoice)
         @foreach ($invoice->invoice_food as $row)
         <tr>
             <td>{{$row->food->sub_category->name_en}} {{$row->food->name_en}}</td>
             <td>{{$row->quantity}}</td>
+           
+            <td>IQD {{ number_format($row->quantity * $row->price, 1, '') }}</td>           
             <td class="d-flex">  
             <form action="{{route('server.foods.plus_or_minus', ['id' => $row->id,'value'=> 1])}}" method="POST" style="display: inline-block; margin-right: 5px;">
                 @csrf
@@ -47,18 +58,16 @@
                 <button class="btn btn-danger"><i class="fas fa-minus"></i></button>
             </form>  
         </td>
-
         </tr>
-            
         @endforeach
-        @else
-        <tr>
-            <td colspan="3" class="text-center">No ordered food found for this table.</td>
-        </tr>
         @endif
+      </tbody>
         </table>
+      </div>
         @endif
     </div>
+
+    {{-- Order Foods Here start --}}
      <div class="m-4">
     <h4 class="mt-3">Categories</h4>
     <div class="row">
@@ -75,9 +84,10 @@
 
     </div>
 </div>
-     <div>
 
-        <form action=" {{ route('server.foods.store')}}" method="POST" >
+     {{-- Subcategories and Foods --}}
+     <div class="m-4">
+        <form action="{{ route('server.foods.store', ['id' => $table->id]) }}" method="POST" >
             @csrf
             <input type="hidden" name="table_id" value="{{$table->id}}">
 

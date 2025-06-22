@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->id();
-            $table->string('table_number');
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');  
+           
+            $table->string('table_number');
             $table->timestamps();
         });
     }

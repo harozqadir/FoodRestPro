@@ -46,7 +46,9 @@ class UserController extends Controller
                 $roles = [
                     1 => 'Admin',
                     2 => 'Server',
-                    3 => 'Chief'
+                    3 => 'Chief',
+                    4=> 'casher',
+                    // Add more roles as needed
                 ];
                 return $roles[$row->role] ?? 'Unknown';
             })

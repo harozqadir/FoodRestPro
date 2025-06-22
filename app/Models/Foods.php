@@ -32,5 +32,10 @@ protected $appends = ['created_at_readable','price_readable'];
         return number_format($this->price);
     }
 
+    public function orders()
+{
+    return $this->hasMany(Order::class, 'food_id');
+}
+
 }
 

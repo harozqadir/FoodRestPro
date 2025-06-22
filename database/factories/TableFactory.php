@@ -16,6 +16,8 @@ class TableFactory extends Factory
      */
     public function definition(): array
     {
+        
+        // Generate a random table number between 1 and 100
         return [
             'table_number' => rand(1,100)
         ];

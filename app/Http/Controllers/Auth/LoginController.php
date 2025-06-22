@@ -34,8 +34,10 @@ class LoginController extends Controller
             return '/admin/home';
         }else if(auth()->user()->isServer()) {
             return '/server/home';
-        }else{
+        }else if(auth()->user()->isChief()) {
             return '/chief/home';
+        }else if(auth()->user()->isCasher()){
+            return '/casher/home';
         }
         
         

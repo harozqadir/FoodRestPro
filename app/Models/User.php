@@ -75,6 +75,8 @@ class User extends Authenticatable
     public function invoice_food(){
         return $this->hasMany(Foodinvoice::class,'user_id');
     }
+
+    
     
   //appends
   protected $appends = ['created_at_readable','role_readable'];
@@ -89,9 +91,13 @@ class User extends Authenticatable
             return 'admin';
         }else if ($this->role == 2){
             return 'server';
-        }else {
+        }else if ($this->role == 3){
             return 'chife';
-        }    }
+        }else if($this->role == 4){
+            return 'casher';
+        }    
+    
+    }
 
         //permissions   
 
@@ -108,5 +114,10 @@ class User extends Authenticatable
         {
             return $this->role == 3;
         }
+
+        public function isCasher()
+    {
+        return $this->role == 4;
+    }
 
 }
