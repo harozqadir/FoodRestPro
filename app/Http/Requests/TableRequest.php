@@ -22,7 +22,7 @@ class TableRequest extends FormRequest
     public function rules(): array
     {
         return [
-         'table_number' => 'required|string|max:255',
+            'table_number' => 'required|string|unique:tables,table_number,'
         ];
     }
 }

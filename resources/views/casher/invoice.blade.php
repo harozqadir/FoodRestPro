@@ -2,53 +2,68 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Invoice for Table #{{ $table->table_number }}</h2>
-
+    
     <div class="card">
+        <div class="card-header">
+            <h3>Invoice for Table #{{ $table->table_number }}</h3>
+            @if($table->invoice)
+                <p class="text-muted">
+                    Date: {{ $table->invoice->created_at->format('Y-m-d') }} |
+                    Time: {{ $table->invoice->created_at->format('H:i:s') }}
+                </p>
+            @else
+                <p class="text-muted">No invoice found for this table.</p>
+            @endif
+            <div style="position: absolute; top: 10px; right: 10px;">
+                <a href="{{ route('casher.home') }}" class="btn btn-primary">Back</a>
+            </div>
+        </div>
+        </div>
         <div class="card-body">
-            <h4>Table Details</h4>
-            <p><strong>Table ID:</strong> {{ $table->id }}</p>
-            <p><strong>Table Number:</strong> {{ $table->table_number }}</p>
-
-            <h4 class="mt-4">Ordered Foods</h4>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>Food Name</th>
-                        <th>Quantity</th>
-                        <th>Price</th>
-                        <th>Total</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($invoice->orders as $order)
-                    <tr>
-                        <td>{{ $order->food->name }}</td>
-                        <td>{{ $order->quantity }}</td>
-                        <td>IQD {{ number_format($order->food->price, 3, '.', '') }}</td>
-                        <td>IQD {{ number_format($order->food->price * $order->quantity, 3, '.', '') }}</td>
-                        <td>
-                            <!-- Example action: Remove item -->
-                            <form action="{{ route('casher.tables.removeOrder', ['id' => $order->id]) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm">Remove</button>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th colspan="3" class="text-end">Total Price</th>
-                        <th colspan="2">IQD {{ number_format($invoice->total_price, 3, '.', '') }}</th>
-                    </tr>
-                </tfoot>
-            </table>
+            @if($table->invoice)
+                <table class="table table-hover table-bordered" style="border-collapse: collapse; background-color: #ffffff; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <thead style="background-color: #007bff; color: #ffffff;">
+                        <tr>
+                            <th style="padding: 10px; text-align: center; font-size: 1.1rem;">Food Item</th>
+                            <th style="padding: 10px; text-align: center; font-size: 1.1rem;">Quantity</th>
+                            <th style="padding: 10px; text-align: center; font-size: 1.1rem;">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($table->invoice->invoice_food as $item)
+                            <tr style="transition: background-color 0.3s;">
+                                <td style="padding: 10px; text-align: center; font-size: 1rem; color: #333;">{{ $item->food->name_en }}</td>
+                                <td style="padding: 10px; text-align: center; font-size: 1rem; color: #333;">{{ $item->quantity }}</td>
+                                <td style="padding: 10px; text-align: center; font-size: 1rem; color: #007bff;">{{ number_format($item->price) }} IQD</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2" style="padding: 10px; text-align: left; font-size: 1.2rem; font-weight: bold; color: #333;">Total Price: {{ number_format($finalTotalPrice) }} IQD</td>
+                            <td style="padding: 10px; text-align: center;">
+                                <form action="{{ route('casher.process.payment', ['id' => $table->id]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" 
+                                            class="btn btn-success btn-lg shadow-sm" 
+                                            style="font-size: 1rem; padding: 10px 20px; width: 100%; border-radius: 10px;">
+                                        <i class="fas fa-money-bill-wave me-2"></i>
+                                        Pay
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                
+            @else
+                <p>No invoice found for this table.</p>
+            @endif
         </div>
     </div>
-
-    <a href="{{ route('casher.home') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+    <div class="container">
+    
+        @yield('content')
+    </div>
 </div>
 @endsection

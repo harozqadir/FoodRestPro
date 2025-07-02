@@ -20,16 +20,22 @@ class Table extends Model
       return $this->hasMany(Reservation::class,'table_id');
    }
 
-   public function invoice()
+   public function invoices()
 {
-    
-   return $this->hasOne(Invoice::class, 'table_id')->where('status', 0); // Open invoice
-}  
+    return $this->hasMany(Invoice::class, 'table_id');
+}
+   
 
    protected $appends = ['created_at_readable'];
    public function getCreatedAtReadableAttribute()
    {
       return $this->created_at?->diffForHumans();
    }
+
+   // One table has one open (unpaid) invoice
+     public function invoice()
+       {
+        return $this->hasOne(\App\Models\Invoice::class, 'table_id')->where('status', 0);
+        }
    
 }

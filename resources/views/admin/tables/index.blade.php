@@ -70,8 +70,8 @@
               }
             },
           {
-              data: 'user.email',
-              name: 'user.email',
+              data: 'user.username',
+              name: 'user.username',
              
           },{
               data: 'created_at_readable',

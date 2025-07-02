@@ -21,7 +21,7 @@
                                     <th>Name Arabic</th>
                                     <th>Name English</th>
                                     <th>Image</th>
-                                    <th>Added By </th>
+                                    
                                     <th>Created At</th>
                                     <th>Actions</th>
                                 </tr>
@@ -62,6 +62,7 @@
           },{
               data: 'name_ckb',
               name: 'name_ckb',
+              
           },{
               data: 'name_ar',
               name: 'name_ar',
@@ -75,12 +76,8 @@
               render: function(data, type, row){
                 return `<img src="${data}" style="width: 50px; height: 50px;">`
               }
-          },
-          {
-              data: 'user.email',
-              name: 'user.email',
-             
-          },{
+          }
+          ,{
               data: 'created_at_readable',
               name: 'created_at_readable',
               searchable: false,

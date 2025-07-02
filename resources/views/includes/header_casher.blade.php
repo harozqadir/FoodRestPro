@@ -40,6 +40,11 @@
                     <i class="fa fa-home"></i> Home 
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('casher.invoices.report') }}">
+                    <i class="fa fa-info"></i> Report
+                </a>
+            </li>
             
         </ul>
     </nav>

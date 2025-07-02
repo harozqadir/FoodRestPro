@@ -11,7 +11,7 @@
                     <div class="table-rep-plugin">
                         <div class="table-responsive mb-0">
                         
-                            <table id="myTable" class="table table-bordered dt-reponsive nowrap myTable"
+                            <table id="myTable" class="table table-bordered table-striped align-middle w-100"
                             style="border-collapse: collapse; border-spacing: 0; width:100% vertical-align:middle">
                             <br>
                             <thead>
@@ -77,8 +77,8 @@
               }
           },
           {
-              data: 'user.email',
-              name: 'user.email',
+              data: 'user.username',
+              name: 'user.username',
              
           },{
               data: 'created_at_readable',

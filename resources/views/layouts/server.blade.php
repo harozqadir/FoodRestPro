@@ -108,7 +108,7 @@
             </div>
 
         </div>
-
+        @stack('js')
 
         
 

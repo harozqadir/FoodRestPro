@@ -5,7 +5,7 @@
 <div class="container">
 <div class="container CustomBG shadow-sm rounded mt-3 py-3">
 
-    <a href="{{ route('admin.foods.index', ['sub_category' => request('sub_category')]) }}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Categories </a>
+    <a href="{{ route('admin.foods.index', ['sub_category' => request('sub_category')]) }}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Foods </a>
 
 <br><br>
 <div class="mt-3">
@@ -29,8 +29,7 @@
 
 {{-- index and upadte form Reusable form --}}
 
-<form 
-enctype="multipart/form-data"
+<form enctype="multipart/form-data"
 action="{{ isset($data) ? route('admin.foods.update', ['food' => $data->id]) : route('admin.foods.store') }}" 
 method="POST" 
 class="row mt-4">
@@ -45,6 +44,10 @@ class="row mt-4">
     <x-input title="Name in English" name="name_en" type="text"  :dt="isset($data) ? $data : false" />
     <x-input title="Price" name="price" type="number"  :dt="isset($data) ? $data : false" />
     <input type="hidden" name="sub_category_id" value="{{ request('sub_category') }}">
+    {{-- <input type="hidden" name="table_id" value="{{ request('table_id') }}"> --}}
+    {{-- <input type="hidden" name="table_id" value="{{ request('table_id') }}"> --}}
+
+    
     <x-button :chehckedifupdate=" isset($data) ? true : false " />
 
 </form>

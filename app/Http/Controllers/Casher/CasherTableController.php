@@ -3,55 +3,33 @@
 namespace App\Http\Controllers\Casher;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
+use App\Models\Invoice;
 use App\Models\Order;
+use App\Models\SubCategory;
 use App\Models\Table;
 use Illuminate\Http\Request;
 
 class CasherTableController extends Controller
 {
-    /**
-     * Display the Casher's dashboard with tables and their invoice statuses.
-     */
+   
     public function index()
-    {
-        // Fetch all tables with their invoices
-        $tables = Table::with('invoice')->get();
+{
+    $tables = Table::with(['invoice' => function($query) {
+        $query->where('status', 0); // Only unpaid invoices
+    }, 'invoices.invoice_food'])->get();
 
-        // Return the view for the Casher's home page
-        return view('casher.home', compact('tables'));
-    }
-
-    /**
-     * Display the invoice for a specific table.
-     */
-    public function invoice($id)
-    {
-        // Fetch the table and its invoice
-        $table = Table::with('invoice.orders.food')->findOrFail($id);
-        $invoice = $table->invoice;
-
-        // Ensure the table has an invoice
-        if (!$invoice) {
-            return redirect()->route('casher.home')->with('error', 'No invoice found for this table.');
+    $tables->each(function ($table) {
+        if ($table->invoice) {
+            $table->total_price = $table->invoice->invoice_food->sum(function ($item) {
+                return $item->quantity * $item->price;
+            });
+        } else {
+            $table->total_price = 0;
         }
+    });
 
-        // Return the view for the table's invoice
-        return view('casher.invoice', compact('table', 'invoice'));
-    }
+    return view('casher.home', compact('tables'));
+}
 
-    public function removeOrder($id)
-      {
-    // Find the order and delete it
-       $order = Order::findOrFail($id);
-       $order->delete();
-
-       // Recalculate the total price of the invoice
-       $invoice = $order->invoice;
-        $invoice->total_price = $invoice->orders->sum(function ($order) {
-          return $order->price * $order->quantity;
-          });
-            $invoice->save();
-
-          return redirect()->back()->with('success', 'Order removed successfully.');
-    }
 }

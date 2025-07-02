@@ -18,9 +18,11 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'email',
+        'username',
         'password',
         'role',
+        'created_by',
+
     ];
 
     /**
@@ -86,38 +88,44 @@ class User extends Authenticatable
     }
 
     public function getRoleReadableAttribute()
-    {
-        if($this->role== 1){
+{
+    switch ($this->role) {
+        case 1:
             return 'admin';
-        }else if ($this->role == 2){
+        case 2:
             return 'server';
-        }else if ($this->role == 3){
-            return 'chife';
-        }else if($this->role == 4){
+        case 3:
+            return 'chief';
+        case 4:
             return 'casher';
-        }    
-    
+        
     }
+}
 
-        //permissions   
+// Permissions
+public function isAdmin()
+{
+    return $this->role == 1; // Compare to numeric value
+}
 
-        public function isAdmin()
-        {
-            return $this->role == 1;
-        }
-        public function isServer()
-        {
-            return $this->role == 2;
-        }
+public function isServer()
+{
+    return $this->role == 2; // Compare to numeric value
+}
 
-        public function isChief()
-        {
-            return $this->role == 3;
-        }
+public function isChief()
+{
+    return $this->role == 3; // Compare to numeric value
+}
 
-        public function isCasher()
-    {
-        return $this->role == 4;
-    }
+public function isCasher()
+{
+    return $this->role == 4; // Compare to numeric value
+}
+
+public function creator()
+{
+    return $this->belongsTo(User::class, 'created_by');
+}
 
 }

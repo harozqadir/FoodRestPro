@@ -9,16 +9,20 @@ use Illuminate\Http\Request;
 
 class TableController extends Controller
 {
-public function index(){
-    $tables = Table::all();
-    // You can pass the tables to the view if needed
-    return view('server.home',compact('tables'));
-}
+    public function index()
+    {
+        // Retrieve all tables with their related invoices
+        $tables = Table::with('invoices')->get();
 
-public function deleteInvoice($id){
-    Invoice::findOrFail($id)->delete();
-    return redirect () ->route('server.home');
-}
+        // Pass the tables data to the server.home view
+        return view('server.home', compact('tables'));
+    }
+
+    public function deleteInvoice($id)
+    {
+        Invoice::findOrFail($id)->forceDelete();
+        return redirect()->route('server.home');
+    }
 
 
 }

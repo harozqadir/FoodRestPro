@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     /*
@@ -28,20 +29,30 @@ class LoginController extends Controller
     //protected $redirectTo = '/admin/home';
     
 
-    public function redirectTo(){
-
-        if (auth()->user()->isAdmin()) {
-            return '/admin/home';
-        }else if(auth()->user()->isServer()) {
-            return '/server/home';
-        }else if(auth()->user()->isChief()) {
-            return '/chief/home';
-        }else if(auth()->user()->isCasher()){
-            return '/casher/home';
-        }
-        
-        
+    public function redirectTo()
+{
+    $user = auth()->user();
+    if ($user->isAdmin()) {
+        return '/admin/home';
+    } elseif ($user->isServer()) {
+        return '/server/home';
+    } elseif ($user->isChief()) {
+        return '/chief/home';
+    } elseif ($user->isCasher()) {
+        return '/casher/home';
     }
+    return '/home';
+}
+
+public function username()
+{
+    return 'username';
+}
+
+public function showLoginForm()
+{
+    return view('auth.login');
+}
 
     /**
      * Create a new controller instance.
@@ -54,4 +65,17 @@ class LoginController extends Controller
 
         //$this->middleware('auth')->only('logout');
     }
+   
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        // Invalidate the session and regenerate the CSRF token
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Redirect to the login page
+        return redirect()->route('login');
+    }
+
 }

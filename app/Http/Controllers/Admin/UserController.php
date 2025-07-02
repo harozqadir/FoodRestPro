@@ -39,7 +39,8 @@ class UserController extends Controller
     //   return view('admin.users.index',compact('data'));
     
     if ($request->ajax()) {
-        $data = User::query()->latest()->with('user'); // Remove with('user') if not needed
+
+        $data = User::query()->latest()->with('creator')->get(); // Remove with('user') if not needed
         return DataTables::of($data)
             ->addIndexColumn()
             ->addColumn('role_readable', function($row) {
@@ -50,7 +51,10 @@ class UserController extends Controller
                     4=> 'casher',
                     // Add more roles as needed
                 ];
-                return $roles[$row->role] ?? 'Unknown';
+                return $roles[$row->role];
+            })
+            ->addColumn('created_by', function ($row) {
+                return $row->creator ? $row->creator->username : 'admin';
             })
             ->addColumn('actions', function ($row) {
                 return '<a href="'.route('admin.users.edit', ['user' => $row->id]).'" class="btn btn-primary">Edit</a>
@@ -81,7 +85,7 @@ class UserController extends Controller
     
     public function store(UserRequest $request)
     {
-        auth()->user()->users()->create($request->validated());
+        auth()->user()->user()->create($request->validated());
         return redirect()->back()->with(['message' => 'User created successfully'],);
     }
 

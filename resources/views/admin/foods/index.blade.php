@@ -2,56 +2,85 @@
 
 
 @section('content')
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-10">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <h4 class="mb-2 mb-md-0">{{ $sub_category->name_en }}</h4>
+                <a href="{{ route('admin.foods.create', ['sub_category' => request('sub_category')]) }}" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Add
+                </a>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-bordered table-striped align-middle w-100">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name Kurdish</th>
+                                <th>Name Arabic</th>
+                                <th>Name English</th>
+                                <th>Price</th>
+                                <th>Added By</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{-- Table rows --}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<div class="col-10 mx-auto">
+{{-- 
+<div class="col-10" style="margin-left: 60px;">
     <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                   <h4>{{$sub_category ->name_en}}</h4>
-                    <a  href="{{ route('admin.foods.create',['sub_category' => request('sub_category')])}}" class="btn btn-success">
-                        <i class="fas fa-plus"></i>  Add
-                    </a>
-                    </div>
-                
-                <div class="card-body">
-                    <div class="table-rep-plugin">
-                        <div class="table-responsive mb-0">
-                        
-                            <table id="myTable" class="table table-responsive"
-                            style="border-collapse: collapse; border-spacing: 0; width:100% vertical-align:middle">
-                            <br>
-                            <thead>
-                                <tr>
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                               <h4>{{$sub_category ->name_en}}</h4>
+                                 <a  href="{{ route('admin.foods.create',['sub_category' => request('sub_category')])}}" class="btn btn-success">
+                                 <i class="fas fa-plus"></i>  Add
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body" >
+                           <div class="table-responsive mb-0">
+                            <table id="myTable" class="table table-responsive " 
+                                  style="border-collapse: collapse; border-spacing: 0; width:100%; vertical-align:middle">
+                                  <br>
+                                <thead>
+                                   <tr>
                                     <th>#</th>
-                                    <th>Name Kuridsh</th>
+                                    <th>Name Kurdish</th>
                                     <th>Name Arabic</th>
                                     <th>Name English</th>
                                     <th>Price</th>
                                     <th>Added By </th>
                                     <th>Created At</th>
                                     <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                
-                               
-                            
-                            </tbody>
-                        </table>
-                    </div>
-                    </div>
+                                   </tr>
+                                </thead>
+                            </table>
+                          </div>
                         </div>
-
-                    </div>
-    {{-- {{$data->links('pagination::bootstrap-5')}} --}}
+                     </div>
                 </div>
-            </div>
 
-        </div>
     </div>
-</div>
+
+</div> --}}
+
+
+
+
+
+
 {{-- <script>
     let table = new DataTable('#myTable');
 </script> --}}
@@ -59,6 +88,7 @@
     
     
       let table = $('#myTable').DataTable({
+        
           processing: true,
           serverSide: true,
           ajax: '{{ route('admin.foods.index') }}?sub_category={{ request('sub_category') }}',
@@ -82,8 +112,8 @@
                 name: 'price_readable'
             },
           {
-              data: 'user.email',
-              name: 'user.email',
+              data: 'user.username',
+              name: 'user.username',
              
           },{
               data: 'created_at_readable',

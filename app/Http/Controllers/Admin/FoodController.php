@@ -18,7 +18,6 @@ class FoodController extends Controller
     use DeleteFile;
     public function index(Request $request)
     {
-
     if ($request->ajax()) {
         $data = Foods::latest()->where('sub_category_id',$request->sub_category)->with('user','sub_category'); // Remove with('user') if not needed
         return DataTables::of($data)->addIndexColumn()

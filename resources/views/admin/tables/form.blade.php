@@ -35,7 +35,15 @@
 
    <x-input title="Table Number" name="table_number"  :dt="isset($data) ? $data :false "  type="text"/>
 
-
+   @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 <x-button :chehckedifupdate=" isset($data) ? true : false " />
 
    

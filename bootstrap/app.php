@@ -23,7 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'isCasher' => isCasher::class,
             'isChief' => isChief::class,
         ]);
+        
     })
+    
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

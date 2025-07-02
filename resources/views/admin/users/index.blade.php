@@ -7,16 +7,17 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <br>
                     <div class="table-rep-plugin">
                         <div class="table-responsive mb-0">
                         
                             <table id="myTable" class="table table-bordered dt-reponsive nowrap myTable"
                             style="border-collapse: collapse; border-spacing: 0; width:100% vertical-align:middle">
-                            <br>
+                           
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Email</th>
+                                    <th>Username</th>
                                     <th>Role</th>
                                     <th>Created By</th>
                                     <th>Created At</th>
@@ -58,20 +59,21 @@
               searchable: false,
               orderable: false
           },{
-              data: 'email',
-              name: 'email',
+              data: 'username',
+              name: 'username',
           },{
               data: 'role_readable',
               name: 'role_readable',
               searchable: false,
               orderable: false
           },
-          {
-              data: 'user.email',
-              name: 'user.email',
-              defaultContent: ''
-             
-          },{
+          { 
+            data: 'created_by', 
+            name: 'created_by',
+            searchable: false,
+              orderable: false
+        }, 
+         {
               data: 'created_at',
               name: 'created_at',
               searchable: false,

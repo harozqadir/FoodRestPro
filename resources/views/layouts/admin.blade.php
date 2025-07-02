@@ -38,12 +38,10 @@
         <link href="{{ asset('assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
         <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
-        integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" 
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-       
+        {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" /> --}}
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">       
         {{-- //install DataTable.net --}}
        <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
        <link rel="stylesheet" href="//cdn.datatables.net/2.2.2/js/dataTables.min.js">
@@ -67,7 +65,6 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
          
-
         
            <!-- Template Main JS File -->
             <script src="{{ asset('assets/js/main.js') }}"></script>
@@ -75,20 +72,12 @@
            <!-- App js-->
             <script src="assets/js/app.js"></script>
     </head>
-
-    <body data-layout="horizantal" data-topbar="colored" >
-        
-
-           
+    <body data-layout="horizantal" data-topbar="colored">
         <div id="layout-wrapper">
-            @include('includes.header') 
-            
-
-            
-            <br>
-            <div class="main-content mt-5" >
-                
-                <div class="page-content col-10 mx-auto" >
+            @include('includes.header')
+    
+            <div class="main-content mt-5">
+                <div class="page-content container-fluid px-2 px-md-4">
                     @if (session()->has('message'))
                         <div class="alert alert-success alert-dismissible mt-2 fade show" role="alert">
                             {{ session()->get('message') }}
@@ -97,20 +86,15 @@
                     @endif
                     @yield('content')
                 </div>
-                
                 <footer class="footer">
                     <div class="container-fluid">
                         <div class="row"></div>
                     </div>
                 </footer>
-
             </div>
-
         </div>
-
-
-        
-
+    </body>
+    
     </html>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -149,7 +133,7 @@
     document.addEventListener('DOMContentLoaded', function () {
         const dropdowns = document.querySelectorAll('.dropdown');
         dropdowns.forEach(dropdown => {
-            dropdown.addEventListener('mouseenter', function () {
+            dropdown.addEventListener('moistener', function () {
                 const submenu = this.querySelector('.dropdown-menu');
                 if (submenu) submenu.style.display = 'block';
             });
