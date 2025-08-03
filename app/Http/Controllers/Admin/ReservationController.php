@@ -11,82 +11,92 @@ use Yajra\DataTables\Facades\DataTables;
 
 class ReservationController extends Controller
 {
-    
-    public function index(Request $request)
+
+   public function index(Request $request)
     {
-
-    if ($request->ajax()) {
-        $data = Reservation::latest()->where('table_id',$request->table_id)->with('user'); 
-        return DataTables::of($data)->addIndexColumn()
-            ->make(true);
-        }
-        $table = Table::findOrFail($request->table_id);
-    return view('admin.reservations.index', compact('table'));
-    
-}
-
-    
-    public function create()
-    {
-
-        return view('admin.reservations.form');
-
-    }
-
-    
-    public function store(ReservationRequest $request)
-    {
-        auth()->user()->reservations()->create($request->validated());
-        return redirect()->back()->with(['message' => 'User Created Successfully'],);
-        
-
-   
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Request $request, $id)
-    { 
         if ($request->ajax()) {
+            $data = Reservation::query()->latest()->with('user'); // Include 'user' relation
 
-            $data = Reservation::latest()->where('table_id',$id)->with('user'); 
-            return DataTables::of($data)->addIndexColumn()
+            // Return the data to DataTables
+            return DataTables::of($data)
+                ->addColumn('created_at_readable', function($row) {
+                    return $row->created_at->format('Y-m-d H:i:s');
+                })
+                ->addColumn('user_name', function($row) {
+                    return $row->user ? $row->user->name : 'N/A'; // Return 'N/A' if no user found
+                })
+                 ->addColumn('table_number', function ($row) {
+                return $row->table ? 'Table No. ' . $row->table->table_number : 'N/A'; // Render table number
+            })
+                ->addIndexColumn() // Add index column for DataTables
                 ->make(true);
-            }
-            
-            $table = Table::findOrFail($id);
-        return view('admin.reservations.index', compact('table'));
-        
+        }
+
+        return view('admin.reservations.index');
+    }
+  
+  public function create()
+    {
+     $tables =Table::where('status', 'available')->get();
+    return view('admin.reservations.form', compact('tables'));
+    }
+  
+   
+    // Show Individual Reservation
+    public function show(Request $request, $id)
+    {
+        $data = Reservation::findOrFail($id);
+        return view('admin.reservation.show', compact('data'));
+    }
+     // Store the reservation data
+    public function store(ReservationRequest $request)
+{
+       // Your logic to store reservation here
+        $new_data = $request->all();
+        auth()->user()->reservations()->create($new_data);
+
+
+    // Update the table status to reserved
+    $table = Table::find($request->table_id);
+    if ($table) {
+        $table->status = 'reserved'; // Set the table status to 'reserved'
+        $table->save();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    return redirect()->back()->with(['message' => 'Reservation created successfully!']);
+}
+    
     public function edit(string $id)
     {
-        $data = Reservation::findOrfail($id);
-
-        return view('admin.reservations.form',compact('data'));
+      $data = Reservation::findOrFail($id);
+    $tables = \App\Models\Table::get(); // allow pick any for edit
+    return view('admin.reservations.form', compact('data', 'tables'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(ReservationRequest $request, string $id)
-    {
-        Reservation::findOrFail($id)->update($request->validated());
-        return redirect()->back()->with(['message' => 'User updated successfully'],);
+{
+    $reservation = Reservation::findOrFail($id);
+    $reservation->update($request->validated()); // This will update the reservation
 
-       }
+    return redirect()->back()->with('message', 'Reservation updated successfully!');
+}
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
-    {
-        Reservation::findOrFail($id)->delete();
-        
-        return redirect()->back()->with(['message' => 'User deleted successfully'],);
+{
+    // Find the reservation by ID
+    $reservation = Reservation::findOrFail($id);
+    
+    // If reservation exists, delete it
+    $reservation->delete();
+    
+    // Optional: Update the table status to 'available' when the reservation is deleted
+    $table = Table::find($reservation->table_id);
+    if ($table) {
+        $table->status = 'available'; // Or whatever the default status is
+        $table->save();
     }
+
+    // Return success message
+    return redirect()->back()->with('message', 'Reservation deleted successfully!');
+}
 }

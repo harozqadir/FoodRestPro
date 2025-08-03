@@ -28,7 +28,7 @@ class FoodRequest extends FormRequest
             'name_en' => 'required|string|max:255',
             'sub_category_id' => 'required|exists:sub_categories,id|numeric', 
            // 'table_id' => 'required|exists:tables,id|numeric',
-            'price'=> 'required|numeric',
+            'price'=> 'required|numeric|min:0',
             // 'foods' => 'required|array',
             // 'foods.*.id' => 'required|exists:foods,id',
             // 'foods.*.quantity' => 'required|integer|min:1',

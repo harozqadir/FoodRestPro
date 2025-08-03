@@ -21,12 +21,17 @@ class ReservationRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => 'required|string',
-            'phone-number' => 'required|string|max:15',
-            'hour' => 'required|string',
-            'chair' => 'required|string',
-            'table_id' => 'required|string',
+
+        
+       return [
+          'name' => 'required|string|max:255',
+        'phone_number' => 'required|string|max:20',
+        'hour' => 'required',
+        'chair' => 'required|integer|min:1',
+        'table_id' => 'required|exists:tables,id',
+        'user_id' => 'required|exists:users,id',
+
         ];
     }
+    
 }

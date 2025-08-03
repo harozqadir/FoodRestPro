@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->unsignedBigInteger('created_by')->nullable()->after('table_id');
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('set null');
+            $table->unsignedBigInteger('created_by_server')->nullable()->after('table_id');
+            $table->foreign('created_by_server')->references('id')->on('users')->onDelete('set null');
         });
     }
 
     public function down(): void
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->dropForeign(['created_by']);
-            $table->dropColumn('created_by');
+            $table->dropForeign(['created_by_server']);
+            $table->dropColumn('created_by_server');
         });
     }
 };

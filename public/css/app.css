@@ -3550,12 +3550,13 @@ textarea.form-control-lg {
 .dropdown-toggle:empty::after {
   margin-left: 0;
 }
+    /* Dropdown Menu Style */
 
 .dropdown-menu {
   position: absolute;
   z-index: 1000;
   display: none;
-  min-width: 10rem;
+        min-width: 180px;
   padding: 0.5rem 0;
   margin: 0;
   font-size: 0.9rem;
@@ -3564,8 +3565,11 @@ textarea.form-control-lg {
   list-style: none;
   background-color: #fff;
   background-clip: padding-box;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: opacity 0.3s ease;
+
   border: 1px solid rgba(0, 0, 0, 0.15);
-  border-radius: 0.25rem;
+        border-radius: 10px;
 }
 .dropdown-menu[data-bs-popper] {
   top: 100%;
@@ -11398,17 +11402,28 @@ textarea.form-control-lg {
 
 .admin-nav .dropdown:hover .dropdown-menu,
 .admin-nav .dropdown.active .dropdown-menu {
-  display: block;
+  display: legacy;
 }
 
 @media (max-width: 768px) {
-  #page-topbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1030;
-  }
+  /* Header Styling */
+    #page-topbar {
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+    /* Branding text styling */
+    #page-topbar .navbar-brand-box h1 span {
+        font-weight: bold;
+    }
 
+    /* Avatar Size */
+    .dropdown-menu img {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+    }
   .navbar-brand-box h2 {
     font-size: 18px;
   }
@@ -11478,3 +11493,224 @@ textarea.form-control-lg {
   width: 100%;
   left: 0;
 }
+
+ /* Mobile-first adjustments */
+    @media (max-width: 767px) {
+        #page-topbar .navbar-brand-box h1 {
+            font-size: 1.5rem;
+        }.dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            min-width: 180px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    }
+/* Dropdown Menu Style */
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 100%;
+        min-width: 180px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: opacity 0.3s ease;
+    }
+
+    .dropdown-menu.show {
+        display: block;
+        opacity: 1;
+    }
+
+    /* Dropdown items style */
+    .dropdown-item {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    /* Icon beside logout */
+    .dropdown-item i {
+        font-size: 18px;
+    }
+#myTable {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+#myTable th {
+  background-color: #f8f9fa;
+  color: #343a40;
+  text-align: center;
+}
+#myTable td {
+  vertical-align: middle;
+  text-align: center;
+}
+.table thead th {
+  border-bottom: 2px solid #dee2e6;
+}
+.contact-links {
+    visibility: visible !important;  /* Make sure the section is always visible */
+    opacity: 1 !important;           /* Ensure it's fully opaque */
+    display: block !important;       /* Make sure it's being displayed */
+    transition: none !important;     /* Disable any transition that hides or fades it */
+}
+.sidebar .nav-link.active {
+    color: #fff !important;
+    background-color: #0d6efd;
+    border-radius: 5px;
+       font-weight: bold;
+    color: #0d6efd !important;
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+
+
+.nav-link {
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #0d6efd !important;
+}
+
+.nav .collapse a {
+    font-size: 0.9rem;
+    padding-left: 1.5rem;
+}
+
+/* REMOVE or COMMENT these */
+.dropdown-submenu .dropdown-menu {
+    display: none;
+}
+.dropdown-submenu:hover > .dropdown-menu {
+    display: block;
+}
+.dropdown-submenu:hover .sub-dropdown {
+    display: block;
+}
+.toggle-chevron {
+    transition: transform 0.3s ease;
+    font-size: 0.9rem;
+}
+/* Customizing the logout button */
+.sidebar .btn-danger {
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar .btn-danger:hover {
+    background-color: #d32f2f;  /* Darker shade of red on hover */
+}
+
+/* Optional: Styling the sidebar */
+.sidebar {
+    background-color: #f8f9fa;
+}
+/* Optional: Custom spacing between items */
+.nav-item {
+    margin-bottom: 5px; /* Consistent space between items */
+}
+
+/* Optional: Adjusting padding inside buttons */
+.btn-danger {
+    padding: 10px 20px; /* More comfortable padding for the logout button */
+}
+
+/* Optional: Remove spacing on collapsed submenus */
+.nav .collapse {
+    margin-top: 0 !important;
+}
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Initial state of the submenus - hidden */
+.nav-item .collapse {
+    display: none;
+}
+
+/* Show submenu when hovering over the parent menu */
+.nav-item:hover .collapse {
+    display: block;
+}
+
+
+.form-control, .form-select {
+    min-height: 45px;
+    font-size: 0.95rem;
+}
+label {
+    font-size: 0.92rem;
+}
+.card {
+    background-color: #fff;
+}
+
+.category-card {
+    transition: box-shadow 0.3s ease;
+    border-radius: 12px;
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+.category-card:hover {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    background-color: #e9ecef;
+}
+
+.food-item-card {
+    border-radius: 10px;
+    transition: transform 0.2s ease;
+}
+
+.food-item-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+#total {
+    font-weight: 600;
+    font-size: 1.2rem;
+    border: none;
+    background-color: #d4edda;
+    color: #155724;
+}
+    body, .container {
+        font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+        font-size: 16px;
+        color: #333;
+    }
+    h3, h4, h5 {
+        font-weight: 600;
+    }
+    .table th, .table td {
+        vertical-align: middle;
+        font-size: 15px;
+    }
+    .badge {
+        font-size: 0.9rem;
+        padding: 0.5em 0.75em;
+        border-radius: 0.5rem;
+    }
+    body {
+    font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+

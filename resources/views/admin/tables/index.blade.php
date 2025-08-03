@@ -69,11 +69,14 @@
                   `;
               }
             },
-          {
-              data: 'user.username',
-              name: 'user.username',
-             
-          },{
+           {
+            data: 'user.username', // This is where you're getting the error
+            name: 'user.username',
+            render: function(data, type, row) {
+                // Check if 'user' is null
+                return data ? data : 'Admin';
+            }
+        },{
               data: 'created_at_readable',
               name: 'created_at_readable',
               searchable: false,

@@ -1,26 +1,27 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\FoodController;
 use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\SubCategoryController;
-use App\Http\Controllers\Admin\TableController;
+use App\Http\Controllers\Admin\TableController as AdminTableController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Casher\CasherController;
 use App\Http\Controllers\Casher\CasherInvoiceController;
+use App\Http\Controllers\Casher\CasherReportController;
 use App\Http\Controllers\Casher\CasherTableController;
+use App\Http\Controllers\Chef\OrderController as ChefOrderController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Server\TableController as ServerTableController;
 use App\Http\Controllers\Server\FoodController as ServerFoodController;
-use App\Http\Controllers\Chief\FoodController as ChiefFoodController;
-use App\Http\Controllers\Chief\OrderController;
-
-
-
-
+use App\Http\Controllers\Chef\FoodController as ChefFoodController;
+use App\Http\Controllers\Chef\OrderController;
+use App\Http\Controllers\Server\ServerTableController as ServerServerTableController;
+use App\Http\Controllers\LangController;
 
 // Login route (must be before Auth::routes and NOT in any middleware group)
 Route::get('/', function () {
@@ -30,8 +31,8 @@ Route::get('/', function () {
             return redirect('/admin/home');
         } elseif ($user->isServer()) {
             return redirect('/server/home');
-        } elseif ($user->isChief()) {
-            return redirect('/chief/home');
+        } elseif ($user->isChef()) {
+            return redirect('/chef/home');
         } elseif ($user->isCasher()) {
             return redirect('/casher/home');
         }
@@ -39,50 +40,59 @@ Route::get('/', function () {
     }
     // If not authenticated, go to login
     return redirect()->route('login');
-
 });
+
+// Language Switcher Route
+Route::get('lang/{locale}', [LangController::class, 'switch'])->name('lang.switch');
+
 // Admin routes
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
-    Route::resource('users', UserController::class)->names('admin.users')->except(['show']);
+    Route::resource('users', UserController::class)->names('admin.users');
     Route::resource('categories', CategoryController::class)->names('admin.categories')->except(['show']);
     Route::resource('sub-categories', SubCategoryController::class)->names('admin.sub-categories')->except(['show']);
     Route::resource('foods', FoodController::class)->names('admin.foods')->except(['show']);
-    Route::resource('tables', TableController::class)->names('admin.tables')->except(['show']);
-    Route::resource('reservations', ReservationController::class)->names('admin.reservations')->except(['index']);
+    Route::resource('tables', AdminTableController::class)->names('admin.tables')->except(['show']);
+    Route::resource('reservations', ReservationController::class)->names('admin.reservations')->except(['show']);
+    Route::get('/admin/dashboard', [HomeController::class, 'showDashboard']);
     Route::get('/home', [HomeController::class, 'index'])->name('admin.home');
-    Route::get('/admin/foods', [FoodController::class, 'index'])->name('admin.foods.index');
 });
 
 // Server routes
 Route::prefix('server')->middleware(['auth', 'isServer'])->group(function () {
-    Route::get('/home', [ServerTableController::class, 'index'])->name('server.home');
+    Route::get('/home', [ServerServerTableController::class, 'index'])->name('server.home');
+    Route::get('/delete-invoice/{id}', [ServerServerTableController::class, 'deleteInvoice'])->name('server.deleteInvoice');
+    // Food routes
     Route::get('/foods/{id}', [ServerFoodController::class, 'index'])->name('server.foods');
     Route::post('/foods-store', [ServerFoodController::class, 'store'])->name('server.foods.store');
     Route::post('/foods-plus-or-minus/{id}/{value}', [ServerFoodController::class, 'plus_or_minus'])->name('server.foods.plus_or_minus');
-    Route::post('/invoice-delete/{id}', [ServerTableController::class, 'deleteInvoice'])->name('server.invoice.delete');
+    Route::post('/invoice-delete/{id}', [ServerServerTableController::class, 'deleteInvoice'])->name('server.invoice.delete');
 });
 
-// Chief routes
-Route::prefix('chief')->middleware(['auth', 'isChief'])->group(function () {
-    Route::get('/foods', [ChiefFoodController::class, 'index'])->name('chief.foods.index');
-    Route::post('/foods-update-available/{id}', [ChiefFoodController::class, 'update_available'])->name('chief.foods.update');
-    Route::get('/home', [OrderController::class, 'index'])->name('chief.home');
-    Route::post('/server/food-invoice/{id}/update-quantity', [FoodController::class, 'updateQuantity'])->name('server.food-invoice.updateQuantity');
-    Route::post('/foods-update-state/{id}/{state}', [OrderController::class, 'update_state'])->name('chief.update-state');
+// Chef routes
+Route::prefix('chef')->middleware(['auth', 'isChef'])->group(function () {
+    Route::get('/home', [OrderController::class, 'index'])->name('chef.home');
+    Route::get('/foods', [ChefFoodController::class, 'index'])->name('chef.foods.index');
+    Route::post('/foods/update/{id}', [OrderController::class, 'updateStatus'])->name('chef.foods.update');
+    Route::post('/orders/update-status/{id}/{status}', [OrderController::class, 'updateStatus'])->name('chef.orders.updateStatus');
 });
 
 // Casher routes
 Route::prefix('casher')->middleware(['auth', 'isCasher'])->group(function () {
     Route::get('/home', [CasherTableController::class, 'index'])->name('casher.home');
-    Route::get('/tables/{id}', [CasherInvoiceController::class, 'show'])->name('casher.tables.invoice');
-    Route::post('/process-payment/{id}', [CasherInvoiceController::class, 'processPayment'])->name('casher.process.payment');  
-    Route::get('/invoices', [CasherInvoiceController::class, 'report'])->name('casher.invoices.report');
+    Route::get('/invoice/{id}', [CasherInvoiceController::class, 'index'])->name('casher.invoice.index');
+    Route::get('/invoice/{id}', [CasherInvoiceController::class, 'show'])->name('casher.invoice.show');
+    Route::post('/invoice/{id}/pay', [CasherInvoiceController::class, 'payInvoice'])->name('invoice.pay');
+    Route::get('reports/export', [CasherReportController::class, 'exportInvoicesReport'])->name('casher.report.export');
+    // Reports page (view)
+    Route::get('/reports', [CasherReportController::class, 'index'])->name('casher.reports');
+    // Export Invoices PDF
+    Route::get('/reports/export-invoices', [CasherReportController::class, 'exportInvoicesReport'])->name('casher.reports.export.invoices');
+    // Export Ordered Foods PDF
+    Route::get('/reports/export-ordered-foods', [CasherReportController::class, 'exportOrderedFoodsPdf'])->name('casher.reports.export.ordered_foods');
 });
 
+// Auth routes (should be at the end)
 Auth::routes();
+
 // Logout route
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
-
-// Route::get('/', function () {
-//     return view('welcome');
-// });

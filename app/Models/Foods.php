@@ -9,26 +9,20 @@ class Foods extends Model
 {
         use HasFactory;
         
-//        protected $fillable = [
-//     'name_en',
-//     'name_ar',
-//     'name_ckb',
-//     'price',
-//     'user_id',
-//     'sub_category_id',
-// ];
-
        protected $guarded = [];
 
      public function user()
        {       
-           return $this->belongsTo(User::class, 'user_id');    
+           return $this->belongsTo(User::class, 'created_by');    
        }
+       public function category()
+{
+    return $this->belongsTo(Category::class,);
+}
        public function sub_category()
-       {
-       return $this->belongsTo(SubCategory::class,'sub_category_id');   
-
-       }
+{
+    return $this->belongsTo(\App\Models\SubCategory::class, 'sub_category_id');
+}
        
     // Define a belongsTo relationship with Invoice
        public function invoice()

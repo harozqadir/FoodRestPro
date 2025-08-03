@@ -1,9 +1,6 @@
-<div class="col-12 mt-5">
-    <button class="btn btn-success col-md-2 mt-4">
-        @if($chehckedifupdate)
-            <i class="fa-solid fa-rotate-right text-white"></i> update
-        @else
-            <i class="fa-solid fa-plus text-white"></i> create
-        @endif
-    </button>
-</div>
+@props(['chehckedifupdate'])
+
+<button type="submit" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm">
+    <i class="fas fa-save me-2"></i>
+    {{ $chehckedifupdate ? 'Update ' : 'Create ' }}
+</button>

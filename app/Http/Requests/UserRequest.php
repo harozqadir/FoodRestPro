@@ -16,19 +16,16 @@ class UserRequest extends FormRequest
 {
     if (in_array($this->method(), ['PUT', 'PATCH'])) {
         return [
-            'username' => 'required| string|max:255|unique:users',
-            'password' => 'nullable|string|min:6|max:256|confirmed',
+            'username' => 'required|string|unique:users,username,' . $this->route('id') . '|max:255',
+            'password' => 'nullable|string|min:6|max:255|confirmed',
             'role'     => 'required|in:1,2,3,4',
-            'created_by' => auth()->id(), // Set the creator's user ID
-
+        ];
+    } else {
+        return [
+            'username' => 'required|string|unique:users,username|max:255',
+            'password' => 'required|string|min:6|max:255|confirmed',
+            'role'     => 'required|in:1,2,3,4',
         ];
     }
-
-    // Default rules for other methods (e.g., POST)
-    return [
-        'username' => 'required| string|max:255|unique:users',
-        'password' => 'required|string|min:6|max:256|confirmed',
-        'role'     => 'required|in:1,2,3,4',
-    ];
 }
 }

@@ -17,12 +17,21 @@ class CategoryController extends Controller
     use DeleteFile;
     
     public function index(Request $request)
-    {
+{
     if ($request->ajax()) {
-        $data = Category::latest()->with('user'); // Remove with('user') if not needed
-        return DataTables::of($data)->addIndexColumn()
+        $data = Category::query()->latest()->with('user'); // Remove with('user') if not needed
+
+        // Add full path to image for DataTables
+        return DataTables::of($data)
+            ->addColumn('full_path_image', function($row) {
+                return $row->image ? 'categories-image/' . $row->image : null; // Assuming images are in public/categories-image
+            })
+            ->addColumn('created_at_readable', function($row) {
+                return $row->created_at->format('Y-m-d H:i:s'); // Format the created date as needed
+            })
+            ->addIndexColumn()
             ->make(true);
-        }
+    }
     return view('admin.categories.index');
 }
 
@@ -35,14 +44,12 @@ class CategoryController extends Controller
 
     
     public function store(CategoryRequest $request)
-    {
-
-        $new_data=$request->validated();
-        
-        $new_data['image'] = $this->Uploadfile($request, 'image', 'categories-image');
-        auth()->user()->categories()->create($new_data);
-        return redirect()->back()->with(['message' => 'User Created Successfully'],);
-    }
+{
+    $new_data = $request->validated();
+    $new_data['image'] = $this->Uploadfile($request, 'image', 'categories-image');
+    auth()->user()->categories()->create($new_data);
+    return redirect()->back()->with(['message' => 'Category Created Successfully']);
+}
 
     /**
      * Display the specified resource.
@@ -64,29 +71,28 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CategoryRequest $request, string $id)
-    {
-        $old_data = Category::findOrFail($id);
-        $new_data = $request->validated();
-        $name= $old_data->image;
-        if ($request->hasFile('image')) {
-            //If the image is updated, delete the old image
-            if ($old_data->image != null) {
-                $name = $old_data->image;
-            }
-            // Check if the old image file exists and delete it
-            if (file_exists(public_path('categories-image/' . $old_data->image))) {
-                unlink(public_path('categories-image/' . $old_data->image));
-            }
-            // Store the new image
-            $name = $request->file('image')->hashName();
-            $request->file('image')->move('categories-image', $name);
-        }
-        $new_data['image'] = $name;
-        $old_data->update($new_data);
-        return redirect()->back()->with(['message' => 'User updated successfully'],);
+   public function update(CategoryRequest $request, string $id)
+{
+    $old_data = Category::findOrFail($id);
+    $new_data = $request->validated();
+    $name = $old_data->image;
 
-       }
+    if ($request->hasFile('image')) {
+        // Delete old image from public/categories-image
+        if ($old_data->image && file_exists(public_path('categories-image/' . $old_data->image))) {
+            unlink(public_path('categories-image/' . $old_data->image));
+        }
+
+        // Save new image to public/categories-image
+        $name = $request->file('image')->hashName();
+        $request->file('image')->move(public_path('categories-image'), $name);
+    }
+
+    $new_data['image'] = $name;
+    $old_data->update($new_data);
+
+    return redirect()->back()->with(['message' => 'Category updated successfully']);
+}
 
     /**
      * Remove the specified resource from storage.

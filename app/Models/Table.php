@@ -10,6 +10,8 @@ class Table extends Model
 {
    use HasFactory;
    protected $guarded = [];
+       protected $fillable = ['status', 'table_number', 'user_id'];
+
    public Function user()
    {
       return $this->belongsTo(User::class,'user_id');
@@ -24,7 +26,15 @@ class Table extends Model
 {
     return $this->hasMany(Invoice::class, 'table_id');
 }
-   
+
+public function invoice()
+       {
+        //return $this->hasOne(Invoice::class, 'table_id')->where('status', 0);
+    return $this->hasOne(\App\Models\Invoice::class)->where('status', 1)->latestOfMany();
+  
+      }
+
+        
 
    protected $appends = ['created_at_readable'];
    public function getCreatedAtReadableAttribute()
@@ -33,9 +43,10 @@ class Table extends Model
    }
 
    // One table has one open (unpaid) invoice
-     public function invoice()
-       {
-        return $this->hasOne(\App\Models\Invoice::class, 'table_id')->where('status', 0);
-        }
-   
+     
+    /* ───── Scopes ───── */
+    public function scopeAvailable($query)
+    {
+        return $query->where('status', 'available');
+    }
 }

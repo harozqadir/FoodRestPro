@@ -17,6 +17,12 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+        const CASHER_ROLE = 4;  
+        const CHEF_ROLE = 3;
+        const SERVER_ROLE = 2;
+        const ADMIN_ROLE = 1;       
+                 
     protected $fillable = [
         'username',
         'password',
@@ -68,17 +74,21 @@ class User extends Authenticatable
     public function tables(){
         return $this->hasMany(Table::class,'user_id');
     }
-    public function reservations(){
-        return $this->hasMany(Reservation::class,'user_id');
-    }
+   public function reservations()
+{
+    return $this->hasMany(Reservation::class);
+}
     public function invoices(){
-        return $this->hasMany(Invoice::class,'user_id');
+    return $this->hasMany(Invoice::class, 'created_by_server');
     }
     public function invoice_food(){
         return $this->hasMany(Foodinvoice::class,'user_id');
     }
-
     
+public function creator()
+{
+    return $this->belongsTo(User::class, 'user_id');
+}
     
   //appends
   protected $appends = ['created_at_readable','role_readable'];
@@ -95,7 +105,7 @@ class User extends Authenticatable
         case 2:
             return 'server';
         case 3:
-            return 'chief';
+            return 'chef';
         case 4:
             return 'casher';
         
@@ -113,7 +123,7 @@ public function isServer()
     return $this->role == 2; // Compare to numeric value
 }
 
-public function isChief()
+public function isChef()
 {
     return $this->role == 3; // Compare to numeric value
 }
@@ -123,9 +133,6 @@ public function isCasher()
     return $this->role == 4; // Compare to numeric value
 }
 
-public function creator()
-{
-    return $this->belongsTo(User::class, 'created_by');
-}
+
 
 }

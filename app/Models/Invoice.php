@@ -7,44 +7,62 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Invoice extends Model
 {    
-    // Example: 0 = open, 1 = ordered, 2 = paid, etc.
-
-    const STATUS_OPEN = 0;
-    const STATUS_ORDERED = 1;
-    const STATUS_PAID = 2;
 
     use HasFactory;
     protected $guqarded = [];
     // Allow mass assignment for these fields
-    protected $fillable = [
+     protected $fillable = [
         'table_id',
-        'created_by',      // Server who created the invoice
-        'user_id',         // Casher who paid the invoice (or use 'paid_by' if that's your column)
-        'invoice_number',
-        'status',
+        'created_by_server',
         'total_price',
-        // Add other columns as needed
+        'status',           // << Add this line
+        'paid_by',
+        // other columns...
     ];
-// Define the relationship with InvoiceFood
-public function invoice_food()
-{
-    return $this->hasMany(Foodinvoice::class, 'invoice_id');
-}
+  // Optionally, add casting for data types
+    protected $casts = [
+        'total_price' => 'decimal:2',
+    ];
 
     
     // Define a hasMany relationship with Foods (or another table storing food details)
    
     public function table()
 {
-    return $this->belongsTo(Table::class);
-}
+    return $this->belongsTo(Table::class, 'table_id');}
      
 public function casher()
 {
     return $this->belongsTo(User::class, 'user_id');
 }
+// In the Invoice model (Invoice.php)
 public function creator()
 {
-    return $this->belongsTo(User::class, 'created_by');
+    return $this->belongsTo(User::class, 'created_by_server');
 }
+public function invoice_food()
+{
+    return $this->hasMany(Foodinvoice::class, 'invoice_id');
+}
+public function user()
+{
+    return $this->belongsTo(User::class, 'user_id'); // customer
+}
+public function paidBy()
+{
+    return $this->belongsTo(User::class, 'paid_by');
+}
+public function foodinvoices()
+{
+    return $this->hasMany(FoodInvoice::class);
+}
+public function server()
+{
+    return $this->belongsTo(User::class, 'created_by_server');
+}
+public function foodItems()
+{
+    return $this->hasMany(FoodInvoice::class);
+}
+
 }

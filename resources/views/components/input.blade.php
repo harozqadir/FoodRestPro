@@ -1,8 +1,16 @@
-<div>
-    <div class="col-md-4 mt-3 postion-relative">
-        <label for="{{$name}}" class="form-label">{{$title}}</label>
-        <input type="{{$type}}" id="{{$name}}" value="{{ $dt ? $dt[$name]: old($name)}}" class="form-control"  name="{{$name}}"  required>
-        @error($name)
-        <div class="text-danger">{{ $message }}</div>
-        @enderror
+@props(['title', 'name', 'type' => 'text', 'dt' => false])
+
+<div class="mb-3">
+    <label for="{{ $name }}" class="form-label fw-semibold">{{ ucfirst($title) }}</label>
+    <input 
+        type="{{ $type }}" 
+        name="{{ $name }}" 
+        id="{{ $name }}" 
+        class="form-control rounded-3 shadow-sm @error($name) is-invalid @enderror" 
+        value="{{ old($name, $dt ? $dt->$name : '') }}"
+        {{ $type === 'password' ? '' : 'autocomplete=off' }}
+    >
+    @error($name)
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
 </div>

@@ -1,14 +1,24 @@
-<div class="col-md-4 mt-3 position-relative">
-    <label for="role" class="form-label">Role</label>
-    <select name="role" id="role" class="form-select">
-        <option value=""></option>
-        <option @selected($role == 1) value="1">Admin</option>
-        <option @selected($role == 2) value="2">Server</option>
-        <option @selected($role == 3) value="3">Chief</option>
-        <option @selected($role == 4) value="4">Casher</option>
+@props(['role'])
 
-    </select>
+@php
+    $roles = [
+        1 => 'Admin',
+        2 => 'Server',
+        3 => 'Chief',
+        4 => 'Casher',
+    ];
+@endphp
+
+<div class="mb-3">
+    <label for="role" class="form-label fw-semibold">Role</label>
+    <select name="role" class="form-select">
+    @foreach([1 => 'Admin', 2 => 'Server', 3 => 'Chief', 4 => 'Casher'] as $value => $label)
+        <option value="{{ $value }}" {{ $role == $value ? 'selected' : '' }}>
+            {{ $label }}
+        </option>
+    @endforeach
+</select>
     @error('role')
-        <div class="text-danger">{{ $message }}</div>
+        <small class="text-danger">{{ $message }}</small>
     @enderror
 </div>

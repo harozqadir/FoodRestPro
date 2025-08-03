@@ -9,15 +9,18 @@ class Reservation extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    public Function user()
-    {
-       return $this->belongsTo(User::class,'user_id');
-    }
+  
 
-    public function orders()
-{
-    return $this->hasMany(Order::class, 'reservation_id');
-}
+    public function table()
+      {
+         return $this->belongsTo(Table::class);
+      }
+    public function user()
+    {
+       return $this->belongsTo(User::class, 'user_id');    
+     }
+
+   
     protected $appends = ['created_at_readable'];
     public function getCreatedAtReadableAttribute()
     {

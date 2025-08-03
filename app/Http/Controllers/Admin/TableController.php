@@ -27,14 +27,13 @@ class TableController extends Controller
             if($request->search['value'] != ''){
              $q->whereHas('reservations',function($query) use ($request){
                 $query->where('name','like', '%'.$request->search['value'].'%')
-                    ->orWhere('phone-number','like', '%'.$request->search['value'].'%')
-                    
+                    ->orWhere('phone_number','like', '%'.$request->search['value'].'%')
+                    //->orWhere('tabe_id','like','%'.$request->search['value'].'%')
+                 
                 ;
              });
 
             }
-        
-    
     })
         
         

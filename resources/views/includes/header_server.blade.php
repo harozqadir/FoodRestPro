@@ -1,46 +1,16 @@
-<header id="page-topbar" class="bg-primary text-white" style="height: 80px; font-family: 'Oswald', sans-serif;">
-    <div class="container-fluid">
-        <div class="row align-items-center">
-            <!-- Logo Section -->
-            <div class="col-6 col-md-4">
-                <div class="navbar-brand-box">
-                    <h2 class="text-white m-0">
-                        <span style="color:rgb(255,183,0)">F</span>ood 
-                        <span style="color: rgb(255, 183,0)">R</span>est
-                    </h2>
-                </div>
-            </div>
+<header id="page-topbar" class="bg-dark text-white shadow-sm py-3" style="font-family: 'Roboto', sans-serif;">
+  <div class="container-fluid d-flex align-items-center justify-content-between">
 
-            <!-- User Account Section -->
-            <div class="col-6 col-md-8 text-end">
-                <div class="d-flex align-items-center justify-content-end">
-                    <!-- Account Name -->
-                    <span class="me-3 fw-medium font-size-15">
-                        {{ auth()->user()->name }}
-                    </span>
+    <!-- Logo with playful typography and bolder accent -->
+    <a href="{{ route('server.home') }}" class="navbar-brand d-flex align-items-center text-decoration-none" 
+       style="user-select:none;">
+      <h1 class="m-0 fw-extrabold fs-2" style="letter-spacing: 0.06em; color: #FF4E00;">
+        <span style="font-style: italic; font-weight: 700;">Rest</span>
+        <span style="color: #FFB700; font-weight: 900; margin-left: 4px;">Food</span>
+      </h1>
+    </a>
 
-                     <!-- Logout Button -->
-                     <form action="{{ route('logout') }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="btn btn-light btn-sm">
-                            <i class="uil uil-sign-out-alt font-size-18 align-middle me-1 text-muted"></i>
-                            Logout
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+
+
+  </div>
 </header>
-<aside id="slidebar" class="slidebar bg-light page-topbar" style="font-family: 'Oswald', sans-serif; width: 100%;">
-    <nav class="admin-nav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('server.home') }}">
-                    <i class="fa fa-home"></i> Home 
-                </a>
-            </li>
-            
-        </ul>
-    </nav>
-</aside>
