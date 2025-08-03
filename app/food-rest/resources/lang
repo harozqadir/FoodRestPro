@@ -1,0 +1,13 @@
+The /food-rest/food-rest/resources/lang directory is intended to contain language files for localization. Since you haven't specified any particular language files to create, I will provide a structure for a typical language file in Laravel.
+
+Here are the contents for a default English language file, which you can name `en.json`:
+
+{
+    "login": "Login",
+    "username": "Username",
+    "password": "Password",
+    "remember_me": "Remember Me",
+    "forgot_password": "Forgot Your Password?"
+}
+
+You can create additional language files (e.g., `es.json` for Spanish) in the same directory as needed.
