@@ -9,7 +9,7 @@
                 <img src="/icons/avatar.png" class="rounded-circle" width="50" height="50" alt="user-avatar">
                 <h4 class="fw-bold mt-2" style="font-size: 24px;">{{ auth()->user()->username }}</h4>
                 <small class="text-muted" style="font-size: 16px;"> 
-                    {{ auth()->user()->role == 3 ? 'Chef' : (auth()->user()->role == 1 ? 'Admin' : 'User') }}
+                    {{ auth()->user()->role == 3 ? __('words.Chef') : (auth()->user()->role == 1 ? __('words.Admin') : __('words.User')) }}
                 </small>
             </div>
         </div>
@@ -22,7 +22,7 @@
                 <li class="nav-item w-100 mb-3 mt-2">
                     <a href="{{ route('chef.home') }}" class="nav-link px-0 align-middle text-dark d-flex align-items-center ">
                         <i class="fa fa-home me-2" style="font-size: 18px;"></i>
-                        <span class="ms-1 d-none d-sm-inline" style="font-size: 22px;">Dashboard Chef</span>
+                        <span class="ms-1 d-none d-sm-inline" style="font-size: 22px;">{{ __('words.Dashboard') }} {{ __('words.Chef') }}</span>
                     </a>
                 </li>
         
@@ -30,7 +30,7 @@
                 <li class="nav-item w-100 mb-3 mt-2">
                     <a href="{{ route('chef.foods.index') }}" class="nav-link px-0 align-middle text-dark d-flex align-items-center ">
                         <i class="fas fa-hamburger me-2" style="font-size: 18px;"></i>
-                        <span class="ms-1 d-none d-sm-inline" style="font-size: 22px;">Foods</span>
+                        <span class="ms-1 d-none d-sm-inline" style="font-size: 22px;">{{ __('words.Foods') }}</span>
                     </a>
             </li>
         </ul>
@@ -44,7 +44,7 @@
             <form method="POST" action="{{ route('logout') }}" class="w-100">
                 @csrf
                 <button type="submit" class="btn btn-danger w-100 py-2" style="font-size: 18px;">
-                    <i class="fa fa-sign-out-alt me-2" style="font-size: 20px;"></i> Logout
+                    <i class="fa fa-sign-out-alt me-2" style="font-size: 20px;"></i> {{ __('words.Logout') }}
                 </button>
             </form>
         </div>

@@ -20,7 +20,26 @@ class SubCategoryController extends Controller
     {
         if ($request->ajax()) {
             $data = SubCategory::latest()->with('user', 'category'); // Fetching categories and user relationships
-            return DataTables::of($data)->addIndexColumn()->make(true);
+           
+     // Advanced search: one input, multiple columns
+        if ($request->filled('custom_search')) {
+            $search = $request->custom_search;
+            $data->where(function($q) use ($search) {
+                $q->where('name_ckb', 'like', "%{$search}%")
+                  ->orWhere('name_ar', 'like', "%{$search}%")
+                  ->orWhere('name_en', 'like', "%{$search}%");
+                  // ->orWhere('description', 'like', "%{$search}%"); // Uncomment if you have a description field
+            });
+        }
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('full_path_image', function($row) {
+                    return $row->image ? 'sub-categories-image/' . $row->image : null; // Assuming images are in public/sub-categories-image
+                })
+                ->addColumn('created_at_readable', function($row) {
+                    return $row->created_at->format('H:i:s - Y-m-d'); // Format the created date as needed
+                })
+                ->make(true);
         }
 
         return view('admin.sub-categories.index');
@@ -42,7 +61,7 @@ class SubCategoryController extends Controller
         // Create a new subcategory for the authenticated user
         auth()->user()->sub_categories()->create($new_data);
 
-        return redirect()->back()->with(['message' => 'Sub Category Created Successfully']);
+        return redirect()->back()->with(['message' =>   __('words.SubCategory created successfully')]);
     }
 
     public function show(string $id)
@@ -80,7 +99,7 @@ class SubCategoryController extends Controller
         $new_data['image'] = $name;
         $old_data->update($new_data);
 
-        return redirect()->back()->with(['message' => 'Sub Category Updated Successfully']);
+        return redirect()->back()->with(['message' => __('words.SubCategory updated successfully')]);
     }
 
     public function destroy(string $id)
@@ -93,6 +112,6 @@ class SubCategoryController extends Controller
         // Delete the subcategory record
         $sub_category->delete();
 
-        return redirect()->back()->with(['message' => 'Sub Category Deleted Successfully']);
+        return redirect()->back()->with(['message' => __('words.SubCategory deleted successfully')]);
     }
 }

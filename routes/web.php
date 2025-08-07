@@ -42,8 +42,11 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-// Language Switcher Route
-Route::get('lang/{locale}', [LangController::class, 'switch'])->name('lang.switch');
+Route::get('/lang/{locale}', function ($locale) {
+    session()->put('locale', $locale);
+    app()->setLocale($locale);
+    return redirect()->back();
+});
 
 // Admin routes
 Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {

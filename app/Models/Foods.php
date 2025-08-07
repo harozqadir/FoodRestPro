@@ -8,7 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Foods extends Model
 {
         use HasFactory;
-        
+//         protected $fillable = [
+//     // ...other fields...
+//     'image',
+// ];
        protected $guarded = [];
 
      public function user()
@@ -31,7 +34,7 @@ class Foods extends Model
        }
 
 
-protected $appends = ['created_at_readable','price_readable'];
+protected $appends = ['created_at_readable','price_readable','full_path_image'];
 
     public function getCreatedAtReadableAttribute()
     {
@@ -42,6 +45,10 @@ protected $appends = ['created_at_readable','price_readable'];
     {
         return number_format($this->price);
     }
+     public function getFullPathImageAttribute()
+      {
+          return env('APP_URL').'foods-image/'.$this->image;
+      }
 
     
   

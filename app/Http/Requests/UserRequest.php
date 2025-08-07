@@ -28,4 +28,14 @@ class UserRequest extends FormRequest
         ];
     }
 }
+public function messages()
+{
+    return [
+        'username.required' => 'ناوی بەکارهێنەر پێویستە.',
+        'password.required' => 'وشەی نهێنی پێویستە.',
+        'password.confirmed' => 'دڵنیاکردنەوەی وشەی نهێنی هەمان وشە دەبێت.',
+        'role.required'     => 'تکایە ڕۆڵ هەلبژێرە.',
+        'password_confirmation.required' => 'تکایە وشەی نهێنی دووبارە بنووسە.',        // Add more as needed
+    ];
+}
 }

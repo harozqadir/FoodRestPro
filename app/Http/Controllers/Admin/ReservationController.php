@@ -16,11 +16,20 @@ class ReservationController extends Controller
     {
         if ($request->ajax()) {
             $data = Reservation::query()->latest()->with('user'); // Include 'user' relation
+            
+            // Advanced search: one input, two columns
+        if ($request->filled('custom_search')) {
+            $search = $request->custom_search;
+            $data->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('phone_number', 'like', "%{$search}%");
+            });
+        }
 
             // Return the data to DataTables
             return DataTables::of($data)
                 ->addColumn('created_at_readable', function($row) {
-                    return $row->created_at->format('Y-m-d H:i:s');
+                    return $row->created_at->format('H:i:s - Y-m-d');
                 })
                 ->addColumn('user_name', function($row) {
                     return $row->user ? $row->user->name : 'N/A'; // Return 'N/A' if no user found
@@ -63,7 +72,7 @@ class ReservationController extends Controller
         $table->save();
     }
 
-    return redirect()->back()->with(['message' => 'Reservation created successfully!']);
+    return redirect()->back()->with(['message' => __('words.Reservation created successfully')]);
 }
     
     public function edit(string $id)
@@ -78,7 +87,7 @@ class ReservationController extends Controller
     $reservation = Reservation::findOrFail($id);
     $reservation->update($request->validated()); // This will update the reservation
 
-    return redirect()->back()->with('message', 'Reservation updated successfully!');
+    return redirect()->back()->with('message', __('words.Reservation updated successfully'));
 }
 
     public function destroy(string $id)
@@ -97,6 +106,6 @@ class ReservationController extends Controller
     }
 
     // Return success message
-    return redirect()->back()->with('message', 'Reservation deleted successfully!');
+    return redirect()->back()->with('message', __('words.Reservation deleted successfully'));
 }
 }

@@ -14,14 +14,25 @@ use Illuminate\Support\Facades\Log;
 class UserController extends Controller
 {
     
-   public function index(Request $request)
+
+
+public function index(Request $request)
 {
     if ($request->ajax()) {
         $data = User::query()->latest()->with('user');
+
+        // Advanced search: one input, two columns
+        if ($request->filled('custom_search')) {
+            $search = $request->custom_search;
+            $data->where(function($q) use ($search) {
+                $q->where('username', 'like', "%{$search}%")
+                  ->orWhere('role', 'like', "%{$search}%");
+            });
+        }
+
         return DataTables::of($data)->addIndexColumn()
-       
             ->editColumn('created_at', function ($row) {
-                return $row->created_at->format('Y-m-d');
+                return $row->created_at->format('H:i:s - Y-m-d');
             })
             ->addColumn('creator_by', function ($row) {
                 return $row->creator ? $row->creator->username : '—';
@@ -32,6 +43,7 @@ class UserController extends Controller
 
     return view('admin.users.index');
 }
+
 
 
     
@@ -45,7 +57,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         auth()->user()->users()->create($request->validated());
-        return redirect()->back()->with(['message' => 'User created successfully'],);
+        return redirect()->back()->with(['message' => __('words.User created successfully')]);
     }
 
 
@@ -67,7 +79,7 @@ class UserController extends Controller
         else
         User::findOrFail($id)->update(Arr::except($request->validated(),['password']));
 
-        return redirect()->back()->with(['message' => 'User updated successfully'],);
+        return redirect()->back()->with(['message' => __('words.User updated successfully')]);
     }
 
     /**
@@ -76,8 +88,8 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         User::findOrFail($id)->delete();
-      
-        return redirect()->back()->with(['message' => 'User deleted successfully'],);
+
+        return redirect()->back()->with(['message' => __('words.User deleted successfully')]);
     }
 
     public function logout(Request $request)

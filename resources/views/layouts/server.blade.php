@@ -1,6 +1,6 @@
 @auth
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ app()->getLocale() }}" dir="{{ in_array(app()->getLocale(), ['ar', 'ckb']) ? 'rtl' : 'ltr' }}">
 
 <head>
     <!-- Meta Tags -->
@@ -11,8 +11,18 @@
     <title>Food Restaurant Admin - @yield('title', 'Dashboard')</title>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Oswald&family=Inter:wght@400;600&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+   <link rel="dns-prefetch" href="//fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Kurdish&display=swap" rel="stylesheet">
 
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    @if (in_array(app()->getLocale(), ['ar', 'ckb']))
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    @else
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+    @endif
+    
     <!-- Vendor CSS Files -->
     <link href="https://cdn.jsdelivr.net/npm/boxicons/css/boxicons.min.css" rel="stylesheet">
     <link href="https://cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">

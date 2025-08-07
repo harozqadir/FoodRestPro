@@ -1,53 +1,89 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container-fluid py-4">
-    <div class="row mb-3 align-items-center">
-        <div class="col-md-6">
-            <h4 class="text-primary fw-bold">Manage Reservations</h>
-        </div>
-        <div class="col-md-6 text-md-end">
-            <a href="{{ route('admin.reservations.create') }}" class="btn btn-success shadow-sm">
-                <i class="fas fa-plus me-1"></i> Add Reservation
-            </a>
-        </div>
-    </div>
 
-    <div class="card shadow-sm border-0">
-        <div class="card-body p-3">
-            <div class="table-responsive">
-                <table id="myTable" class="table table-striped table-hover align-middle mb-0 w-100">
-                    <thead class="table-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Phone Number</th>
-                            <th>Hour</th>
-                            <th>Chair</th>
-                            <th>Table Number</th>
-                            <th>Added By</th>
-                            <th>Created At</th>
-                            <th >Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- DataTable AJAX fills this --}}
-                    </tbody>
-                </table>
+
+    <div class="container py-4">
+    <!-- Modern Page Header -->
+    <x-restaurant-header
+    :title="__('words.Manage Reservations')"
+    :subtitle="__('words.Restaurant Reservations & Management')"
+    :icon="'fas fa-calendar-check'"
+    :action-route="route('admin.reservations.create')"
+    :action-text="__('words.Add New Reservation')"
+    :action-icon="'fas fa-user-plus me-2 fs-4'"
+/>
+
+ <!-- Reusable Modern Card Component -->
+    <x-modern-card>
+        <!-- Enhanced Search Bar -->
+        <div class="row mb-4 justify-content-start" dir="rtl">
+            <div class="col-12 col-md-6">
+                <div class="input-group shadow-sm rounded-pill bg-white border border-0">
+                    <span class="input-group-text bg-gradient text-primary border-0 rounded-start-pill px-4" style="background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);">
+                        <i class="fas fa-search fs-5"></i>
+                    </span>
+                    <input 
+                        type="text" 
+                        id="customSearch" 
+                        class="form-control border-0 shadow-none bg-transparent px-3 py-2 rounded-end-pill" 
+                        placeholder="{{ __('words.Search Username or Role') }}"
+                        style="font-size: 1.1rem;"
+                    >
+                </div>
             </div>
         </div>
-    </div>
+
+    <!-- Responsive Table -->
+        <div class="table-responsive">
+            <table id="myTable" class="table modern-table table-hover align-middle text-center mb-2 w-100" dir="rtl">
+                <thead>
+                    <tr>
+                            <th>#</th>
+                            <th>{{ __('words.Guest Name') }}</th>
+                            <th>{{ __('words.Guest Phone') }}</th>
+                            <th>{{ __('words.Guest Hour') }}</th>
+                            <th>{{ __('words.Guest Chair') }}</th>
+                            <th>{{ __('words.Guest Table Number') }}</th>
+                            <th>{{ __('words.Added By') }}</th>
+                            <th>{{ __('words.Created At') }}</th>
+                            <th>{{ __('words.Actions') }}</th>
+                         </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </x-modern-card>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href="{{ asset('assets/vendor/datatables/jquery.dataTables.min.css') }}" rel="stylesheet">
 
 <script>
-$(document).ready(function(){
-    $('#myTable').DataTable({
+$(document).ready(function () {
+    var table = $('#myTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route("admin.reservations.index")}}',
+        responsive: true,
+        searching: false,
+        lengthChange: false,
+        pageLength: 25,
+        ajax: { 
+                url: "{{ route('admin.reservations.index') }}",
+              data: function (d) {
+                d.custom_search = $('#customSearch').val();
+            }
+        },language: {
+            info: "{{ __('words.Showing') }} _START_ {{ __('words.to') }} _END_ {{ __('words.of') }} _TOTAL_ {{ __('words.entries') }}",
+            infoEmpty: "{{ __('words.No entries to show') }}",
+            paginate: {
+                first: '{{ __("words.First") }}',
+                last: '{{ __("words.Last") }}',
+                next: '{{ __("words.Next") }}',
+                previous: '{{ __("words.Previous") }}'
+            }
+        },
+        buttons: ['colvis'],
         columns: [
             { data: 'DT_RowIndex',
              name: 'DT_RowIndex',
@@ -86,13 +122,13 @@ $(document).ready(function(){
                     return `
                         <div class="d-flex justify-content-center">
                             <a href="${editUrl}" class="btn btn-primary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                                <i class="fas fa-edit"></i>
+                                <i class="fas fa-edit"></i> {{ __('words.Edit') }}
                             </a>
                     <form id="delete-form-${id}" action="${deleteUrl}" method="POST" style="display: inline-block;">
                     @csrf
                     @method('DELETE')
                     <button type="button" class="btn btn-danger btn-sm" onclick="deleteFunction(${id})" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                        <i class="fas fa-trash"></i>
+                        <i class="fas fa-trash"></i> {{ __('words.Delete') }}
                     </button>
                 </form>
                         </div>
@@ -101,14 +137,18 @@ $(document).ready(function(){
             }
         ]
 });
+$('#customSearch').on('keyup change', function() {
+        table.draw();
+    });
             });
+
+
         
        
   
-
-function deleteFunction(id) {
+let deleteFunction = (id) => {
     Swal.fire({
-        title: 'Are you sure to delete this?',
+        title: '{{ __('words.Are you sure to delete this?') }}',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -117,16 +157,11 @@ function deleteFunction(id) {
         if (result.isConfirmed) {
             Swal.fire('Deleted!', 'Deleted Successfully', 'success');
             setTimeout(() => {
-
-            // Submit the delete form
-            document.getElementById(`delete-form-${id}`).submit();
-
-            // Reload the table (after deletion)
-            $('#myTable').DataTable().ajax.reload();
+                document.getElementById('delete-form-' + id).submit();
             }, 500);
         }
     });
-}
+};
 </script>
 
 

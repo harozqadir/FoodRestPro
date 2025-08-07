@@ -1,40 +1,60 @@
 @extends('layouts.admin')
 
 @section('content')
-<div class="container py-4">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="text-primary fw-bold">Manage Sub-Categories</h4>
-        <a href="{{ route('admin.sub-categories.create') }}" class="btn btn-success shadow-sm">
-            <i class="fas fa-plus me-2"></i> Add New Sub-Category
-        </a>
-    </div>
+ <div class="container py-4">
+    <!-- Modern Page Header -->
+    <x-restaurant-header
+    :title="__('words.Manage SubCategories')"
+    :subtitle="__('words.Restaurant SubCategories & Management')"
+    :icon="'fas fa-list-alt'"
+    :action-route="route('admin.sub-categories.create')"
+    :action-text="__('words.Add New SubCategory')"
+    :action-icon="'fas fa-plus me-2 fs-4'"
+/>
+
+ <!-- Reusable Modern Card Component -->
+<x-modern-card>
+        <!-- Enhanced Search Bar -->
+        <div class="row mb-4 justify-content-start" dir="rtl">
+            <div class="col-12 col-md-6" >
+                <div class="input-group shadow-sm rounded-pill bg-white border border-0">
+                    <span class="input-group-text bg-gradient text-primary border-0 rounded-start-pill px-4" style="background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);">
+                        <i class="fas fa-search fs-5"></i>
+                    </span>
+                    <input 
+                        type="text"
+                        id="customSearch"
+                        class="form-control border-0 shadow-none bg-transparent px-3 py-2 rounded-end-pill"
+                        placeholder="{{ __('words.Search for SubCategory name') }}"
+                        dir="rtl"
+                        style="font-size: 1.1rem;"
+                        
+                    />
+                </div>
+            </div>
+        </div> 
+
 
     <!-- Sub-Categories Table -->
-    <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-4">
-            <div class="table-responsive">
-                <table id="myTable" class="table table-hover table-bordered align-middle text-center w-100">
-                    <thead class="table-light">
+    <div class="table-responsive">
+            <table id="myTable" class="table modern-table table-hover align-middle text-center mb-2 w-100" dir="rtl">
+                <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name Kurdish</th>
-                            <th>Name Arabic</th>
-                            <th>Name English</th>
-                            <th>Image</th>
-                            <th>Created By</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
+                            <th>{{ __('words.Name Kurdish') }}</th>
+                            <th>{{ __('words.Name Arabic') }}</th>
+                            <th>{{ __('words.Name English') }}</th>
+                            <th>{{ __('words.Image') }}</th>
+                            <th>{{ __('words.Created By') }}</th>
+                            <th>{{ __('words.Created At') }}</th>
+                            <th>{{ __('words.Actions') }}</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <!-- DataTables will populate this dynamically -->
-                    </tbody>
+                    <tbody> </tbody>
                 </table>
             </div>
-        </div>
-    </div>
-</div>
+     </x-modern-card>
+        </div>  
 
 <!-- DataTables Script -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -42,10 +62,30 @@
 
 <script>
 $(document).ready(function () {
-    $('#myTable').DataTable({
+    var table = $('#myTable').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{{ route("admin.sub-categories.index") }}',
+        responsive: true,
+        searching: false,
+        lengthChange: false,
+        pageLength: 25,
+        ajax: {
+            url: '{{ route("admin.sub-categories.index") }}',
+             data: function (d) {
+                d.custom_search = $('#customSearch').val();
+            }
+        },
+         language: {
+            info: "{{ __('words.Showing') }} _START_ {{ __('words.to') }} _END_ {{ __('words.of') }} _TOTAL_ {{ __('words.entries') }}",
+            infoEmpty: "{{ __('words.No entries to show') }}",
+            paginate: {
+                first: '{{ __("words.First") }}',
+                last: '{{ __("words.Last") }}',
+                next: '{{ __("words.Next") }}',
+                previous: '{{ __("words.Previous") }}'
+            }
+        },
+        buttons: ['colvis'],
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false, orderable: false },
             { data: 'name_ckb', name: 'name_ckb' },
@@ -58,7 +98,7 @@ $(document).ready(function () {
                 orderable: false,
                 render: function(data) {
                     // Render image with timestamp to avoid caching issues
-                    return data ? `<img src="${data}?${new Date().getTime()}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%;">` : 'No Image';
+        return data ? `<img src="/${data}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 2px solid #dee2e6;">` : 'No Image';
                 }
             },
             { 
@@ -82,13 +122,13 @@ $(document).ready(function () {
                     return `
                         <div class="d-flex justify-content-center">
                             <a href="${editUrl}" class="btn btn-primary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                                <i class="fas fa-edit"></i>
+                                <i class="fas fa-edit"></i> {{ __('words.Edit') }}
                             </a>
                            <form id="delete-form-${id}" action="${deleteUrl}" method="POST" style="display: inline-block;">
     <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <input type="hidden" name="_method" value="DELETE">
     <button type="button" class="btn btn-danger btn-sm" onclick="deleteFunction(${id})" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-        <i class="fas fa-trash"></i>
+        <i class="fas fa-trash"></i> {{ __('words.Delete') }}
     </button>
 </form>
                         </div>
@@ -97,11 +137,14 @@ $(document).ready(function () {
             }
         ]
     });
+    $('#customSearch').on('keyup change', function() {
+        table.draw();
+    });
 });
 
-function deleteFunction(id) {
+let deleteFunction = (id) => {
     Swal.fire({
-        title: 'Are you sure to delete this?',
+        title: '{{ __('words.Are you sure to delete this?') }}',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -114,6 +157,6 @@ function deleteFunction(id) {
             }, 500);
         }
     });
-}
+};
 </script>
 @endsection

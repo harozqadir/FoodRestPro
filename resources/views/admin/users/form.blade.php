@@ -2,15 +2,16 @@
 
 @section('content')
 <div class="container py-4">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-0 text-primary fw-bold">
-            {{ isset($data) ? 'Update User' : 'Create New User' }}
-        </h4>
-        <a href="{{ route('admin.users.index') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i> Back
-        </a>
-    </div>
+    <!-- Modern Page Header -->
+    <x-restaurant-header
+    :title="__('words.Manage Users')"
+    :subtitle="__('words.Restaurant Staff & Permissions')"
+    :icon="'fas fa-users'"
+    :action-route="route('admin.users.index')"
+    :action-text="__('words.Back')"
+    :action-icon="'fas  fa-arrow-left me-2 fs-4'"
+/>
+
 
     <!-- Form Card -->
     <div class="card shadow-sm border-0 rounded-4">
@@ -25,27 +26,31 @@
 
                 <!-- Username -->
                 <div class="col-md-6">
-                    <x-input title="Username" name="username" :dt="isset($data) ? $data : false" type="text" />
+                    <label for="username">{{ __('words.Username') }}</label>
+                    <x-input title="" name="username" :dt="isset($data) ? $data : false" type="text" />
                 </div>
 
                 <!-- Password -->
                 <div class="col-md-6">
-                    <x-input title="Password" name="password" :dt="false" type="password" />
+                    <label for="password">{{ __('words.Password') }}</label>
+                    <x-input title="" name="password" :dt="false" type="password" />
                 </div>
 
                 <!-- Password Confirmation -->
                 <div class="col-md-6">
-                    <x-input title="Password Confirmation" name="password_confirmation" :dt="false" type="password" />
+                    <label for="password_confirmation">{{ __('words.Password Confirmation') }}</label>
+                    <x-input title="" name="password_confirmation" :dt="false" type="password" />
                 </div>
 
                 <!-- Role -->
                 <div class="col-md-6">
+                    <label for="role">{{ __('words.Role') }}</label>
                     <x-role-select :role="isset($data) ? $data->role : old('role')" />
                 </div>
 
                 <!-- Submit Button -->
                 <div class="col-12 text-end">
-                    <x-button :chehckedifupdate=" isset($data) ? true : false " />
+    <x-button :label="isset($data) ? 'نوێکردنەوە' : 'دروستکردن'" />
                 </div>
             </form>
         </div>

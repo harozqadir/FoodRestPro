@@ -26,22 +26,27 @@ class FoodRequest extends FormRequest
             'name_ckb' => 'required|string|max:255',
             'name_ar' => 'required|string|max:255',
             'name_en' => 'required|string|max:255',
-            'sub_category_id' => 'required|exists:sub_categories,id|numeric', 
-           // 'table_id' => 'required|exists:tables,id|numeric',
+            'sub_category_id' => 'required|exists:sub_categories,id|numeric',
             'price'=> 'required|numeric|min:0',
-            // 'foods' => 'required|array',
-            // 'foods.*.id' => 'required|exists:foods,id',
-            // 'foods.*.quantity' => 'required|integer|min:1',
-            // 'foods.*.price' => 'required|numeric|min:0',
-            // 'total' => 'required|numeric|min:0',
+            'image' => ''.($this->isMethod('PUT') ? 'nullable' : 'required').'|mimes:png,jpg,jpeg|max:10240',
+
+           
         ];
 
-        // Example: Only require 'total' for casher
-//     if (auth()->user()->isCasher()) {
-//         $rules['total'] = 'required|numeric';
-//     }
-
-//     return $rules;
-// }
+      
     }
+     public function messages()
+{
+    return [
+        'name_ckb.required'    => 'تکایە ناوی پۆل  بە کوردی بنووسە.',
+        'name_ar.required'     => 'تکایە ناوی پۆل  بە عەرەبی بنووسە.',
+        'name_en.required'     => 'تکایە ناوی پۆل بە ئینگلیزی بنووسە.',
+        'price.required'    => 'تکایە نرخی پۆل هەلبژێرە.',
+        'sub_category_id' => 'تکایە پۆلی لاوەکی هەلبژێرە.',
+        'image'    => 'تکایە وێنەی پۆل هەلبژێرە.',
+        'image.image'          => 'پەڕگەی هەڵبژێردراو دەبێت وێنە بێت.',
+        'image.mimes'          => 'جۆری وێنە دەبێت jpeg, png, jpg یان gif بێت.',
+        'image.max'            => 'قەبارەی وێنە نابێت لە 2MB زیاتر بێت.',
+           ];
+}
 }

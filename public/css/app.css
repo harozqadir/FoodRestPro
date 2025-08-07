@@ -1,5 +1,5 @@
 @charset "UTF-8";
-@import url(https://fonts.googleapis.com/css?family=Nunito);
+/* @import url(https://fonts.googleapis.com/css?family=Nunito); */
 
 
 /*!
@@ -51,7 +51,7 @@
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
   --bs-body-bg-rgb: 248, 250, 252;
-  --bs-font-sans-serif: "Nunito", sans-serif;
+  --bs-font-sans-serif: "RudawRegular", sans-serif;
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
@@ -345,7 +345,7 @@ select,
 optgroup,
 textarea {
   margin: 0;
-  font-family: inherit;
+  font-family: 'RudawRegular', sans-serif;
   font-size: inherit;
   line-height: inherit;
 }
@@ -452,15 +452,15 @@ legend + * {
 }
 
 ::-webkit-file-upload-button {
-  font: inherit;
+  font: 'RudawRegular', sans-serif;
 }
 
 ::file-selector-button {
-  font: inherit;
+  font: 'RudawRegular', sans-serif;
 }
 
 ::-webkit-file-upload-button {
-  font: inherit;
+  font: 'RudawRegular', sans-serif;
   -webkit-appearance: button;
 }
 
@@ -11632,11 +11632,11 @@ textarea.form-control-lg {
     margin-top: 0 !important;
 }
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Rudaw Regular', 'Noto Sans Kurdish', sans-serif;
 }
 
 h1, h2, h3 {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Rudaw Regular', 'Noto Sans Kurdish', sans-serif;
 }
 
 /* Initial state of the submenus - hidden */
@@ -11691,7 +11691,7 @@ label {
     color: #155724;
 }
     body, .container {
-        font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+    font-family: 'Rudaw Regular', 'Noto Sans Kurdish', sans-serif;
         font-size: 16px;
         color: #333;
     }
@@ -11708,9 +11708,152 @@ label {
         border-radius: 0.5rem;
     }
     body {
-    font-family: 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+    font-family: 'RudawRegular', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
     font-size: 15px;
     line-height: 1.6;
 }
+@font-face {
+    font-family: 'Roboto';
+    src: url('/fonts/Roboto_Condensed-Regular.ttf') format('truetype'),
+         url('/fonts/Roboto-Regular.woff2') format('woff2');
 
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Inter';
+    src: url('/fonts/Inter-Regular.woff2') format('woff2'),
+         url('/fonts/Inter-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
 
+@font-face {
+    font-family: 'RudawRegular';
+    src: url('/fonts/rudawregular2.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Optional: fallback to Noto Sans Kurdish */
+@font-face {
+    font-family: 'Noto Sans Kurdish';
+    src: url('/fonts/NotoSansKurdish-Regular.woff2') format('woff2'),
+         url('/fonts/NotoSansKurdish-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+[dir="rtl"] body, [dir="rtl"] html {
+    font-family: 'Rudaw Regular', 'Noto Sans Kurdish', sans-serif;
+}
+input, textarea {
+    font-family: 'RudawRegular', Arial, sans-serif !important;
+    direction: rtl;
+    text-align: left;
+}
+[dir="rtl"] aside,
+[dir="rtl"] .card-header,
+[dir="rtl"] .card-body,
+[dir="rtl"] .nav,
+[dir="rtl"] .nav-link,
+[dir="rtl"] .btn {
+    font-family: 'Rudaw Regular', sans-serif !important;
+    direction: rtl;
+    text-align: right;
+}
+
+[dir="rtl"] .nav .nav-link i,
+[dir="rtl"] .fa,
+[dir="rtl"] .fas {
+    margin-left: 8px !important;
+    margin-right: 0 !important;
+}
+
+.dataTables_wrapper {
+    direction: rtl;
+    text-align: right;
+}
+.dataTables_filter {
+    margin-bottom: 8px; /* or 3px for your case */
+}
+
+/* ...existing code... */
+.restaurant-header {
+    background: linear-gradient(90deg, #4e54c8 0%, #8f94fb 100%);
+    color: #fff;
+    border-radius: 1rem;
+    padding: 2rem 2.5rem;
+    font-family: 'RudawRegular', sans-serif;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 24px rgba(78,84,200,0.08);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+.restaurant-header .icon {
+    font-size: 2.5rem;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    padding: 1rem;
+}
+.modern-card {
+    border-radius: 1.25rem;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+    border: none;
+}
+.modern-table th, .modern-table td {
+    vertical-align: middle;
+}
+.modern-table th {
+    background: #f8f9fa;
+    font-weight: 600;
+    color: #4e54c8;
+    border-top: none;
+}
+.modern-table tbody tr:hover {
+    background: #f1f3fa;
+    transition: background 0.2s;
+}
+.modern-btn {
+    border-radius: 2rem;
+    font-weight: 500;
+    transition: box-shadow 0.2s;
+}
+.modern-btn:focus, .modern-btn:hover {
+    box-shadow: 0 2px 8px rgba(78,84,200,0.12);
+}
+.input-group .form-control {
+    border-radius: 2rem;
+}
+/* ...existing code... */
+
+/* Optional: Prevent select from overlapping label */
+.form-floating > .form-select {
+    padding-top: 1.625rem;
+    padding-bottom: 0.625rem;
+}
+.rudaw-font {
+    font-family: 'RudawRegular', sans-serif;
+}
+
+.english-data-font {
+    font-family: 'Roboto', 'Inter', 'Open Sans', Arial, sans-serif;
+}
+
+.image-upload-wrapper:hover {
+    background-color: #f8f9fa;
+    border-color: #0d6efd;
+}
+.btn-back {
+    background-color: #6c757d; /* soft gray */
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn-back:hover {
+    background-color: #5a6268;
+}

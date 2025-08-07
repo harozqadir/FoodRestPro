@@ -2,15 +2,15 @@
 
 @section('content')
 <div class="container py-4">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="mb-0 text-primary fw-bold">
-            {{ isset($data) ? 'Update Sub-Category' : 'Create New Sub-Category' }}
-        </h4>
-        <a href="{{ route('admin.sub-categories.index') }}" class="btn btn-outline-secondary">
-            <i class="fas fa-arrow-left me-2"></i> Back
-        </a>
-    </div>
+    <!-- Modern Page Header -->
+    <x-restaurant-header
+        :title="__('words.Manage SubCategories')"
+        :subtitle="__('words.Restaurant SubCategories & Management')"
+        :icon="'fas fa-list-alt'"
+        :action-route="route('admin.sub-categories.index')"
+        :action-text="__('words.Back')"
+        :action-icon="'fas fa-arrow-left me-2 fs-4'"
+    />
 
     <!-- Form Card -->
     <div class="card shadow-sm border-0 rounded-4">
@@ -25,31 +25,29 @@
                     @method('PUT')
                 @endisset
 
-                <!-- Name in Kurdish -->
+                <!-- Name Kurdish -->
                 <div class="col-md-6">
-                    <x-input title="Name in Kurdish" name="name_ckb" type="text" :dt="isset($data) ? $data : false" />
+                    <label for="name_ckb">{{ __('words.Name Kurdish') }}</label>
+                    <x-input title="" name="name_ckb" type="text" :dt="isset($data) ? $data : false" />
                 </div>
 
-                <!-- Name in Arabic -->
+                <!-- Name Arabic -->
                 <div class="col-md-6">
-                    <x-input title="Name in Arabic" name="name_ar" type="text" :dt="isset($data) ? $data : false" />
+                    <label for="name_ar">{{ __('words.Name Arabic') }}</label>
+                    <x-input title="" name="name_ar" type="text" :dt="isset($data) ? $data : false" />
                 </div>
 
-                <!-- Name in English -->
+                <!-- Name English -->
                 <div class="col-md-6">
-                    <x-input title="Name in English" name="name_en" type="text" :dt="isset($data) ? $data : false" />
-                </div>
-
-                <!-- Image Upload -->
-                <div class="col-md-6">
-                    <x-input title="Image" name="image" type="file" :dt="isset($data) ? $data : false" />
+                    <label for="name_en">{{ __('words.Name English') }}</label>
+                    <x-input title="" name="name_en" type="text" :dt="isset($data) ? $data : false" />
                 </div>
 
                 <!-- Parent Category Dropdown -->
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Parent Category</label>
+                    <label class="form-label fw-semibold">{{ __('words.Select Category') }}</label>
                     <select name="category_id" class="form-select">
-                        <option value="">-- Select Category --</option>
+                        <option value="">-- {{ __('words.Select Category') }} --</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}"
                                 @selected(isset($data) ? ($category->id == $data->category_id) : old('category_id') == $category->id)>
@@ -62,12 +60,47 @@
                     @enderror
                 </div>
 
+                <!-- Image -->
+                <div class="col-md-6">
+                    <x-image-input accept="image/*" title="وێنەی پۆل" :value="isset($data) ? $data->image : null" />
+                </div>
+
                 <!-- Submit Button -->
                 <div class="col-12 text-end">
-                    <x-button :chehckedifupdate=" isset($data) ? true : false " />
+                    <x-button :label="isset($data) ? 'نوێکردنەوە' : 'دروستکردن'" />
                 </div>
             </form>
         </div>
     </div>
 </div>
 @endsection
+
+<script>
+function previewImage(event, previewId) {
+    const input = event.target;
+    const preview = document.getElementById(previewId);
+    preview.innerHTML = '';
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'img-thumbnail';
+            img.style.maxWidth = '100px';
+            preview.appendChild(img);
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function handleDrop(event, inputId) {
+    event.preventDefault();
+    document.getElementById('drop-area-' + inputId).classList.remove('border-primary');
+    const files = event.dataTransfer.files;
+    if (files.length > 0) {
+        const input = document.getElementById(inputId);
+        input.files = files;
+        previewImage({ target: input }, inputId + '_preview');
+    }
+}
+</script>

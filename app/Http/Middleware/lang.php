@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class SetLocale
+class lang
 {
     /**
      * Handle an incoming request.
@@ -15,7 +15,8 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        app()->setLocale(session('locale', config('app.locale')));
-    return $next($request);
+
+ app()->setLocale('ckb');
+        return $next($request);
     }
 }

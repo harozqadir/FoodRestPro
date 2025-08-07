@@ -11,6 +11,6 @@
         {{ $type === 'password' ? '' : 'autocomplete=off' }}
     >
     @error($name)
-        <small class="text-danger">{{ $message }}</small>
+    <small class="text-danger" dir="rtl">{{ $message }}</small>
     @enderror
 </div>

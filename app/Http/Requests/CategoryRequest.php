@@ -29,4 +29,14 @@ class CategoryRequest extends FormRequest
             
         ];
     }
+    public function messages()
+{
+    return [
+        'name_ckb.required' => 'تکایە ناوی پۆل بە کوردی بنووسە.',
+        'name_ar.required'  => 'تکایە ناوی پۆل بە عەرەبی بنووسە.',
+        'name_en.required'  => 'تکایە ناوی پۆل بە ئینگلیزی بنووسە.',
+        'image.required'    => 'تکایە وێنەی پۆل هەڵبژێرە.',
+        // Add more fields as needed
+    ];
+}
 }

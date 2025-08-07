@@ -33,5 +33,24 @@ class ReservationRequest extends FormRequest
 
         ];
     }
+    public function messages()
+{
+    return [
+        'name.required'          => 'تکایە ناوی میوان بنووسە.',
+        'name.string'            => 'ناو دەبێت نووسراو بێت.',
+        'name.max'               => 'ناو نابێت لە ٢٥٥ پیت زیاتر بێت.',
+        'phone_number.required'  => 'تکایە ژمارەی مۆبایل بنووسە.',
+        'phone_number.string'    => 'ژمارەی مۆبایل دەبێت نووسراو بێت.',
+        'phone_number.max'       => 'ژمارەی مۆبایل نابێت لە ٢٠ پیت زیاتر بێت.',
+        'hour.required'          => 'تکایە کات هەلبژێرە.',
+        'chair.required'         => 'تکایە ژمارەی کورسی بنووسە.',
+        'chair.integer'          => 'ژمارەی کورسی دەبێت ژمارە بێت.',
+        'chair.min'              => 'ژمارەی کورسی دەبێت لە ١ زیاتر بێت.',
+        'table_id.required'      => 'تکایە خشتە هەلبژێرە.',
+        'table_id.exists'        => 'خشتەی هەلبژێردراو نەدۆزرایەوە.',
+        'user_id.required'       => 'تکایە بەکارهێنەر هەلبژێرە.',
+        'user_id.exists'         => 'بەکارهێنەری هەلبژێردراو نەدۆزرایەوە.',
+    ];
+}
     
 }

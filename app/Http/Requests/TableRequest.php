@@ -25,4 +25,13 @@ class TableRequest extends FormRequest
             'table_number' => 'required|string|unique:tables,table_number,'
         ];
     }
+
+    public function messages()
+{
+    return [
+        'table_number.required' => 'تکایە ژمارەی میزی هەلبژێرە.',
+        'table_number.string'   => 'تکایە ژمارەی میزی هەلبژێرە.',
+        'table_number.unique'   => 'ژمارەی میزی هەلبژێردراو پێشتر هەبوو.',
+    ];
+}
 }

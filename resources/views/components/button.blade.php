@@ -1,6 +1,5 @@
-@props(['chehckedifupdate'])
+@props(['label' => 'دروستکردن'])
 
-<button type="submit" class="btn btn-primary px-4 py-2 rounded-3 shadow-sm">
-    <i class="fas fa-save me-2"></i>
-    {{ $chehckedifupdate ? 'Update ' : 'Create ' }}
+<button type="submit" {{ $attributes->merge(['class' => 'btn btn-success rounded-pill px-4']) }}>
+    {{ $label }}
 </button>

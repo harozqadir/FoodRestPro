@@ -16,28 +16,22 @@ class TableController extends Controller
 
       if ($request->ajax()) {
         $data = Table::latest()->with('user');         
+        // Advanced search: one input, two columns
+        if ($request->filled('custom_search')) {
+            $search = $request->custom_search;
+            $data->where(function($q) use ($search) {
+                $q->where('table_number', 'like', "%{$search}%");
+            });
+        }
         return DataTables::of($data)
-        // WhereHas vs WhereRelation
-        //WhereRelation
-        // ->filter(function($q) use ($request){
-        //     if($request->search['value'] != ''){
-        //        $q->whereRelation('reservations','name','like','%'.$request->search['value'].'%');
-         //WhereHas
-        ->filter(function($q) use ($request){
-            if($request->search['value'] != ''){
-             $q->whereHas('reservations',function($query) use ($request){
-                $query->where('name','like', '%'.$request->search['value'].'%')
-                    ->orWhere('phone_number','like', '%'.$request->search['value'].'%')
-                    //->orWhere('tabe_id','like','%'.$request->search['value'].'%')
-                 
-                ;
-             });
-
-            }
-    })
-        
-        
         ->addIndexColumn()
+        ->editColumn('created_at', function ($row) {
+                return $row->created_at->format('H:i:s - Y-m-d');
+            })
+             ->addColumn('creator_by', function ($row) {
+                return $row->creator ? $row->creator->username : '—';
+            })
+            ->rawColumns(['creator_by'])
             ->make(true);
         }
        return view('admin.tables.index');
@@ -55,11 +49,11 @@ class TableController extends Controller
     public function store(TableRequest $request)
     {
         auth()->user()->tables()->create($request->validated());
-        return redirect()->back()->with(['message' => 'User Created Successfully'],);
-        
+        return redirect()->back()->with(['message' => __('words.Table Created Successfully')]);
+    }
 
    
-    }
+    
 
     
     public function edit(string $id)
@@ -73,11 +67,13 @@ class TableController extends Controller
      * Update the specified resource in storage.
      */
     public function update(TableRequest $request, string $id)
-    {
-         Table::findOrFail($id)->update($request->validated());
-        return redirect()->back()->with(['message' => 'User updated successfully'],);
-
-       }
+{
+    $table = Table::findOrFail($id);
+    $table->update([
+        'table_number' => $request->input('table_number'),
+    ]);
+    return redirect()->back()->with(['message' => __('words.Table updated successfully')]);
+}
 
     /**
      * Remove the specified resource from storage.
@@ -85,7 +81,7 @@ class TableController extends Controller
     public function destroy(string $id)
     {
         Table::findOrFail($id)->delete();
-        
-        return redirect()->back()->with(['message' => 'User deleted successfully'],);
+
+        return redirect()->back()->with(['message' => __('words.Table deleted successfully')]);
     }
 }

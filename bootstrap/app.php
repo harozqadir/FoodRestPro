@@ -8,7 +8,8 @@ use App\Http\Middleware\isCasher;
 use App\Http\Middleware\isChef;
 use App\Http\Middleware\isServer;
 use App\Http\Middleware\SetLocale;
-\App\Http\Middleware\SetLocale::class;
+use Illuminate\Support\Facades\Lang;
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -22,12 +23,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'isServer' => isServer::class,
             'isCasher' => isCasher::class,
             'isChef' => isChef::class,
-            'setLocale' => SetLocale::class, // <-- Add this line
-
         ]);
-                $middleware->append(SetLocale::class); // <-- Add this line to run for all web requests
-
-        
+        // Append your lang middleware globally
+        $middleware->append(\App\Http\Middleware\lang::class);
     })
     
     ->withExceptions(function (Exceptions $exceptions) {

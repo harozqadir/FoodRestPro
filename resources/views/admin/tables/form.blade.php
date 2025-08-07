@@ -2,14 +2,25 @@
 
 @section('content')
 <div class="container py-4">
+
+ <!-- Modern Page Header -->
+    <x-restaurant-header
+    :title="__('words.Manage Tables')"
+    :subtitle="__('words.Restaurant Tables & Management')"
+    :icon="'fas fa-list'"
+    :action-route="route('admin.reservations.index')"
+    :action-text="__('words.Reservations list')"
+    :action-icon="'fas fa-list me-2 fs-4'"
+/>
+
     <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
     <h4 class="mb-0 text-primary fw-bold">
-        {{ isset($data) ? 'Update Table' : 'Create New Table' }}
+        {{ isset($data) ? __('words.Updates') : __('words.Create New Table') }}
     </h4>
-    <a href="{{ route('admin.reservations.index') }}" class="btn btn-primary d-flex align-items-center gap-2 shadow-sm px-4 rounded-pill">
+    <a href="{{ route('admin.tables.index') }}" class="btn btn-primary d-flex align-items-center gap-2 shadow-sm px-4 rounded-pill">
         <i class="fas fa-list"></i>
-        <span class="fw-semibold">Reservation List</span>
+        <span class="fw-semibold">{{ __('words.Tables list') }}</span>
     </a>
 </div>
 
@@ -26,7 +37,8 @@
 
                 <!-- Table Number -->
                 <div class="col-md-6">
-                    <x-input title="Table Number" name="table_number" type="text" :dt="isset($data) ? $data : false" />
+                    <label for="table_number">{{ __('words.Table Number') }}</label>
+                    <x-input title="" name="table_number" type="number" min="1" :dt="isset($data) ? $data : false" />
                 </div>
 
                 @if ($errors->any())
@@ -43,10 +55,11 @@
 
                 <!-- Submit Button -->
                 <div class="col-12 text-end">
-                    <x-button :chehckedifupdate=" isset($data) ? true : false " />
+
+<x-button :label="isset($data) ? 'نوێکردنەوە' : 'دروستکردن'" />
                 </div>
             </form>
         </div>
     </div>
-</div>
+
 @endsection

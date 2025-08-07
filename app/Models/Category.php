@@ -19,11 +19,13 @@ protected $guarded = [];
        return $this->hasMany(SubCategory::class, 'category_id');
      }
 
+//appends
 protected $appends = ['created_at_readable','full_path_image'];
+    
     public function getCreatedAtReadableAttribute()
-      {
+    {
         return $this->created_at?->diffForHumans();
-       }
+    }
 
     public function getFullPathImageAttribute()
     {

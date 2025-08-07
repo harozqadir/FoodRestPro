@@ -20,6 +20,15 @@ class CategoryController extends Controller
 {
     if ($request->ajax()) {
         $data = Category::query()->latest()->with('user'); // Remove with('user') if not needed
+        
+         // Advanced search: one input, two columns (e.g., name and description)
+        if ($request->filled('custom_search')) {
+            $search = $request->custom_search;
+            $data->where(function($q) use ($search) {
+                $q->where('name_en', 'like', "%{$search}%");
+            });
+        }
+
 
         // Add full path to image for DataTables
         return DataTables::of($data)
@@ -27,7 +36,7 @@ class CategoryController extends Controller
                 return $row->image ? 'categories-image/' . $row->image : null; // Assuming images are in public/categories-image
             })
             ->addColumn('created_at_readable', function($row) {
-                return $row->created_at->format('Y-m-d H:i:s'); // Format the created date as needed
+                return $row->created_at->format('H:i:s - Y-m-d'); // Format the created date as needed
             })
             ->addIndexColumn()
             ->make(true);
@@ -48,7 +57,7 @@ class CategoryController extends Controller
     $new_data = $request->validated();
     $new_data['image'] = $this->Uploadfile($request, 'image', 'categories-image');
     auth()->user()->categories()->create($new_data);
-    return redirect()->back()->with(['message' => 'Category Created Successfully']);
+    return redirect()->back()->with(['message' =>  __('words.Category created successfully')]);
 }
 
     /**
@@ -91,7 +100,7 @@ class CategoryController extends Controller
     $new_data['image'] = $name;
     $old_data->update($new_data);
 
-    return redirect()->back()->with(['message' => 'Category updated successfully']);
+    return redirect()->back()->with(['message' => __('words.Category updated successfully')]);
 }
 
     /**
@@ -104,6 +113,6 @@ class CategoryController extends Controller
        $this->DeleteFile(public_path(("categories-image/{$category->image}")));
     
         $category->delete();
-        return redirect()->back()->with(['message' => 'User deleted successfully'],);
+        return redirect()->back()->with(['message' => __('words.Category deleted successfully')]);
     }
 }

@@ -25,7 +25,22 @@ class SubCategoryRequest extends FormRequest
         'name_ckb' => 'required|string|max:255',
         'name_ar' => 'required|string|max:255',
         'name_en' => 'required|string|max:255',
-        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'image' => ''.($this->isMethod('PUT') ? 'nullable' : 'required').'|mimes:png,jpg,jpeg|max:10240',
         'category_id' => 'required|exists:categories,id', ];
     }
+
+    public function messages()
+{
+    return [
+        'name_ckb.required'    => 'تکایە ناوی پۆل  بە کوردی بنووسە.',
+        'name_ar.required'     => 'تکایە ناوی پۆل  بە عەرەبی بنووسە.',
+        'name_en.required'     => 'تکایە ناوی پۆل بە ئینگلیزی بنووسە.',
+        'image'    => 'تکایە وێنەی پۆل هەلبژێرە.',
+        'image.image'          => 'پەڕگەی هەڵبژێردراو دەبێت وێنە بێت.',
+        'image.mimes'          => 'جۆری وێنە دەبێت jpeg, png, jpg یان gif بێت.',
+        'image.max'            => 'قەبارەی وێنە نابێت لە 2MB زیاتر بێت.',
+        'category_id.required' => 'تکایە پۆلێکی سەرەکی هەلبژێرە.',
+        'category_id.exists'   => 'پۆلی سەرەکی هەلبژێردراو نەدۆزرایەوە.',
+    ];
+}
 }

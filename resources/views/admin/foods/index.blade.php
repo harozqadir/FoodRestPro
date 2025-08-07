@@ -3,134 +3,157 @@
 
 @section('content')
 <div class="container py-4">
-    <!-- Page Header -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="text-primary fw-bold">Manage Foods</h4>
-        <a href="{{ route('admin.foods.create') }}" class="btn btn-success shadow-sm">
-            <i class="fas fa-plus me-2"></i> Add New Food
-        </a>
-    </div>
+    <!-- Advanced Page Header -->
+    <x-restaurant-header
+        :title="__('words.Manage Foods')"
+        :subtitle="__('words.Restaurant Foods & Management')"
+        :icon="'fas fa-utensils'"
+        :action-route="route('admin.foods.create')"
+        :action-text="__('words.Create New Food')"
+        :action-icon="'fas fa-plus me-2 fs-4'"
+    />
 
-    <!-- Filters Section -->
-    <div class="row mb-4">
-        <div class="col-md-3">
+   <x-modern-card>
+    <!-- Advanced Filters -->
+    <form id="filtersForm" class="row g-3 mb-4 align-items-end">
+        <!-- Subcategory Filter -->
+        <div class="col-md-4">
             <div class="form-floating">
-                <select id="sub_category_id" class="form-select" aria-label="Subcategory Filter">
-                    <option value="">Select Subcategory</option>
+                <select id="sub_category_id" name="sub_category_id" class="form-select" aria-label="{{ __('words.SubCategory Name') }}">
+                    <option value="">{{ __('words.All Subcategories') }}</option>
                     @foreach ($sub_categories as $sub_category)
                         <option value="{{ $sub_category->id }}">{{ $sub_category->name_en }}</option>
                     @endforeach
                 </select>
-                {{-- <label for="sub_category_id">Subcategory</label> --}}
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="form-floating">
-                <select id="is_active" class="form-select"  aria-label="Status Filter">
-                    <option value="">Select Status</option>
-                    <option value="1">Active</option>
-                    <option value="0">Inactive</option>
-                </select>
-                {{-- <label for="is_active">Status</label> --}}
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-floating">
-                <input type="number" id="price_min" class="form-control" placeholder="Min Price" aria-label="Min Price Filter">
-                <label for="price_min">Min Price</label>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="form-floating">
-                <input type="number" id="price_max" class="form-control" placeholder="Max Price" aria-label="Max Price Filter">
-                <label for="price_max">Max Price</label>
-            </div>
-        </div>
-    </div>
-     
-    <!-- Foods Table -->
-    <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-4">
-            <div class="table-responsive">
         
-                <table id="myTable" class="table table-hover table-bordered align-middle text-center w-100">
-                    <thead class="table-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Name English</th>
-                            <th>Price</th>
-                            <th>Subcategory</th>
-                            <th>Created By</th>
-                            <th>Status</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- DataTables will populate this -->
-                    </tbody>
-                </table>
+        <!-- Status Filter -->
+        <div class="col-md-4">
+            <div class="form-floating">
+                <select id="is_active" name="is_active" class="form-select" aria-label="{{ __('words.Status') }}">
+                    <option value="">{{ __('words.All Statuses') }}</option>
+                    <option value="1">{{ __('words.Active') }}</option>
+                    <option value="0">{{ __('words.Inactive') }}</option>
+                </select>
             </div>
         </div>
+        <!-- Global Search -->
+        <div class="col-md-4">
+            <div class="form-floating">
+                <input 
+                    type="text" 
+                    id="global_search" 
+                    name="global_search" 
+                    class="form-control" 
+                    placeholder="{{ __('words.Search Foods') }}" 
+                    aria-label="{{ __('words.Search Foods') }}"
+                >
+                <label for="global_search">{{ __('words.Search Foods') }}</label>
+            </div>
+        </div>
+    </form>
+
+    <!-- Advanced Table -->
+    <div class="table-responsive  shadow rounded">
+        <table id="myTable" class="table table-striped table-hover align-middle text-center mb-2 w-100" dir="rtl">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>{{ __('words.Name Kurdish') }}</th>
+                    <th>{{ __('words.Name Arabic') }}</th>
+                    <th>{{ __('words.Name English') }}</th>
+                    <th>{{ __('words.Price') }}</th>
+                    <th>{{ __('words.Image') }}</th>
+                    <th>{{ __('words.SubCategory Name') }}</th>
+                    <th>{{ __('words.Created By') }}</th>
+                    <th>{{ __('words.Status') }}</th>
+                    <th>{{ __('words.Created At') }}</th>
+                    <th>{{ __('words.Actions') }}</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
+</x-modern-card>
 </div>
 
-<!-- Scripts -->
+
+
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href="{{ asset('assets/vendor/datatables/jquery.dataTables.min.css') }}" rel="stylesheet">
-{{-- <script src="{{ asset('assets/vendor/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
 
+<script src="{{ asset('assets/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script> --}}
 <script>
-$(document).ready(function () {
-    var table = $('#myTable').DataTable({
+$(function () {
+    const table = $('#myTable').DataTable({
         processing: true,
         serverSide: true,
+        responsive: true,
+        searching: false,
+        lengthChange: false,
+        pageLength: 8,
         ajax: {
-            url: '{{ route("admin.foods.index") }}',
+            url: "{{ route('admin.foods.index') }}",
             data: function (d) {
                 d.sub_category_id = $('#sub_category_id').val();
                 d.is_active = $('#is_active').val();
-                d.price_min = $('#price_min').val();
-                d.price_max = $('#price_max').val();
+               
+                d.global_search = $('#global_search').val();
+            }
+        },
+        language: {
+            info: "{{ __('words.Showing') }} _START_ {{ __('words.to') }} _END_ {{ __('words.of') }} _TOTAL_ {{ __('words.entries') }}",
+            infoEmpty: "{{ __('words.No entries to show') }}",
+            paginate: {
+                first: '{{ __("words.First") }}',
+                last: '{{ __("words.Last") }}',
+                next: '{{ __("words.Next") }}',
+                previous: '{{ __("words.Previous") }}'
             }
         },
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', searchable: false, orderable: false },
+            { data: 'name_ckb', name: 'name_ckb' },
+            { data: 'name_ar', name: 'name_ar' },
             { data: 'name_en', name: 'name_en' },
+            {
+                data: 'full_path_image',
+                name: 'full_path_image',
+                searchable: false,
+                orderable: false,
+                render: function(data) {
+                    // Render image with timestamp to avoid caching issues
+        return data ? `<img src="/${data}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 2px solid #dee2e6;">` : 'No Image';
+                }
+            },
             { data: 'price', name: 'price' },
             {
                 data: 'sub_category.name_en',
                 name: 'sub_category.name_en',
-                render: function(data) {
-                    return data ? data : '-';
-                }
+                render: data => data ? data : '-'
             },
             {
                 data: 'user.username',
                 name: 'user.username',
                 searchable: false,
-    orderable: false,
-                render: function(data) {
-                    return data ? data : 'Admin';
-                }
+                orderable: false,
+                render: data => data ? data : 'Admin'
             },
             {
                 data: 'is_active',
                 name: 'is_active',
-                render: function(data) {
-                    return data ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-secondary">Inactive</span>';
-                }
+                render: data => data ? '<span class="badge bg-success">Active</span>' : '<span class="badge bg-secondary">Inactive</span>'
             },
             {
                 data: 'created_at',
                 name: 'created_at',
                 searchable: false,
                 orderable: false,
-                render: function(data) {
-                    return moment(data).format('YYYY-MM-DD HH:mm:ss');
-                }
+                render: data => moment(data).format('YYYY-MM-DD HH:mm:ss')
             },
             {
                 data: 'actions',
@@ -141,49 +164,44 @@ $(document).ready(function () {
                     const id = row.id;
                     const editUrl = '{{ route("admin.foods.edit", ":id") }}'.replace(':id', id);
                     const deleteUrl = '{{ route("admin.foods.destroy", ":id") }}'.replace(':id', id);
-                    return `
-                        <div class="d-flex justify-content-center">
-                            <a href="${editUrl}" class="btn btn-primary btn-sm me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
-                                <i class="fas fa-edit"></i>
+                   return `
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="${editUrl}" class="btn btn-primary btn-sm modern-btn" data-bs-toggle="tooltip" title="Edit">
+                                <i class="fas fa-edit"></i> {{ __('words.Edit') }}
                             </a>
                             <form id="delete-form-${id}" action="${deleteUrl}" method="POST" style="display: inline-block;">
-                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                <input type="hidden" name="_method" value="DELETE">
-                                <button type="button" class="btn btn-danger btn-sm" onclick="deleteFunction(${id})" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
-                                    <i class="fas fa-trash"></i>
+                                @csrf
+                                @method('DELETE')
+                                <button type="button" class="btn btn-danger btn-sm modern-btn" onclick="deleteFunction(${id})" data-bs-toggle="tooltip" title="Delete">
+                                    <i class="fas fa-trash"></i> {{ __('words.Delete') }}
                                 </button>
                             </form>
                         </div>
                     `;
                 }
             }
-        ]
+        ],
+        drawCallback: function() {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        }
     });
 
-    // Apply filters when any of them change
-    $('#sub_category_id, #is_active, #price_min, #price_max').on('change', function () {
+    // Advanced filter triggers
+    $('#filtersForm input, #filtersForm select').on('change keyup', function () {
         table.ajax.reload();
     });
-
-     // Global search
-    $('#global_search').on('keyup', function () {
-        table.search(this.value).draw();
-    });
-
-    // Initialize Tooltips
-    $('[data-bs-toggle="tooltip"]').tooltip();
 });
 
 function deleteFunction(id) {
     Swal.fire({
-        title: 'Are you sure to delete this?',
+        title: '{{ __('words.Are you sure to delete this?') }}',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire('Deleted!', 'Deleted Successfully', 'success');
+            Swal.fire('Deleted!', '{{ __("words.Food deleted successfully") }}', 'success');
             setTimeout(() => {
                 document.getElementById('delete-form-' + id).submit();
             }, 500);
@@ -191,4 +209,5 @@ function deleteFunction(id) {
     });
 }
 </script>
+{{-- @endpush --}}
 @endsection
