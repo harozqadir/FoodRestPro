@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 
 return [
-    
+
     //For login page
     'login' => 'چوونەژوورەوە',
     'username' => 'ناوی بەکارهێنەر',
@@ -41,7 +41,7 @@ return [
     'Server' => 'سێرڤەر',
     'Chef' => 'شێف',
     'Casher' => 'کاشیر',
-    
+
     'Edit User' => 'بەکارهێنەر گۆڕین',
     'Delete User' => 'بەکارهێنەر سڕینەوە',
     'User Name' => 'ناوی بەکارهێنەر',
@@ -52,15 +52,15 @@ return [
     'Search' => 'گەڕان',
     'Role' => 'ڕۆڵ',
     'Status' => 'دۆخ',
-    'Actions' => 'کردارەکان',       
+    'Actions' => 'کردارەکان',
     'Edit' => 'گۆڕین',
     'Delete' => 'سڕینەوە',
     'View' => 'بینین',
-    
-     // Form creation and update
+
+    // Form creation and update
 
     'Create New User' => 'بەکارهێنەر نوێ دروست کردن',
-    
+
     //DataTables
     'First' => 'یەکەمی',
     'Last' => 'کۆتایی',
@@ -75,7 +75,7 @@ return [
     'User updated successfully' => 'بەکارهێنەر بە سەرکەوتوویی نوێکرایەوە',
     'User deleted successfully' => 'بەکارهێنەر بە سەرکەوتوویی سڕایەوە',
     'No users found' => 'هیچ بەکارهێنەرێک نەدۆزرایەوە',
-    
+
     'Search Username or Role' => 'گەڕان بۆ ناوی بەکارهێنەر یان ڕۆڵ',
 
     'Showing' => 'پێشان دەدات',
@@ -90,7 +90,7 @@ return [
     'Manage Categories' => 'ڕێکخستنی پۆلەکان',
     'Create New Category' => 'پۆلی نوێ دروستکردن',
     'Restaurant Categories & Management' => 'پۆلەکانی چێشتخانە و ڕێکخستنیان',
-     'Search for Category name' => 'گەڕان بۆ ناوی پۆل',
+    'Search for Category name' => 'گەڕان بۆ ناوی پۆل',
     'Creates' => '  دروستکردن',
     'Updates' => ' نوێکردنەوە',
     'Add New Category' => 'زیادکردنی پۆلی نوێ',
@@ -111,7 +111,7 @@ return [
 
     //For Admin SubCategories
     'Manage SubCategories' => 'ڕێکخستنی پۆلەکانی خوارەوە',
-    'Create New Sub Category' => 'پۆلی خوارەوەی نوێ دروستکردن', 
+    'Create New Sub Category' => 'پۆلی خوارەوەی نوێ دروستکردن',
     'Restaurant SubCategories & Management' => 'پۆلەکانی خوارەوەی چێشتخانە و ڕێکخستنیان',
     'Search for SubCategory name' => 'گەڕان بۆ ناوی پۆلەکانی خوارەوە',
     'SubCategories' => 'پۆلەکانی خوارەوە',
@@ -143,7 +143,7 @@ return [
     'No tables found' => 'هیچ مێزەیەک نەدۆزرایەوە',
     'Search Table Name' => 'گەڕان بۆ ناوی مێزە',
     'Table Name is required' => 'ناوی مێزە پێویستە',
-    'Table Status' => 'دۆخی مێزە',  
+    'Table Status' => 'دۆخی مێزە',
 
     //For Admin Reservation
     'Manage Reservations' => 'ڕێکخستنی حجزکردنەکان',
@@ -170,14 +170,14 @@ return [
     'Foods list' => 'لیستی خواردنەکان',
     'Restaurant Foods & Management' => 'خواردنەکانی چێشتخانە و ڕێکخستنیان',
     'Search for Food name' => 'گەڕان بۆ ناوی خواردن',
-    'Price'=>'نرخ',
+    'Price' => 'نرخ',
     'Food Name' => 'ناوی خواردن',
-    'Status'=>'دۆخ',
-    'All Statuses'=>'دۆخەکان',
-    'Active'=>'چالاک',
-    'Inactive'=>'ناچالاک',
-    'All Subcategories'=>' پۆلە لاوەکییەکان',
-    'Filter by Subcategory'=>' بەپێی ژێرپۆل',
+    'Status' => 'دۆخ',
+    'All Statuses' => 'دۆخەکان',
+    'Active' => 'چالاک',
+    'Inactive' => 'ناچالاک',
+    'All Subcategories' => ' پۆلە لاوەکییەکان',
+    'Filter by Subcategory' => ' بەپێی ژێرپۆل',
     'Min Price' => 'کەمترین نرخ',
     'Max Price' => 'زۆرترین نرخ',
     'Search Foods' => 'گەڕان بەدوای خواردن',
@@ -209,6 +209,7 @@ return [
     'Reserved' => 'حیجزکراوە',
     'Food Orders' => 'داواکاری خواردن',
     'Order' => 'داواکاری',
+    'Ordered Foods' => 'خواردنە داواکراوەکان',
     'Reset Order' => 'سڕینەوەی داواکاری',
     'Order Status' => 'دۆخی داواکاری',
     'Chef' => 'شێف',
@@ -219,7 +220,81 @@ return [
     'IQD' => 'دینار ',
     //For Chef
     'Chef' => 'شێف',
+    'Chef Dashboard - Orders' => 'داشبۆردی شێف - داواکاریەکان',
+    'Chef Dashboard - Foods' => 'داشبۆردی شێف - خواردنەکان',
+    'Pending Orders' => 'داواکاریەکان لە چاوەڕوانیدا',
+    'Done Orders' => 'داواکاریەکان تەواوکراوە',
+    'Arrived Orders' => 'داواکاریەکان هاتنەوە',
+    'Category & Foods' => 'پۆل و خواردنەکان',
+    'Mark as Done' => '  داواکاریەکە تەواوکرا',
+    'Mark as Not Yet' => 'داواکاریەکە تەواو نەکراوە',
+    'No food orders at the moment.' => 'لە ئێستا هیچ داواکاری خواردنێک نییە.',
+    'Current status' => 'دۆخی ئێستا',
+
 
     //For Casher
+    'Casher Dashboard - Tables' => 'داشبۆردی کاشیر - مێزەکان',
+    'Unpaid' => ' پارە نەدراوە ',
+    'Table Number' => 'ژمارەی مێز',
+    'Invoice ID' => 'ژمارەی فاکتۆر',
+    'Pay Now' => 'پارەدان  ',
+    'Server' => 'گارسۆن',
+    'Total Quantity' => 'کۆی گشتی  ',
+    'Subtotal' => '    نرخ  بە پێی دانە ',
+
+
+    //For Casher Report
+    'Cashier Report Dashboard' => 'داشبۆردی کاشیر - ڕاپۆرتەکان',
+    'Start Date' => 'بەروارەی دەستپێکردن',
+    'End Date' => 'بەروارەی کۆتایی',
+    'Cashier' => 'کاشیر',
+    'Cashier Name' => 'ناوی کاشیر',
+    'Total Sales' => 'کۆی فرۆشتنەکان',
+    'Total Invoices' => 'کۆی فاکتۆرەکان',
+    'Invoices' => 'فاکتۆرەکان',
+    'Unpaid Invoices' => 'فاکتۆرە نادراوەکان',
+    'Unpaid' => 'نەدراوەکان',
+    'Invoice ID' => 'ژمارەی فاکتۆر',
+    'Table Number' => 'ژمارەی مێز',
+    'Food Item' => 'بەرزکردنەوەی خواردن',
+    'Quantity' => 'چەند',
+    'Invoices Report' => 'ڕاپۆرتی فاکتۆرەکان',
+    'Ordered Foods Report' => 'ڕاپۆرتی خواردنە داواکراوەکان',
+    'Sales' => 'فرۆشتنەکان',
+    'Invoices Summary' => 'پوختەی فاکتورەکان',
+    'Total Price' => 'کۆی نرخ',
+    'Status' => 'دۆخ',
+    'Actions' => 'کردارەکان',
+    'Export PDF' => 'بە شێوەی PDF ناردن',
+    'Apply Filters' => 'جێبەجێکردن',
+    'Clear Filters' => 'پاکردنەوە',
+    'No records found' => 'هیچ تۆمارێک پیدا نەکرا',
+    'Date' => 'بەروار',
+    'Food Name' => 'ناوی خواردن',
+    'Total Quantity' => 'کۆی گشتی',
+    'Total Price (IQD)' => 'کۆی نرخ (IQD)',
+    'Ordered Foods' => 'خواردنە داواکراوەکان',
+    'Ordered At' => 'بەرواری داواکاری',
+    'Reset Order' => 'سڕینەوەی داواکاری',
+    'Order Status' => 'دۆخی داواکاری',
+    'Chef' => 'شێف',
     'Casher' => 'کاشیر',
+    'Invoice' => 'فاکتۆرە',
+    'Pay Invoice' => 'پارەدان بۆ فاکتۆرە',
+    'Reports' => 'ڕاپۆرتەکان',
+    'IQD' => 'دینار',
+    'Paid' => 'پارەدراوە',
+    'Ordered Foods Summary' => 'پوختەی خواردنە داواکراوەکان',
+    'Address' => 'ناونیشانی',
+    'Phone' => 'تەلەفۆن',
+    'Email' => 'ئیمەیل',
+    'Generated at' => 'دروستکراوە لە',
+    'From' => 'لە',
+    'To' => 'بۆ',
+    'Printed by' => 'چاپکراوە لەلایەن ',
+    'Printed at' => 'چاپکراوە لە بەرواری ',
+    'Export Ordered Foods' => ' پرنت کردن ',
+    'All' => 'هەموو',
+    'Unknown' => 'نەزانراو',
+    'Total Revenue' => 'داهات'
 ];

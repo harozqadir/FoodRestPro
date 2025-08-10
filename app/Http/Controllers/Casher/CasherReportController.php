@@ -9,9 +9,11 @@ use App\Models\Invoice;
 use App\Models\Table;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Spatie\Browsershot\Browsershot;
 
 class CasherReportController extends Controller
 {
@@ -202,73 +204,154 @@ public function exportInvoicesReport(Request $request)
     $unpaidCount = $invoices->where('status', 1)->count();
     
     
-    $pdf = Pdf::loadView('casher.exports.invoices_report', [
-    'invoices' => $invoices,
-    'from' => $request->start_date, // <-- use start_date
-    'to' => $request->end_date,     // <-- use end_date
-    'cashierName' => $cashierName,
-    // 'tableNumber' => $tableNumber,
-    'totalSales' => $totalSales,
-    'unpaidCount' => $unpaidCount,
-]);
+  $cashierName = $request->filled('cashier_id')
+        ? optional(User::find($request->cashier_id))->username
+        : 'All';
 
-    return $pdf->download('invoices_report.pdf');
+    $html = view('casher.exports.invoices_report', [
+        'invoices' => $invoices,
+        'from' => $request->start_date,
+        'to' => $request->end_date,
+        'cashierName' => $cashierName,
+        'totalSales' => $totalSales,
+        'unpaidCount' => $unpaidCount,
+    ])->render();
+
+    return response()->streamDownload(function () use ($html) {
+        echo Browsershot::html($html)
+            ->format('A4')
+            ->margins(10, 10, 10, 10)
+            ->showBackground()
+            ->pdf();
+    }, 'invoices_report.pdf');
+
+
 }
-
-
-
 public function exportOrderedFoodsPdf(Request $request)
-{    
+{
     // Validate request parameters
     $from = $request->input('start_date');
     $to = $request->input('end_date');
     $cashierId = $request->input('cashier_id');
     $tableId = $request->input('table_id');
+
     // Get cashier and table names
-    $cashierName = $cashierId ? optional(\App\Models\User::find($cashierId))->username : 'All';
-    $tableNumber = $tableId ? optional(\App\Models\Table::find($tableId))->table_number : 'All';
+    $cashierName = $cashierId ? optional(User::find($cashierId))->username : 'All';
+    $tableNumber = $tableId ? optional(Table::find($tableId))->table_number : 'All';
+
     // Build the query for invoices
     $query = Invoice::with(['creator', 'table', 'foodItems.food'])
-    ->when($from && $to, fn($q) => $q->whereBetween('created_at', [$from, $to]))
-    ->when($cashierId, fn($q) => $q->where('created_by_server', $cashierId))
-    ->when($tableId, fn($q) => $q->where('table_id', $tableId));
+        ->when($from && $to, fn($q) => $q->whereBetween('created_at', [$from, $to]))
+        ->when($cashierId, fn($q) => $q->where('created_by_server', $cashierId))
+        ->when($tableId, fn($q) => $q->where('table_id', $tableId));
 
     $invoices = $query->orderByDesc('created_at')->get();
 
     // Group and summarize ordered foods
-    $foods = \App\Models\Foodinvoice::selectRaw('
+    $foods = Foodinvoice::selectRaw('
         DATE(created_at) as date,
         food_id,
         SUM(quantity) as total_quantity,
         SUM(quantity * price) as total_revenue
     ')
-    ->when($from, fn($q) => $q->whereDate('created_at', '>=', $from))
-    ->when($to, fn($q) => $q->whereDate('created_at', '<=', $to))
-    ->when($cashierId, fn($q) => $q->whereHas('invoice', fn($q2) => $q2->where('created_by_server', $cashierId)))
-    ->when($tableId, fn($q) => $q->whereHas('invoice', fn($q2) => $q2->where('table_id', $tableId)))
-    ->groupBy(DB::raw('DATE(created_at)'), 'food_id')
-    ->orderByDesc('total_quantity')
-    ->get()
-    ->map(function ($row) {
-        $row->food = \App\Models\Foods::find($row->food_id);
-        return $row;
-    });
+        ->when($from, fn($q) => $q->whereDate('created_at', '>=', $from))
+        ->when($to, fn($q) => $q->whereDate('created_at', '<=', $to))
+        ->when($cashierId, fn($q) => $q->whereHas('invoice', fn($q2) => $q2->where('created_by_server', $cashierId)))
+        ->when($tableId, fn($q) => $q->whereHas('invoice', fn($q2) => $q2->where('table_id', $tableId)))
+        ->groupBy(DB::raw('DATE(created_at)'), 'food_id')
+        ->orderByDesc('total_quantity')
+        ->get()
+        ->map(function ($row) {
+            $row->food = Foods::find($row->food_id);
+            return $row;
+        });
 
     $totalQuantity = $foods->sum('total_quantity');
     $totalRevenue = $foods->sum('total_revenue');
 
-   
-
-    return Pdf::loadView('casher.exports.ordered_foods_report', [
+    // Render Blade view to HTML
+    $html = view('casher.exports.ordered_foods_report', [
         'foods' => $foods,
         'from' => $from,
         'to' => $to,
         'totalQuantity' => $totalQuantity,
-            'cashierName' => $cashierName,
-    'tableNumber' => $tableNumber,
-
+        'cashierName' => $cashierName,
+        'tableNumber' => $tableNumber,
         'totalRevenue' => $totalRevenue,
-    ])->download('ordered_foods_report.pdf');
-   }
+    ])->render();
+
+    // Generate PDF using Browsershot (A4, RTL, Kurdish font support)
+    return response()->streamDownload(function () use ($html) {
+        echo Browsershot::html($html)
+            ->format('A4')
+            ->margins(10, 10, 10, 10)
+            ->showBackground()
+            ->pdf();
+    }, 'ordered_foods_report.pdf');
+}
 
 }
+/* public function exportOrderedFoodsPdf(Request $request)
+    {
+        // Validate request parameters
+        $from = $request->input('start_date');
+        $to = $request->input('end_date');
+        $cashierId = $request->input('cashier_id');
+        $tableId = $request->input('table_id');
+        // Get cashier and table names
+        $cashierName = $cashierId ? optional(\App\Models\User::find($cashierId))->username : 'All';
+        $tableNumber = $tableId ? optional(\App\Models\Table::find($tableId))->table_number : 'All';
+        // Build the query for invoices
+        $query = Invoice::with(['creator', 'table', 'foodItems.food'])
+            ->when($from && $to, fn($q) => $q->whereBetween('created_at', [$from, $to]))
+            ->when($cashierId, fn($q) => $q->where('created_by_server', $cashierId))
+            ->when($tableId, fn($q) => $q->where('table_id', $tableId));
+
+        $invoices = $query->orderByDesc('created_at')->get();
+
+        // Group and summarize ordered foods
+        $foods = \App\Models\Foodinvoice::selectRaw('
+        DATE(created_at) as date,
+        food_id,
+        SUM(quantity) as total_quantity,
+        SUM(quantity * price) as total_revenue
+    ')
+            ->when($from, fn($q) => $q->whereDate('created_at', '>=', $from))
+            ->when($to, fn($q) => $q->whereDate('created_at', '<=', $to))
+            ->when($cashierId, fn($q) => $q->whereHas('invoice', fn($q2) => $q2->where('created_by_server', $cashierId)))
+            ->when($tableId, fn($q) => $q->whereHas('invoice', fn($q2) => $q2->where('table_id', $tableId)))
+            ->groupBy(DB::raw('DATE(created_at)'), 'food_id')
+            ->orderByDesc('total_quantity')
+            ->get()
+            ->map(function ($row) {
+                $row->food = \App\Models\Foods::find($row->food_id);
+                return $row;
+            });
+        $totalSales = $invoices->sum('total_price');
+        $unpaidCount = $invoices->where('status', 1)->count();
+        $totalQuantity = $foods->sum('total_quantity');
+        $totalRevenue = $foods->sum('total_revenue');
+
+        $html = view('casher.reports.exports.ordered_foods', [
+            'invoices' => $invoices,
+            'from' => $request->start_date,
+            'to' => $request->end_date,
+            'cashierName' => $cashierName,
+            'totalSales' => $totalSales,
+            'totalQuantity' => $totalQuantity,
+            'tableNumber' => $tableNumber,
+
+            'unpaidCount' => $unpaidCount,
+            'totalRevenue' => $totalRevenue,
+
+
+        ])->render();
+
+        return response()->streamDownload(function () use ($html) {
+            echo Browsershot::html($html)
+                ->format('A4')
+                ->margins(10, 10, 10, 10)
+                ->showBackground()
+                ->pdf();
+        }, 'orders_foods_report.pdf');
+    } */

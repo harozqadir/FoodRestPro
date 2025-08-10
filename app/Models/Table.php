@@ -49,4 +49,9 @@ public function invoice()
     {
         return $query->where('status', 'available');
     }
+
+    public function latestInvoice()
+{
+    return $this->hasOne(Invoice::class)->latestOfMany();
+}
 }

@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @if (in_array(app()->getLocale(), ['ar', 'ckb']))
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
-    @else
+        
+        @else
         <link rel="stylesheet" href="/css/bootstrap.min.css">
     @endif
     

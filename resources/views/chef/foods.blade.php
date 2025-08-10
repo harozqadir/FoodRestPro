@@ -1,139 +1,88 @@
 @extends('layouts.chef')
 
 @section('content')
-    <div class="mt-5">
-        <br> 
-    
-    <div class="m-4">
-        <h4 class="mt-3">Categories</h4>
-        <div class="row">
+<div class="container py-5">
+    <div class="mb-4">
+        <h2 class="fw-bold text-primary">{{ __('words.Categories') }}</h2>
+        <div class="row g-4">
             @foreach ($categories as $category)
-                <div class="col-3 p-2">
-                    <div onclick="show_sub_categories({{ $category->id }})" class="card">
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0 h-100 category-card" onclick="show_sub_categories({{ $category->id }})" style="cursor:pointer;">
+                        <img src="{{ asset('categories-image/' . $category->image) }}" class="card-img-top" alt="" style="height:180px; object-fit:cover;">
                         <div class="card-body text-center">
-                            <img src="{{ asset('categories-image/' . $category->image) }}" class="col-12" alt=""
-                                style="width: 100%; height: 150px; object-fit: cover;">
-                            <h5 class="mt-5">{{ $category->name_en }}</h5>
+                            <h5 class="card-title mb-0">{{ $category->name_ckb }}</h5>
                         </div>
                     </div>
                 </div>
             @endforeach
-
         </div>
     </div>
-    <div>
 
-        
-
-            <div class="row mt-5">
-                @foreach ($sub_categories as $sub_category)
-                    <div class="category{{ $sub_category->category_id }} foods d-none" style="margin-bottom: 70px">
-
-                        <div class="d-flex align-items-center">
-
-                            <img src="{{ asset('sub-categories-image/' . $sub_category->image) }}" class="col-1"
-                                alt="">
-                            <h5 class="ms-2">{{ $sub_category->name_en }}</h5>
-
-                        </div>
-                        <div class="mt-4 row">
-                            @foreach ($sub_category->foods as $row)
-                                <div class="p-1 col-3 text-center">
-                                    <div class="card">
-                                        <div class="card-body inputsBox">
-                                            <p>{{ $row->name_en }}</p>
-                                            <p>{{ $row->price_readable }}</p>
-                                            <input type="hidden" value="{{ $row->id }}" name="food_id[]">
-                                            <input type="hidden" value="{{ $row->price }}" name="price[]">
-                                            <div class="d-flex justify-content-between ">
-                                             <form action="{{route('chef.foods.update',['id' => $row->id])}}" method="POST">
-                                                @csrf
-                                                <button class="btn btn-sm btn-primary"><i class="fas fa-sync-alt"></i></button>
-                                             </form>
-                                              
-                                             <p>Current status: {!!
-                                             $row->is_active? 
-                                             '<span class="text-success">Available</span>' : 
-                                             '<span class="text-warning">Not Available</span>'
-                                             !!}
-                                             </p>
+    <div id="subCategoriesSection">
+        <div class="row mt-5">
+            @foreach ($sub_categories as $sub_category)
+                <div class="category{{ $sub_category->category_id }} foods d-none mb-5">
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <img src="{{ asset('sub-categories-image/' . $sub_category->image) }}" class="rounded" style="width:60px; height:60px; object-fit:cover;" alt="">
+                                <h4 class="ms-3 mb-0">{{ $sub_category->name_ckb }}</h4>
+                            </div>
+                            <div class="row g-4">
+                                @foreach ($sub_category->foods as $row)
+                                    <div class="col-md-3">
+                                        <div class="card h-100 border-0 shadow-sm food-card">
+                                            <div class="card-body d-flex flex-column justify-content-between">
+                                                <div>
+                                                    <h5 class="card-title">{{ $row->name_ckb }}</h5>
+                                                    <p class="card-text text-muted">{{ number_format($row->price, 0, '.', ',') }} {{ __('words.IQD') }}</p>
+                                                </div>
+                                                <div class="mt-2">
+                                                    <form action="{{route('chef.foods.update',['id' => $row->id])}}" method="POST" class="d-inline">
+                                                        @csrf
+                                                        <button class="btn btn-outline-primary btn-sm"><i class="fas fa-sync-alt"></i></button>
+                                                    </form>
+                                                    <span class="ms-2">
+                                                        {{ __('words.Current status') }}:
+                                                        @if ($row->is_active)
+                                                            <span class="badge bg-success">{{ __('words.Available') }}</span>
+                                                        @else
+                                                            <span class="badge bg-warning text-dark">{{ __('words.Not Available') }}</span>
+                                                        @endif
+                                                    </span>
+                                                </div>
                                             </div>
-
                                         </div>
                                     </div>
-
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
-
                     </div>
-                @endforeach
-            </div>
-            
+                </div>
+            @endforeach
+        </div>
     </div>
+</div>
 
-    </div>
-    <script>
-        // Function to show sub-categories when a category is clicked
-        let show_sub_categories = (id) => {
-            let foods = document.getElementsByClassName('foods');
+<style>
+    .category-card:hover, .food-card:hover {
+        box-shadow: 0 0 20px rgba(0,0,0,0.12);
+        transform: translateY(-2px) scale(1.02);
+        transition: all 0.2s;
+    }
+</style>
 
-            // Hide all foods first
-            if (foods.length > 0) {
-                for (let i = 0; i < foods.length; i++) {
-                    foods[i].classList.add('d-none');
-                }
-            }
-
-            // Show the sub-categories of the clicked category
-
-            let sub_categories = document.getElementsByClassName('category' + id);
-
-            if (sub_categories.length > 0) {
-                for (let i = 0; i < sub_categories.length; i++) {
-                    sub_categories[i].classList.toggle('d-none');
-                }
-            }
+<script>
+    let show_sub_categories = (id) => {
+        let foods = document.getElementsByClassName('foods');
+        for (let i = 0; i < foods.length; i++) {
+            foods[i].classList.add('d-none');
         }
-
-        let increment = (id) => {
-            // Get the input element by its ID and increment its value
-            let input = document.getElementById(id);
-            input.value++;
-
-            // Call the calculation function to update the total
-            calculation();
+        let sub_categories = document.getElementsByClassName('category' + id);
+        for (let i = 0; i < sub_categories.length; i++) {
+            sub_categories[i].classList.remove('d-none');
         }
-
-
-
-        let decrement = (id) => {
-
-            let input = document.getElementById(id);
-            // Check if the value is greater than 0 before decrementing
-            if (input.value > 0)
-                input.value--;
-            calculation();
-
-        }
-
-        let calculation = () => {
-            let inputs = document.getElementsByClassName('inputsBox'); // Get all input boxes
-            let total = 0;
-
-            // Loop through each input box to calculate the total
-            for (let i = 0; i < inputs.length; i++) {
-                let price = parseFloat(inputs[i].querySelector('input[name="price[]"]').value); // Get the price
-                let quantity = parseInt(inputs[i].querySelector('input[name="quantity[]"]').value); // Get the quantity
-
-                // Ensure price and quantity are valid numbers before adding to total
-                if (!isNaN(price) && !isNaN(quantity)) {
-                    total += price * quantity;
-                }
-            }
-
-            // Update the total price field
-            document.getElementById('total').value = total;
-        };
-    </script>
+        window.scrollTo({ top: document.getElementById('subCategoriesSection').offsetTop - 80, behavior: 'smooth' });
+    }
+</script>
 @endsection

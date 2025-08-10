@@ -15,9 +15,12 @@ class CasherTableController extends Controller
    
     public function index()
 {
-    $tables = Table::with(['invoice' => function($query) {
-        $query->where('status', 1); // Only unpaid invoices
-    }, 'invoices.invoice_food'])->get();
+    $tables = Table::with([
+    'invoices' => function($query) {
+        $query->latest(); // Get all invoices, latest first
+    },
+    'invoices.invoice_food'
+])->get();
 
   
 

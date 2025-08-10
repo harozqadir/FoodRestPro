@@ -120,6 +120,7 @@ $(function () {
             { data: 'name_ckb', name: 'name_ckb' },
             { data: 'name_ar', name: 'name_ar' },
             { data: 'name_en', name: 'name_en' },
+            { data: 'price', name: 'price' },
             {
                 data: 'full_path_image',
                 name: 'full_path_image',
@@ -130,7 +131,7 @@ $(function () {
         return data ? `<img src="/${data}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 50%; border: 2px solid #dee2e6;">` : 'No Image';
                 }
             },
-            { data: 'price', name: 'price' },
+            
             {
                 data: 'sub_category.name_en',
                 name: 'sub_category.name_en',

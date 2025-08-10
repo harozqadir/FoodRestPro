@@ -47,7 +47,7 @@ protected $appends = ['created_at_readable','price_readable','full_path_image'];
     }
      public function getFullPathImageAttribute()
       {
-          return env('APP_URL').'foods-image/'.$this->image;
+    return asset('foods-image/' . $this->image);
       }
 
     

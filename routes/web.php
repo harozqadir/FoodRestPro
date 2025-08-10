@@ -99,3 +99,8 @@ Auth::routes();
 
 // Logout route
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+
+
+
+

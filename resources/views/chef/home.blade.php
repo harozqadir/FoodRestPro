@@ -3,44 +3,43 @@
 @section('content')
 <div class="container my-5">
     <div class="row mb-4 text-center">
-        <h2 class="fw-bold text-primary">Kitchen Order Dashboard</h2>
+        <h2 class="fw-bold text-primary">{{ __('words.Chef Dashboard - Orders') }}</h2>
     </div>
 
     <!-- Filters -->
     <div class="row g-3 mb-3">
         <div class="col-md-3">
             <select id="statusFilter" class="form-select">
-                <option value="">All Statuses</option>
-                <option value="Pending">Pending</option>
-                <option value="Done">Done</option>
-                <option value="Arrived">Arrived</option>
+                <option value="">{{ __('words.All Statuses') }}</option>
+                <option value="Pending">{{ __('words.Pending Orders') }}</option>
+                <option value="Done">{{ __('words.Done Orders') }}</option>
+                <option value="Arrived">{{ __('words.Arrived Orders') }}</option>
             </select>
         </div>
         
     </div>
 
-    <!-- Table -->
-    <div class="card shadow-sm border-0 rounded-4">
-        <div class="card-body p-4">
-            <div class="table-responsive">
-                <table id="ordersTable" class="table table-hover table-bordered align-middle text-center w-100">
-                    <thead class="table-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Category & Food</th>
-                            <th>Quantity</th>
-                            <th>Status</th>
-                            <th>Created At</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse ($foodOrders as $index => $order)
-                            <tr>
+    <!-- Advanced Table -->
+    <div class="table-responsive  shadow rounded">
+        <table id="myTable" class="table table-striped table-hover align-middle text-center mb-2 w-100" dir="rtl">
+            <thead class="table-dark">
+                <tr>
+                    
+                    <th>#</th>
+                    <th>{{ __('words.Category & Foods') }}</th>
+                    <th>{{ __('words.Quantity') }}</th>
+                    <th>{{ __('words.Status') }}</th>
+                    <th>{{ __('words.Created At') }}</th>
+                    <th>{{ __('words.Actions') }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($foodOrders as $index => $order)
+                    <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td class="text-start">
-                                    <strong>{{ $order->food->sub_category->name_en ?? 'N/A' }}</strong><br>
-                                    <small class="text-muted">{{ $order->food->name_en ?? 'N/A' }}</small>
+                                    <strong>{{ $order->food->sub_category->name_ckb ?? 'N/A' }}</strong><br>
+                                    <small class="text-muted">{{ $order->food->name_ckb ?? 'N/A' }}</small>
                                 </td>
                                 <td>
                                     <span class="badge bg-info text-dark px-3 py-2 fs-6">
@@ -52,15 +51,15 @@
                                         switch($order->status) {
                                             case 1:
                                                 $badgeClass = 'bg-warning text-dark';
-                                                $statusText = 'Pending';
+                                                $statusText = __('words.Pending Orders');
                                                 break;
                                             case 2:
                                                 $badgeClass = 'bg-success text-white';
-                                                $statusText = 'Done';
+                                                $statusText = __('words.Done Orders');
                                                 break;
                                             case 3:
                                                 $badgeClass = 'bg-primary text-white';
-                                                $statusText = 'Arrived';
+                                                $statusText = __('words.Arrived Orders');
                                                 break;
                                             default:
                                                 $badgeClass = 'bg-secondary';
@@ -68,7 +67,7 @@
                                         }
                                     @endphp
                                     <span class="badge fs-6 px-3 py-2 {{ $badgeClass }}">
-                                        {{ $statusText }}
+                                       {{__( $statusText) }}
                                     </span>
                                 </td>
                                 <td>{{ $order->created_at->format('Y-m-d') }}</td>
@@ -76,20 +75,20 @@
                                     @if($order->status == 1)
                                         <form action="{{ route('chef.orders.updateStatus', ['id' => $order->id, 'status' => 2]) }}" method="POST" class="d-inline">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-success" title="Mark as Done">✔ Mark as Done</button>
+                                            <button type="submit" class="btn btn-sm btn-success" title="Mark as Done">{{ __('words.Mark as Done') }}</button>
                                         </form>
                                     @elseif($order->status == 2)
                                         <form action="{{ route('chef.orders.updateStatus', ['id' => $order->id, 'status' => 1]) }}" method="POST" class="d-inline">
                                             @csrf
-                                            <button type="submit" class="btn btn-sm btn-secondary" title="Mark as Not Yet">↺ Mark as Not Yet</button>
+                                            <button type="submit" class="btn btn-sm btn-secondary" title="Mark as Not Yet">{{ __('words.Mark as Not Yet') }}</button>
                                         </form>
                                     @else
-                                        <span class="text-muted">No actions</span>
+                                        <span class="text-muted">{{ __('words.No actions') }}</span>
                                     @endif
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="6" class="text-center py-4 text-muted">No food orders at the moment.</td></tr>
+                            <tr><td colspan="6" class="text-center py-4 text-muted">{{ __('words.No food orders at the moment.') }}</td></tr>
                         @endforelse
                     </tbody>
                 </table>

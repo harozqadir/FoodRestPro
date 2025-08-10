@@ -1,5 +1,5 @@
-@auth
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="{{ app()->getLocale() }}" dir="{{ in_array(app()->getLocale(), ['ar', 'ckb']) ? 'rtl' : 'ltr' }}">
 <head>
     <!-- Meta Tags -->
@@ -45,6 +45,8 @@
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
 </head>
 <body data-layout="horizontal" data-topbar="colored">
+    @auth
+
     <div id="layout-wrapper">
         @include('includes.header_admin')
         <div class="d-flex">

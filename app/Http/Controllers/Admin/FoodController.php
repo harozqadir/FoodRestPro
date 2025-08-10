@@ -110,32 +110,31 @@ class FoodController extends Controller
      * Update the specified food item in storage.
      */
     public function update(FoodRequest $request, string $id)
-    {
-          $old_data = Foods::findOrFail($id);
-        $new_data = $request->validated();
-        $name = $old_data->image;
+{
+    $food = Foods::findOrFail($id);
+    $new_data = $request->validated();
 
-        // If there's a new image, upload and replace the old one
-        if ($request->hasFile('image')) {
-            // Delete the old image from storage if it exists
-            if ($old_data->image && file_exists(public_path('foods-image/' . $old_data->image))) {
-                unlink(public_path('foods-image/' . $old_data->image));
-            }
+    // Keep the old image name by default
+    $imageName = $food->image;
 
-            // Upload the new image
-            $name = $request->file('image')->hashName();
-            $request->file('image')->move(public_path('foods-image'), $name);
+    // If a new image is uploaded
+    if ($request->hasFile('image')) {
+        // Delete the old image if it exists
+        if ($food->image && file_exists(public_path('foods-image/' . $food->image))) {
+            unlink(public_path('foods-image/' . $food->image));
         }
-         // Update the subcategory data
-        $new_data['image'] = $name;
-        $old_data->update($new_data);
-
-        // Find and update the food item
-        $old_data = Foods::findOrFail($id)->update($request->validated());
-
-        // Redirect back with an update success message
-        return redirect()->back()->with(['message' =>__('words.Food updated successfully')]);
+        // Upload the new image
+        $image = $request->file('image');
+        $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+        $image->move(public_path('foods-image'), $imageName);
     }
+
+    // Update the image field
+    $new_data['image'] = $imageName;
+    $food->update($new_data);
+
+    return redirect()->back()->with(['message' => __('words.Food updated successfully')]);
+}
 
     /**
      * Remove the specified food item from storage.

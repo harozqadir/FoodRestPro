@@ -7,7 +7,7 @@
     <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div>
             <h2 class="text-primary fw-bold mb-1">
-                <i class="fas fa-utensils me-2"></i>{{ __('words.Table') }} <span class="rudaw-font">{{ $table->table_number }}</span>
+                <i class=" text-transparent fas fa-utensils me-2"></i>{{ __('words.Table') }} <span class="rudaw-font">{{ $table->table_number }}</span>
             </h2>
             @if ($invoice)
                 <div class="d-flex align-items-center mb-2">
@@ -32,7 +32,7 @@
             <div class="col-lg-3  col-8 mb-1">
                 <div class="card category-card shadow-sm border-0 h-100" onclick="showFoods({{ $sub_category->id }})" role="button" tabindex="0" style="cursor:pointer; transition:transform .2s;">
                     <div class="ratio ratio-1x1">
-                        <img src="{{ asset('sub-categories-image/' . ($sub_category->image ?? 'default.png')) }}" class="card-img-top rounded-top w-100 h-100" alt="{{ $sub_category->name_ckb }}" style="object-fit:cover;">
+                        <img src="{{ asset('sub-categories-image/' . ($sub_category->image ?? 'default.png')) }}" class="card-img-top rounded-top w-100 h-100" alt="{{ $sub_category->name_ckb }}" style="object-fit:fill;">
                     </div>
                     <div class="card-body text-center p-2">
                         <h6 class="card-title text-primary fw-bold mb-0">{{ $sub_category->name_ckb }}</h6>
@@ -53,7 +53,7 @@
                         @foreach ($sub_category->foods as $food)
                             <div class="col-lg-3 col-md-4 col-6 mb-4">
                                 <div class="card food-item-card shadow-sm border-0 h-100">
-                                    <img src="{{ asset('foods-image/' . ($food->image ?? 'default.png')) }}" class="card-img-top rounded-top" alt="{{ $food->name_ckb }}" style="height:120px; object-fit:cover;">
+                                    <img src="{{ asset('foods-image/' . ($food->image ?? 'default.png')) }}" class="card-img-top rounded-top" alt="{{ $food->name_ckb }}" style="height:150px; object-fit:fill;">
                                     <div class="card-body text-center p-2">
                                         <h6 class="fw-bold mb-1">{{ $food->name_ckb }}</h6>
                                         <p class="text-muted mb-2">{{ number_format($food->price, 0, '.', ',') }} {{ __('WORDS.IQD') }}</p>
@@ -76,7 +76,7 @@
                 </div>
             @endforeach
         </div>
-        <div class="d-flex flex-column align-items-center mt-4">
+        <div class="d-flex flex-column align-items-center mt-6">
             <input type="text" readonly id="total" name="total" class="form-control text-center fw-bold mb-2" value="0 {{__('words.IQD')}}" style="max-width: 300px;" dir="rtl">
             <div class="d-flex gap-2 w-100 justify-content-center">
                 <button type="submit" class="btn btn-success btn-lg" id="submitOrder" disabled>{{__('words.Order')}}</button>
@@ -87,7 +87,7 @@
 
     <!-- Ordered Food Section -->
     @if ($invoice)
-    <div class="card shadow rounded mb-4">
+    <div class="card shadow rounded mt-4">
         <div class="card-header bg-gradient bg-primary text-white">
             <h5 class="mb-0">{{ __('words.Ordered Foods') }}</h5>
         </div>
@@ -96,11 +96,11 @@
                 <thead class="rudaw-font">
                     <tr>
                         <th>#</th>
-                        <th>{{ __('words.Food Name') }}</th>
-                        <th>{{ __('words.Price') }}</th>
-                        <th>{{ __('words.Quantity') }}</th>
-                        <th>{{ __('words.Total Price') }}</th>
-                        <th>{{ __('words.Actions') }}</th>
+                        <th class="text-center">{{ __('words.Food Name') }}</th>
+                        <th class="text-center">{{ __('words.Price') }}</th>
+                        <th class="text-center">{{ __('words.Quantity') }}</th>
+                        <th class="text-center">{{ __('words.Total Price') }}</th>
+                        <th class="text-center">{{ __('words.Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -149,20 +149,33 @@
                     @endforeach
                 </tbody>
                 <tfoot>
-                    <tr class="table-secondary">
-                        <td colspan="3" class="text-end fw-bold align-middle">
-                            <span class="me-2">{{ __('words.Total Price') }}</span>
+                    <tr class="bg-gradient bg-light align-middle">
+                        <td></td>
+                        <td colspan="2" class="align-right">
+                            <div class="d-flex flex-column align-items-start">
+                                <span class="fw-bold text-success fs-5 mb-1">
+                                    <i class="fas fa-calculator me-2"></i>{{ __('words.Total Price') }}
+                                </span>
+                            </div>
                         </td>
-                        <td class="text-center fw-bold align-middle">
-                            <span class="badge bg-primary fs-6 px-3 py-2">{{ $invoice->invoice_food->sum('quantity') }}</span>
-                        </td>
-                        <td class="text-end fw-bold text-success align-middle">
-                            <span class="badge bg-success fs-6 px-3 py-2">
-                                <i class="fas fa-money-bill-wave me-1"></i>
-                                {{__('words.IQD')}} {{ number_format($invoice->invoice_food->sum(function($row){ return $row->quantity * $row->price; }), 0, '.', ',') }}
+                        
+                        <td class="text-center">
+                            <span class="badge bg-info text-dark fs-5 px-4 py-2 shadow-sm">
+                                <i class="fas fa-list-ul me-1"></i>
+                                {{ $invoice->invoice_food->sum('quantity') }}
                             </span>
                         </td>
-                        <td></td>
+
+
+                        <td class="align-left">
+                        <div class="d-flex flex-column align-items-end">
+                            <span class="badge bg-success fs-5 px-4 py-2 shadow-sm">
+                                <i class="fas fa-money-bill-wave me-1"></i>
+                                {{ number_format($invoice->invoice_food->sum(function($row){ return $row->quantity * $row->price; }), 0, '.', ',') }}
+                                <span class="ms-1">{{ __('words.IQD') }}</span>
+                            </span>
+                        </div>
+                    </td>
                     </tr>
                 </tfoot>
             </table>

@@ -8,11 +8,13 @@
     "require": {
         "php": "^8.2",
         "barryvdh/laravel-dompdf": "^3.1",
+        "barryvdh/laravel-snappy": "^1.0",
         "doctrine/dbal": "^4.2",
         "laravel/framework": "^11.31",
         "laravel/jetstream": "^5.3",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.6",
+        "spatie/browsershot": "^5.0",
         "yajra/laravel-datatables-oracle": "^11.1"
     },
     "require-dev": {

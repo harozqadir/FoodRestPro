@@ -11857,3 +11857,89 @@ input, textarea {
 .btn-back:hover {
     background-color: #5a6268;
 }
+
+/* report teamplate */
+
+<style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 13px;
+            background: #f8f9fa;
+            color: #222;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .header h2 {
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+        .header small {
+            color: #888;
+        }
+        .summary-card {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px #0001;
+            padding: 18px 24px;
+            margin: 0 auto 18px auto;
+            max-width: 600px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 15px;
+        }
+        .summary-card span {
+            display: inline-block;
+            margin-right: 18px;
+        }
+        .filter-info {
+            margin: 18px auto 0 auto;
+            text-align: center;
+            background: #e9ecef;
+            border-radius: 6px;
+            padding: 10px 0;
+            font-size: 14px;
+            max-width: 600px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 18px;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px #0001;
+        }
+        th {
+            background: #2c3e50;
+            color: #fff;
+            font-weight: 600;
+            padding: 10px 6px;
+            border-bottom: 2px solid #dee2e6;
+        }
+        td {
+            padding: 8px 6px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .status-paid {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .status-unpaid {
+            color: #e67e22;
+            font-weight: bold;
+        }
+        .no-data {
+            color: #888;
+            font-style: italic;
+            text-align: center;
+            padding: 24px 0;
+        }
+
+
+        

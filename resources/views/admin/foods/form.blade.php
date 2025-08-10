@@ -65,7 +65,7 @@
 
                 <!-- Image -->
                 <div class="col-md-6">
-                    <x-image-input accept="image/*" title="وێنەی پۆل" :value="isset($data) ? $data->image : null" />
+                    <x-image-input accept="('foods-image/' . $food->image)" title="وێنەی پۆل" :value="isset($data) ? $data->image : null" />
                 </div>  
 
                 {{-- Submit Button --}}
